@@ -19,8 +19,8 @@ public class WebSocketController {
 
     private final Random random = new Random();
 
-    @MessageMapping("/compliment")
-    @SendTo("/outbound")
+    @MessageMapping("/name")
+    @SendTo("/outbound/compliment")
     public WebSocketSend compliment(WebSocketReceiver message) throws Exception {
         Thread.sleep(1000);
         return new WebSocketSend(compliments[random.nextInt(compliments.length - 1)] + HtmlUtils.htmlEscape(message.getName()) + "!");
