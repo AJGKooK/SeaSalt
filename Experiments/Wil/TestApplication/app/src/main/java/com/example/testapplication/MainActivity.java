@@ -2,6 +2,7 @@ package com.example.testapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +19,12 @@ public class MainActivity extends AppCompatActivity {
     public void changeText(View view)
     {
         TextView screenText = findViewById(R.id.MainText);
-        screenText.setText(R.string.alt_text0);
+        View painPic = findViewById(R.id.pain);
+
+        if(painPic.getVisibility() == View.INVISIBLE)
+        {
+            screenText.setText(R.string.alt_text0);
+            painPic.setVisibility(View.VISIBLE);
+        }
     }
 }
