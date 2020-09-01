@@ -19,7 +19,7 @@ public class WebSocketController {
 
     private final Random random = new Random();
 
-    @MessageMapping("/inbound")
+    @MessageMapping("/compliment")
     @SendTo("/outbound")
     public WebSocketSend compliment(WebSocketReceiver message) throws Exception {
         Thread.sleep(1000);

@@ -23,7 +23,7 @@ public class Greeting {
 		return this.content;
 	}
 
-	public int getTest() {
+	public int getLuckyNumber() {
 		return this.luckyNumber;
 	}
 
