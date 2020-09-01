@@ -1,4 +1,4 @@
-package com.example.restservice;
+package com.serviceapplication;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

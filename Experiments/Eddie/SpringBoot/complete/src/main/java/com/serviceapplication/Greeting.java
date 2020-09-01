@@ -1,4 +1,4 @@
-package com.example.restservice;
+package com.serviceapplication;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

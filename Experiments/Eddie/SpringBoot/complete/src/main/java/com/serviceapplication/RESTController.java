@@ -1,4 +1,4 @@
-package com.example.restservice;
+package com.serviceapplication;
 
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.Random;
