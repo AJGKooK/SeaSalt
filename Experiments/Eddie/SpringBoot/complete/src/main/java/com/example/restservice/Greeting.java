@@ -1,5 +1,8 @@
 package com.example.restservice;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Greeting {
 
 	private final long id;
@@ -22,5 +25,11 @@ public class Greeting {
 
 	public int getTest() {
 		return test;
+	}
+
+	public String getTime() {
+		Date date = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		return formatter.format(date);
 	}
 }
