@@ -7,12 +7,12 @@ public class Greeting {
 
 	private final long id;
 	private final String content;
-	private final int test;
+	private final int lucky;
 
-	public Greeting(long id, String content, int test) {
+	public Greeting(long id, String content, int lucky) {
 		this.id = id;
 		this.content = content;
-		this.test = test;
+		this.lucky = lucky;
 	}
 
 	public long getId() {
@@ -24,7 +24,7 @@ public class Greeting {
 	}
 
 	public int getTest() {
-		return test;
+		return lucky;
 	}
 
 	public String getTime() {
