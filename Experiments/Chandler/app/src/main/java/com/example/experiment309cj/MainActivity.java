@@ -21,12 +21,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 EditText firstNum = (EditText) findViewById(R.id.firstNum);
-                EditText secondNum = (EditText) findViewById(R.id.secondNum);
                 TextView showResult = (TextView) findViewById(R.id.showResult);
-
                 int num1 = Integer.parseInt(firstNum.getText().toString());
-                int num2 = Integer.parseInt(secondNum.getText().toString());
-                int result = num1 + num2;
+                int result = num1 * num1 * num1;
                 showResult.setText(result + "");
 
             }
@@ -35,10 +32,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 EditText firstNum = (EditText) findViewById(R.id.firstNum);
-                EditText secondNum = (EditText) findViewById(R.id.secondNum);
                 TextView showResult = (TextView) findViewById(R.id.showResult);
                 firstNum.setText("");
-                secondNum.setText("");
                 showResult.setText("");
 
             }
