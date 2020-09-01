@@ -16,15 +16,15 @@ public class Greeting {
 	}
 
 	public long getId() {
-		return id;
+		return this.id;
 	}
 
 	public String getContent() {
-		return content;
+		return this.content;
 	}
 
 	public int getTest() {
-		return luckyNumber;
+		return this.luckyNumber;
 	}
 
 	public String getTime() {
