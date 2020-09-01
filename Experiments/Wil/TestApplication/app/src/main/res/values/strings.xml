@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">TestApplication</string>
+    <string name="app_name">I AM TEST</string>
+    <string name="text">Oh hey there!</string>
+    <string name="button_name">Press me, dad!</string>
+
+    <string name="alt_text0">Ow, why\'d you do that?!</string>
+    <string name="alt_text1">Wow, you cured me!  Thank you kind stranger!</string>
 </resources>
