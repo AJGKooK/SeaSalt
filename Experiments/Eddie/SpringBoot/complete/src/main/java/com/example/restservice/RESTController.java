@@ -12,10 +12,10 @@ public class RESTController {
 
 	private static final String template = "Hello, %s!";
 	private final AtomicLong counter = new AtomicLong();
+	private Random rand = new Random();
 
 	@GetMapping("/greeting")
 	public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-		Random rand = new Random();
 		return new Greeting(counter.incrementAndGet(), String.format(template, name), rand.nextInt(1000));
 	}
 
