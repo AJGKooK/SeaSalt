@@ -2,8 +2,13 @@ plugins {
     id 'java'
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+group = 'com.backend'
+version = '0.1'
+def javaVersion = JavaVersion.VERSION_14
+
+if(JavaVersion.current() != javaVersion) {
+    throw new GradleException("This build must be run with Java 14!")
+}
 
 repositories {
     mavenCentral()
