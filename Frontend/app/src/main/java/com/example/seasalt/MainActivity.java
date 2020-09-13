@@ -11,6 +11,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //set code to enter and transfer email and password to back end to start app.
+        //required for backend
 
     }
 }
