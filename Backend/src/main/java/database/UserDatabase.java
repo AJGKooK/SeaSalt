@@ -10,4 +10,3 @@ import org.springframework.stereotype.Repository;
 public interface UserDatabase extends JpaRepository<User, Integer> {
 
 }
-S
