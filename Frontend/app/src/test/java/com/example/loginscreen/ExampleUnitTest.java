@@ -1,4 +1,4 @@
-package com.example.seasalt;
+package com.example.loginscreen;
 
 import org.junit.Test;
 
