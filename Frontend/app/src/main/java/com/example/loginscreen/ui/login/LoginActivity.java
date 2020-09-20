@@ -128,4 +128,10 @@ public class LoginActivity extends AppCompatActivity {
     private void showLoginFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
     }
+
+    public void forgotpassword(View view) {
+    }
+
+    public void newaccount(View view) {
+    }
 }
