@@ -38,11 +38,13 @@ public class RegisterActivity extends AppCompatActivity {
     private String API_URL = "http://coms-309-ug-09.cs.iastate.edu/";
     private EditText username, password;
     private Button submit;
+    private Map<String, String> map;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+
 
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
@@ -64,4 +66,12 @@ public class RegisterActivity extends AppCompatActivity {
         boolean ret = restTemplate.postForObject("http://coms-309-ug-09.cs.iastate.edu/add/", null, boolean.class, map);
         return ret;
     }
+    class MyTask extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            return null;
+        }
+    }
+
 }
