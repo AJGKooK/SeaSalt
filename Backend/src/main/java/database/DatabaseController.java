@@ -32,14 +32,20 @@ public class DatabaseController {
     }
 
     @PostMapping(path="/add")
-    public @ResponseBody void addUser(@RequestParam String username
+    public @ResponseBody boolean addUser(@RequestParam String username
             , @RequestParam String password){
+
+        List<User> users = userDatabase.findAll();
+
+        for(User user : users)
+            if(user.getUsername().equals(username)) return false;
+
         User addedUser = new User();
 
         addedUser.setPassword(password);
         addedUser.setUsername(username);
 
         userDatabase.save(addedUser);
-        return;
+        return true;
     }
 }
