@@ -27,10 +27,12 @@ import com.example.loginscreen.R;
 import com.example.loginscreen.ui.login.LoginViewModel;
 import com.example.loginscreen.ui.login.LoginViewModelFactory;
 
+
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
     private Button newaccount;
+    private static String API_URL = "coms-309-ug-09.cs.iastate.edu/static/";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
