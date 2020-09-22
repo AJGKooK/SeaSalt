@@ -69,13 +69,29 @@ public class MainActivity extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                result.setText("Fail");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        result.setText("Fail");
+                    }
+                });
+
 
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                result.setText(response.body().string());
+            public void onResponse(Call call, final Response response) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            result.setText(response.body().string());
+                        } catch (IOException ioe){
+                            result.setText("Error during get body");
+                        }
+                    }
+                });
+
 
             }
         });

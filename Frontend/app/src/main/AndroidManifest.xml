@@ -12,6 +12,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".MainScreen"></activity>
+        <activity android:name=".ui.login.MainActivity" />
         <activity android:name=".ui.login.RegisterActivity" />
         <activity
             android:name=".ui.login.LoginActivity"
