@@ -30,13 +30,24 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.loginscreen.R;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class RegisterActivity extends AppCompatActivity {
     private String API_URL = "http://coms-309-ug-09.cs.iastate.edu";
     private EditText username, password;
     private Button submit;
+    private OkHttpClient client;
     private Map<String, String> map;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +69,49 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public boolean register() {
-        RestTemplate restTemplate = new RestTemplate();
+        final String[] result = new String[1];
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("username", username.getText().toString().trim())
+                .addFormDataPart("password", password.getText().toString().trim()).build();
+
+        final Request request = new Request.Builder().url("http://coms-309-ug-09.cs.iastate.edu/database/add").post(requestBody).build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        result[0] = "fail";
+                    }
+                });
+
+
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            result[0] = response.body().string();
+                        } catch (IOException ioe){
+                            result[0] = "Error during get body";
+                        }
+                    }
+                });
+
+
+            }
+        });
+
+        if(result[0].equals("true")) return true;
+        /*RestTemplate restTemplate = new RestTemplate();
         Map<String, String> map = new HashMap<>();
         map.put("username", username.getText().toString().trim());
         map.put("password", password.getText().toString().trim());
-        boolean ret = restTemplate.postForObject("http://coms-309-ug-09.cs.iastate.edu/add/", null, boolean.class, map);
-        return ret;
+        boolean ret = restTemplate.postForObject("http://coms-309-ug-09.cs.iastate.edu/add/", null, boolean.class, map);*/
+        return false;
     }
     class MyTask extends AsyncTask<Void, Void, Void>{
 
