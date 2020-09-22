@@ -10,5 +10,5 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <!-- Required URLs -->
-    <string name="host_address"></string>
+    <string name="host_address">http://coms-309-ug-09.cs.iastate.edu/</string>
 </resources>

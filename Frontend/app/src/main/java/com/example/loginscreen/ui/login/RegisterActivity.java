@@ -33,9 +33,8 @@ import com.example.loginscreen.R;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class RegisterActivity extends AppCompatActivity {
-    private String API_URL = "http://coms-309-ug-09.cs.iastate.edu/";
+    private String API_URL = "http://coms-309-ug-09.cs.iastate.edu";
     private EditText username, password;
     private Button submit;
     private Map<String, String> map;

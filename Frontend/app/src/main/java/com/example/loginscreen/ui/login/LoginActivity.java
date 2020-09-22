@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
     private Button newaccount;
+    private Button testbutton;
     private static String API_URL = "coms-309-ug-09.cs.iastate.edu/static/";
 
     @Override
@@ -50,6 +51,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 openRegistration();
+            }
+        });
+        testbutton = (Button) findViewById(R.id.testbutton);
+        testbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openTest();
             }
         });
 
@@ -148,6 +156,11 @@ public class LoginActivity extends AppCompatActivity {
 
     public void openRegistration(){
         Intent intent = new Intent(this, RegisterActivity.class);
+        startActivity(intent);
+    }
+
+    public void openTest(){
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
