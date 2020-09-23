@@ -35,17 +35,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
 public class MainActivity extends AppCompatActivity {
 
     private Button getBtn;
     private TextView result;
-    private OkHttpClient client;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,47 +47,6 @@ public class MainActivity extends AppCompatActivity {
 
         result = (TextView) findViewById(R.id.result);
         getBtn = (Button) findViewById(R.id.getBtn);
-        getBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getWebservice();
-            }
-
-        });
-
-        client = new OkHttpClient();
-    }
-        private void getWebservice() {
-        final Request request = new Request.Builder().url("http://coms-309-ug-09.cs.iastate.edu").build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        result.setText("Fail");
-                    }
-                });
-
-
-            }
-
-            @Override
-            public void onResponse(Call call, final Response response) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try{
-                            result.setText(response.body().string());
-                        } catch (IOException ioe){
-                            result.setText("Error during get body");
-                        }
-                    }
-                });
-
-
-            }
-        });
     }
 
 }
