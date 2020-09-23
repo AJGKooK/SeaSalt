@@ -54,6 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
         final String password = this.password.getText().toString().trim();
 
         //Get Boolean
+        //please
         StringRequest stringRequest = new StringRequest(Request.Method.POST, API_URL,
                 new Response.Listener<String>() {
                     @Override
