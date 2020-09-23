@@ -37,18 +37,9 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button getBtn;
-    private TextView result;
-
-    @Override protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_screen);
 
 
-        result = (TextView) findViewById(R.id.result);
-        getBtn = (Button) findViewById(R.id.getBtn);
-    }
-
+//push
 }
 
 
