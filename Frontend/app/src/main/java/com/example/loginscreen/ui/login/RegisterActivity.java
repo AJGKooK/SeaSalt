@@ -24,12 +24,14 @@ import com.example.loginscreen.R;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.util.server.ServerRequestMaker;
+
 
 public class RegisterActivity extends AppCompatActivity {
-    private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/database/add/";
     private EditText username, password;
     private Button submit;
     private Map<String, String> map;
+    private ServerRequestMaker requestMaker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -40,6 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         submit = (Button) findViewById(R.id.submit);
+        requestMaker = new ServerRequestMaker("http://coms-309-ug-09.cs.iastate.edu/database/");
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,43 +52,22 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private void register() {
-        final String username = this.username.getText().toString().trim();
-        final String password = this.password.getText().toString().trim();
+   private void register() {
+        requestMaker.setParam("username", this.username.getText().toString().trim());
+        requestMaker.setParam("password", this.username.getText().toString().trim());
 
-        //Get Boolean
-        //please
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, API_URL,
+        requestMaker.sendRequest("add/",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                            String success = response;
-                            if(success.equals("true")){
-                                Toast.makeText(RegisterActivity.this, "Register Success", Toast.LENGTH_SHORT).show();
-                            }
-                            else{
-                                Toast.makeText(RegisterActivity.this, "Register Failed", Toast.LENGTH_SHORT).show();
-                            }
+                        String success = response;
+                        if(success.equals("true")){
+                            Toast.makeText(RegisterActivity.this, "Register Success", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(RegisterActivity.this, "Register Failed", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(RegisterActivity.this, "Register Error!" + error.toString(), Toast.LENGTH_SHORT).show();
-                    }
-                })
-        {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = new HashMap<>();
-                map.put("username", username);
-                map.put("password", password);
-                return map;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-
-        //push
+                }, this);
     }
 }
