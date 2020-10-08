@@ -56,6 +56,8 @@ public class RegisterActivity extends AppCompatActivity {
         final String username = this.username.getText().toString().trim();
         passwordCheck(this.password.getText().toString().trim(), this.password_verify.getText().toString().trim());
         final String password = this.password.getText().toString().trim();
+        final String name_first = this.name_first.getText().toString().trim();
+        final String name_last = this.name_last.getText().toString().trim();
 
 
         //Get Boolean
@@ -85,6 +87,8 @@ public class RegisterActivity extends AppCompatActivity {
                 Map<String, String> map = new HashMap<>();
                 map.put("username", username);
                 map.put("password", password);
+                map.put("name_first", name_first);
+                map.put("name_last", name_last);
                 return map;
             }
         };
@@ -108,12 +112,17 @@ public class RegisterActivity extends AppCompatActivity {
         return false;
     }
 
-    public static String passwordCheck (String passwordString, String passwordVerifyString){
+    public String passwordCheck (String passwordString, String passwordVerifyString){
         if (!stringCompare(passwordString, passwordVerifyString)){
+            Toast.makeText(RegisterActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
             // Passwords do not match
         }
-        if (passwordString.length() < 3){
+        else if (passwordString.length() < 3){
+            Toast.makeText(RegisterActivity.this, "Password length too short", Toast.LENGTH_SHORT).show();
             // Password too short, set to 3 for testing, final version will be 8
+        }
+        else{
+            return passwordString;
         }
         return null;
     }
