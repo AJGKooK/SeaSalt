@@ -24,8 +24,6 @@ import com.example.loginscreen.R;
 import java.util.HashMap;
 import java.util.Map;
 
-//changed
-
 
 public class RegisterActivity extends AppCompatActivity {
     private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/database/add/";
