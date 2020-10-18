@@ -66,13 +66,13 @@ public class RegisterActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        String success = response;
-                        if(success.equals("true")){
-                            Toast.makeText(RegisterActivity.this, "Register Success", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            Toast.makeText(RegisterActivity.this, "Register Failed", Toast.LENGTH_SHORT).show();
-                        }
+                            String success = response;
+                            if(success.equals("true")){
+                                Toast.makeText(RegisterActivity.this, "Register Success", Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(RegisterActivity.this, "Register Failed", Toast.LENGTH_SHORT).show();
+                            }
                     }
                 },
                 new Response.ErrorListener() {

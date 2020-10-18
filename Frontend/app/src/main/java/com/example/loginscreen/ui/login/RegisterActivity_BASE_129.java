@@ -27,7 +27,7 @@ import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
     private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/database/add/";
-    private EditText username, password, password_verify, name_first, name_last;
+    private EditText username, password;
     private Button submit;
     private Map<String, String> map;
     @Override
@@ -36,12 +36,9 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
-        password_verify = findViewById(R.id.password_verify);
-        name_first = findViewById(R.id.name_first);
-        name_last = findViewById(R.id.name_last);
-
         submit = (Button) findViewById(R.id.submit);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,11 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void register() {
         final String username = this.username.getText().toString().trim();
-        passwordCheck(this.password.getText().toString().trim(), this.password_verify.getText().toString().trim());
         final String password = this.password.getText().toString().trim();
-        final String name_first = this.name_first.getText().toString().trim();
-        final String name_last = this.name_last.getText().toString().trim();
-
 
         //Get Boolean
         //please
@@ -66,13 +59,13 @@ public class RegisterActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        String success = response;
-                        if(success.equals("true")){
-                            Toast.makeText(RegisterActivity.this, "Register Success", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            Toast.makeText(RegisterActivity.this, "Register Failed", Toast.LENGTH_SHORT).show();
-                        }
+                            String success = response;
+                            if(success.equals("true")){
+                                Toast.makeText(RegisterActivity.this, "Register Success", Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(RegisterActivity.this, "Register Failed", Toast.LENGTH_SHORT).show();
+                            }
                     }
                 },
                 new Response.ErrorListener() {
@@ -87,8 +80,6 @@ public class RegisterActivity extends AppCompatActivity {
                 Map<String, String> map = new HashMap<>();
                 map.put("username", username);
                 map.put("password", password);
-                map.put("name_first", name_first);
-                map.put("name_last", name_last);
                 return map;
             }
         };
@@ -96,34 +87,5 @@ public class RegisterActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
 
         //push
-    }
-    public static Boolean stringCompare (String str1, String str2){
-        if (str1.length() == str2.length()){
-            for (int i = 0; i < str1.length(); i++){
-                if (str1.charAt(i) != str2.charAt(i)){
-                    return false;
-                }
-                else
-                    return true;
-            }
-        }
-        else
-            return false;
-        return false;
-    }
-
-    public String passwordCheck (String passwordString, String passwordVerifyString){
-        if (!stringCompare(passwordString, passwordVerifyString)){
-            Toast.makeText(RegisterActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
-            // Passwords do not match
-        }
-        else if (passwordString.length() < 3){
-            Toast.makeText(RegisterActivity.this, "Password length too short", Toast.LENGTH_SHORT).show();
-            // Password too short, set to 3 for testing, final version will be 8
-        }
-        else{
-            return passwordString;
-        }
-        return null;
     }
 }
