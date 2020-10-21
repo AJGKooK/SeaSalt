@@ -67,7 +67,7 @@ backend-deploy:
       - Backend/*
     refs:
       - master
-    variable:
+    variables:
       - $CI_COMMIT_MESSAGE =~ /Deploy/ 
   script:
     - sudo mv Backend/build/libs/*.jar /srv/app/app.jar
