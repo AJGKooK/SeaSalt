@@ -31,7 +31,7 @@ backend-build:
 backend-test:
   stage: test
   allow_failure: true
-  dependencies:
+  needs:
     - backend-build
   tags:
     - Backend
@@ -58,7 +58,7 @@ backend-test:
 backend-deploy:
   stage: deploy
   allow_failure: true
-  dependencies:
+  needs:
     - backend-test
   tags:
     - Shell
@@ -67,7 +67,7 @@ backend-deploy:
       - Backend/*
     refs:
       - master
-    variables:
+    variable:
       - $CI_COMMIT_MESSAGE =~ /Deploy/ 
   script:
     - sudo mv Backend/build/libs/*.jar /srv/app/app.jar
@@ -84,12 +84,12 @@ nginx-test:
     changes:
       - Documents/nginx/*
   script:
-    - sudo nginx -t -c Documents/nginx/nginx.conf
+    - sudo nginx -t -c ./Documents/nginx/nginx.conf
 
 nginx-deploy:
   stage: deploy
   allow_failure: true
-  dependencies:
+  needs:
     - nginx-test
   tags:
     - Shell
@@ -97,7 +97,8 @@ nginx-deploy:
     changes:
       - Documents/nginx/*
   script:
-    - sudo mv Documents/nginx/* /etc/nginx/.
+    - sudo cp -r Documents/nginx/* /etc/nginx/.
+    - sudo chown root:root /etc/nginx/*
     - sudo systemctl reload nginx
 
 systemd-test:
@@ -109,18 +110,21 @@ systemd-test:
     changes:
       - Documents/app.service
   script:
-    - sudo systemctl verify Documents/app.service
+    - sudo systemd-analyze verify ./Documents/app.service
 
 systemd-deploy:
   stage: deploy
   allow_failure: true
+  needs:
+    - systemd-test
   tags:
     - Shell
   only:
     changes:
       - Documents/app.service
   script:
-    - sudo mv Documents/app.service /etc/systemd/system/app.service
+    - sudo cp Documents/app.service /etc/systemd/system/app.service
+    - sudo chown root:root /etc/systemd/system/app.service
     - sudo systemctl daemon-reload
     - sudo systemctl restart app 
 
@@ -128,7 +132,7 @@ android-build:
   image: javiersantos/android-ci:latest
   stage: build
   allow_failure: true
-  tags:
+  tages:
     - Android 
     - Frontend
   only:
@@ -148,9 +152,9 @@ android-test:
   image: javiersantos/android-ci:latest
   stage: test
   allow_failure: true
-  dependencies:
+  needs:
     - android-build
-  tags:
+  tages:
     - Android 
     - Frontend
   only:
