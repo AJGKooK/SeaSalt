@@ -8,7 +8,6 @@ variables:
 
 backend-build:
   stage: build
-  allow_failure: true
   tags:
     - Backend
     - Spring
@@ -30,7 +29,6 @@ backend-build:
 
 backend-test:
   stage: test
-  allow_failure: true
   needs:
     - backend-build
   tags:
@@ -57,7 +55,6 @@ backend-test:
 
 backend-deploy:
   stage: deploy
-  allow_failure: true
   needs:
     - backend-test
   tags:
@@ -77,18 +74,18 @@ backend-deploy:
 
 nginx-test:
   stage: test
-  allow_failure: true
   tags:
     - Shell
   only:
     changes:
       - Documents/nginx/*
   script:
-    - sudo nginx -t -c ./Documents/nginx/nginx.conf
+    - sudo mkdir /tmp/nginx
+    - sudo cp -r Documents/nginx/* /tmp/nginx/.
+    - sudo nginx -t -c /tmp/nginx/nginx.conf
 
 nginx-deploy:
   stage: deploy
-  allow_failure: true
   needs:
     - nginx-test
   tags:
@@ -103,7 +100,6 @@ nginx-deploy:
 
 systemd-test:
   stage: test
-  allow_failure: true
   tags:
     - Shell
   only:
@@ -114,7 +110,6 @@ systemd-test:
 
 systemd-deploy:
   stage: deploy
-  allow_failure: true
   needs:
     - systemd-test
   tags:
@@ -131,7 +126,6 @@ systemd-deploy:
 android-build:
   image: javiersantos/android-ci:latest
   stage: build
-  allow_failure: true
   tags:
     - Android 
     - Frontend
@@ -151,7 +145,6 @@ android-build:
 android-test:
   image: javiersantos/android-ci:latest
   stage: test
-  allow_failure: true
   needs:
     - android-build
   tags:
