@@ -1,0 +1,167 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+backend-build:
+  stage: build
+  allow_failure: true
+  tags:
+    - Backend
+    - Spring
+  only:
+    changes:
+      - Backend/*
+  before_script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - chmod +x ./Backend/gradlew
+  script:
+    - cd Backend
+    - ./gradlew --build-cache assemble
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push 
+    paths:
+      - build
+      - .gradle
+
+backend-test:
+  stage: test
+  allow_failure: true
+  dependencies:
+    - backend-build
+  tags:
+    - Backend
+    - Spring
+  only:
+    changes:
+      - Backend/*
+  before_script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - chmod +x ./Backend/gradlew
+  script:
+    - cd Backend
+    - ./gradlew check
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - build
+      - .gradle
+  artifacts:
+    paths:
+      - Backend/build/libs/*.jar
+
+backend-deploy:
+  stage: deploy
+  allow_failure: true
+  dependencies:
+    - backend-test
+  tags:
+    - Shell
+  only:
+    changes:
+      - Backend/*
+    refs:
+      - master
+    variable:
+      - $CI_COMMIT_MESSAGE =~ /Deploy/ 
+  script:
+    - sudo mv Backend/build/libs/*.jar /srv/app/app.jar
+    - sudo chown app:app /srv/app/app.jar
+    - sudo chmod 774 /srv/app/app.jar
+    - sudo systemctl restart app
+
+nginx-test:
+  stage: test
+  allow_failure: true
+  tags:
+    - Shell
+  only:
+    changes:
+      - Documents/nginx/*
+  script:
+    - sudo nginx -t -c Documents/nginx/nginx.conf
+
+nginx-deploy:
+  stage: deploy
+  allow_failure: true
+  dependencies:
+    - nginx-test
+  tags:
+    - Shell
+  only:
+    changes:
+      - Documents/nginx/*
+  script:
+    - sudo mv Documents/nginx/* /etc/nginx/.
+    - sudo systemctl reload nginx
+
+systemd-test:
+  stage: test
+  allow_failure: true
+  tags:
+    - Shell
+  only:
+    changes:
+      - Documents/app.service
+  script:
+    - sudo systemctl verify Documents/app.service
+
+systemd-deploy:
+  stage: deploy
+  allow_failure: true
+  tags:
+    - Shell
+  only:
+    changes:
+      - Documents/app.service
+  script:
+    - sudo mv Documents/app.service /etc/systemd/system/app.service
+    - sudo systemctl daemon-reload
+    - sudo systemctl restart app 
+
+android-build:
+  image: javiersantos/android-ci:latest
+  stage: build
+  allow_failure: true
+  tages:
+    - Android 
+    - Frontend
+  only:
+    changes:
+      - Frontend/*
+  before_script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - chmod +x ./Frontend/gradlew
+  script:
+    - cd Frontend
+    - ./gradlew assemble
+  artifacts:
+    paths:
+      - Frontend/app/build/outputs/
+
+android-test:
+  image: javiersantos/android-ci:latest
+  stage: test
+  allow_failure: true
+  dependencies:
+    - android-build
+  tages:
+    - Android 
+    - Frontend
+  only:
+    changes:
+      - Frontend/*
+  before_script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - chmod +x ./Frontend/gradlew
+  script:
+    - cd Frontend
+    - ./gradlew check
+  
+    
+
