@@ -28,7 +28,7 @@ backend-build:
       - .gradle
   artifacts:
     paths:
-      - build/libs/*.jar
+      - Backend/build/libs/*.jar
 
 backend-test:
   stage: test
@@ -123,6 +123,7 @@ systemd-deploy:
   script:
     - sudo cp Documents/app.service /etc/systemd/system/app.service
     - sudo chown root:root /etc/systemd/system/app.service
+    - sudo restorecon /etc/systemd/system/app.service
     - sudo systemctl daemon-reload
     - sudo systemctl restart app 
 
