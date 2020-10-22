@@ -67,7 +67,6 @@ backend-deploy:
     variables:
       - $CI_COMMIT_MESSAGE =~ /[Deploy]/ 
   script:
-    before_script:
     - export GRADLE_USER_HOME=`pwd`/.gradle
     - chmod +x ./Backend/gradlew
     - ./Backend/gradlew assemble
