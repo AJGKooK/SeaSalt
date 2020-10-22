@@ -92,6 +92,8 @@ nginx-deploy:
   only:
     changes:
       - Documents/nginx/*
+    refs:
+      - master
   script:
     - sudo cp -r Documents/nginx/* /etc/nginx/.
     - sudo chown root:root /etc/nginx/*
@@ -116,6 +118,8 @@ systemd-deploy:
   only:
     changes:
       - Documents/app.service
+    refs:
+      - master
   script:
     - sudo cp Documents/app.service /etc/systemd/system/app.service
     - sudo chown root:root /etc/systemd/system/app.service
