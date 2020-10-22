@@ -26,6 +26,9 @@ backend-build:
     paths:
       - build
       - .gradle
+  artifacts:
+    paths:
+      - build/libs/*.jar
 
 backend-test:
   stage: test
@@ -49,9 +52,6 @@ backend-test:
     paths:
       - build
       - .gradle
-  artifacts:
-    paths:
-      - build/libs/*.jar
 
 backend-deploy:
   stage: deploy
