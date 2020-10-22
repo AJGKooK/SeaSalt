@@ -51,7 +51,7 @@ backend-test:
       - .gradle
   artifacts:
     paths:
-      - Backend/build/libs/*.jar
+      - build/libs/*.jar
 
 backend-deploy:
   stage: deploy
@@ -67,6 +67,10 @@ backend-deploy:
     variables:
       - $CI_COMMIT_MESSAGE =~ /[Deploy]/ 
   script:
+    before_script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - chmod +x ./Backend/gradlew
+    - ./Backend/gradlew assemble
     - sudo mv Backend/build/libs/*.jar /srv/app/app.jar
     - sudo chown app:app /srv/app/app.jar
     - sudo chmod 774 /srv/app/app.jar
