@@ -53,13 +53,6 @@ public class LoginActivity extends AppCompatActivity {
                 openRegistration();
             }
         });
-        testbutton = (Button) findViewById(R.id.testbutton);
-        testbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openTest();
-            }
-        });
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
