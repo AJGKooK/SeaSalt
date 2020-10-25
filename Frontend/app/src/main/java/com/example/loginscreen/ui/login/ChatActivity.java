@@ -49,22 +49,8 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        editText = (EditText) findViewById(R.id.editText);
+//        editText = (EditText) findViewById(R.id.editText);
     }
-
-    @Override
-    public void onOpen(Room room){
-        System.out.println("Connected to room");
-    }
-
-    @Override
-    public void onOpenFailure(Room room, Exception ex){
-        System.err.println(ex);
-    }
-
-    @Override
-    public void onMessage(Room room, API_URL receivedMessage){
-        //TODO
-    }
+    
 
 }
