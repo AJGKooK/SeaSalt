@@ -34,6 +34,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.example.loginscreen.R;
 
 import android.widget.ImageButton;
@@ -83,7 +87,25 @@ public class ChatActivity extends AppCompatActivity {
     public void sendMessage(View view) {
         String message = editText.getText().toString();
         if (message.length() > 0) {
-            // Send to backend
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, API_URL,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            String success = response;
+                            if(success.equals("true")){
+                                // Do nothing, message sent successfully
+                            }
+                            else{
+                                Toast.makeText(ChatActivity.this, "Message not delivered", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(ChatActivity.this, "Chat Message Error!" + error.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
             editText.getText().clear();
         }
 
