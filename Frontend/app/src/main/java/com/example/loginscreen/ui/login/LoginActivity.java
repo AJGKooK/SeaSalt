@@ -32,7 +32,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
     private Button newaccount;
-    private Button testbutton;
     private static String API_URL = "coms-309-ug-09.cs.iastate.edu/static/";
 
     @Override
@@ -135,25 +134,16 @@ public class LoginActivity extends AppCompatActivity {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
     }
 
-    public void forgotpassword(View view) {
-    }
-
-    public void newaccount(View view) {
-    }
-
     public void openRegistration(){
         Intent intent = new Intent(this, RegisterActivity.class);
-        startActivity(intent);
-    }
-
-    public void openTest(){
-        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
