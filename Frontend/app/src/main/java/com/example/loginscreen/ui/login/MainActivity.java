@@ -37,10 +37,34 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Button chat;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main_screen);
 
 
-//Finish this, commenting for my branch push...
+        chat = (Button) findViewById(R.id.chat);
+        chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openChat();
+            }
+        });
+
+
+    }
+
+    public void openChat(){
+        Intent intent = new Intent(this, ChatActivity.class);
+        startActivity(intent);
+    }
+
 }
+
+
 
 
 
