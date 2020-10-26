@@ -17,4 +17,15 @@ public class UserServiceTest {
         Assert.assertTrue(service.getUserByUsername("XYZ123").equals(user));
     }
 
+    @Test
+    public void checkIfAdmin()
+    {
+        User user = new User("ugohar", "!MTH383$T");
+        service.addUser(user);
+
+        Assert.assertEquals(service.isAuthorized("ugohar", "!MTH383$T"), 0);
+        Assert.assertEquals(service.isAuthorized("ugohar", "ManISuck"), 1);
+        Assert.assertEquals(service.isAuthorized("handsoap", "LemmeGittemNiceNSqueaky"), 2);
+    }
+
 }
