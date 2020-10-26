@@ -6,6 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.loginscreen.R;
 
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 public class UploadActivity extends AppCompatActivity {
 
     @Override
@@ -13,7 +19,6 @@ public class UploadActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
-
     }
 
 }
