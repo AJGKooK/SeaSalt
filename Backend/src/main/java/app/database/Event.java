@@ -1,4 +1,4 @@
-package database;
+package app.database;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Homework {
+public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -14,15 +14,15 @@ public class Homework {
     private String name;
     private String desc;
     private Integer classId;
-    private Integer dueTime;
+    private Integer time;
 
     public String getName() { return name; }
     public String getDesc() { return desc; }
     public Integer getClassId() { return classId; }
-    public Integer getDueTime() { return dueTime; }
+    public Integer getTime() { return time; }
 
     public void setName(String name) { this.name = name; }
     public void setDesc(String desc) { this.desc = desc; }
     public void setClassId(Integer id) { classId = id; }
-    public void setDueTime(Integer dueTime) { this.dueTime = dueTime; }
+    public void setDueTime(Integer time) { this.time = time; }
 }

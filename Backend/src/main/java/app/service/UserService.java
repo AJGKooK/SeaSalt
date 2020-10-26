@@ -1,8 +1,9 @@
-package service;
+package app.service;
 
-import database.User;
-import database.UserDatabase;
+import app.database.User;
+import app.database.UserDatabase;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Optional;
 @Service
 public class UserService {
 
+    @Autowired
     UserDatabase userDatabase;
 
     public List<User> getAllUsers() {

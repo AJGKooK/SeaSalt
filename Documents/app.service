@@ -1,7 +1,7 @@
 [Unit]
 Description=Spring Boot Java App
-Requires=mariadb.service
-Requires=nginx.service
+Requires=mariadb.app.service
+Requires=nginx.app.service
 After=syslog.target
 
 [Service]

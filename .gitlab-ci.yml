@@ -111,9 +111,9 @@ systemd-test:
     - Shell
   only:
     changes:
-      - Documents/app.service
+      - Documents/app.app.service
   script:
-    - sudo systemd-analyze verify ./Documents/app.service
+    - sudo systemd-analyze verify ./Documents/app.app.service
 
 systemd-deploy:
   stage: deploy
@@ -123,13 +123,13 @@ systemd-deploy:
     - Shell
   only:
     changes:
-      - Documents/app.service
+      - Documents/app.app.service
     refs:
       - master
   script:
-    - sudo cp Documents/app.service /etc/systemd/system/app.service
-    - sudo chown root:root /etc/systemd/system/app.service
-    - sudo restorecon /etc/systemd/system/app.service
+    - sudo cp Documents/app.app.service /etc/systemd/system/app.app.service
+    - sudo chown root:root /etc/systemd/system/app.app.service
+    - sudo restorecon /etc/systemd/system/app.app.service
     - sudo systemctl daemon-reload
     - sudo systemctl restart app 
 

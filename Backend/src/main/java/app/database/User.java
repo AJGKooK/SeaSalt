@@ -1,8 +1,7 @@
-package database;
+package app.database;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 
 @Entity
 public class User implements Serializable {
@@ -15,6 +14,10 @@ public class User implements Serializable {
 
     @Column(name="role_id")
     private Integer role_id;
+
+    public User() {
+        this.username = String.valueOf(System.currentTimeMillis());
+    }
 
     public User(String username) {
         this.username = username;
