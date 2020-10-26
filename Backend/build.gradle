@@ -4,13 +4,13 @@ plugins {
     id 'java-library'
 }
 
-def javaVersion = JavaVersion.VERSION_14
+def javaVersion = JavaVersion.VERSION_15
 
 group = 'com.backend'
 version = '0.1'
 
 if(JavaVersion.current() != javaVersion) {
-    throw new GradleException("This build must be run with Java 14!")
+    throw new GradleException("This build must be run with Java 15!")
 }
 
 repositories {
