@@ -11,18 +11,18 @@ public class Homework {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private String name;
-    private String desc;
+    private String homeworkName;
+    private String homeworkDesc;
     private Integer classId;
     private Integer dueTime;
 
-    public String getName() { return name; }
-    public String getDesc() { return desc; }
+    public String getHomeworkName() { return homeworkName; }
+    public String getHomeworkDesc() { return homeworkDesc; }
     public Integer getClassId() { return classId; }
     public Integer getDueTime() { return dueTime; }
 
-    public void setName(String name) { this.name = name; }
-    public void setDesc(String desc) { this.desc = desc; }
+    public void setHomeworkName(String name) { this.homeworkName = name; }
+    public void setHomeworkDesc(String desc) { this.homeworkDesc = desc; }
     public void setClassId(Integer id) { classId = id; }
     public void setDueTime(Integer dueTime) { this.dueTime = dueTime; }
 }
