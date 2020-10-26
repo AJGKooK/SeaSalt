@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     private Button chat;
+    private ImageButton chatButton, eventsButton, uploadButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +48,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_screen);
 
 
-        chat = (Button) findViewById(R.id.chat);
-        chat.setOnClickListener(new View.OnClickListener() {
+        chatButton = (ImageButton) findViewById(R.id.chatButton);
+        chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openChat();
+            }
+        });
+        uploadButton = (ImageButton) findViewById(R.id.uploadButton);
+        uploadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openUpload();
+            }
+        });
+        eventsButton = (ImageButton) findViewById(R.id.eventsButton);
+        eventsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openEvents();
             }
         });
 
@@ -58,6 +74,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openChat(){
+        Intent intent = new Intent(this, ChatActivity.class);
+        startActivity(intent);
+    }
+
+    public void openUpload(){
+        Intent intent = new Intent(this, ChatActivity.class);
+        startActivity(intent);
+    }
+
+    public void openEvents(){
         Intent intent = new Intent(this, ChatActivity.class);
         startActivity(intent);
     }
