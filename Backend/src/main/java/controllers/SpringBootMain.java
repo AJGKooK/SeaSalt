@@ -1,13 +1,12 @@
-package database;
+package controllers;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SqlDatabaseAccess {
+public class SpringBootMain {
 
-    //Main test function
     public static void main(String[] args) {
-        SpringApplication.run(SqlDatabaseAccess.class, args);
+        SpringApplication.run(SpringBootMain.class, args);
     }
 }
