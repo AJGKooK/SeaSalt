@@ -1,20 +1,25 @@
 package database;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 @Entity
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="ID", unique = true, nullable = false, precision = 20)
     private Integer id;
 
+    @Column(name="USERNAME")
     private String username;
+
+    @Column(name="PASSWORD")
     private String password;
+
+    @Column(name="ROLE_ID")
     private Integer role_id;
+
     private ArrayList<Integer> class_ids;
     private ArrayList<Integer> fin_hw_ids;
 
