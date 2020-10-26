@@ -38,7 +38,6 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button chat;
     private ImageButton chatButton, eventsButton, uploadButton, meetButton, contactsButton;
 
     @Override
@@ -93,22 +92,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openUpload(){
-        Intent intent = new Intent(this, ChatActivity.class);
+        Intent intent = new Intent(this, UploadActivity.class);
         startActivity(intent);
     }
 
     public void openEvents(){
-        Intent intent = new Intent(this, ChatActivity.class);
+        Intent intent = new Intent(this, EventsActivity.class);
         startActivity(intent);
     }
 
     public void openMeet(){
-        Intent intent = new Intent(this, ChatActivity.class);
+        Intent intent = new Intent(this, MeetActivity.class);
         startActivity(intent);
     }
 
     public void openContacts(){
-        Intent intent = new Intent(this, ChatActivity.class);
+        Intent intent = new Intent(this, ContactsActivity.class);
         startActivity(intent);
     }
 

@@ -14,6 +14,10 @@
         <activity android:name=".ui.login.MainActivity" />
         <activity android:name=".ui.login.RegisterActivity" />
         <activity android:name=".ui.login.ChatActivity" />
+        <activity android:name=".ui.login.UploadActivity" />
+        <activity android:name=".ui.login.EventsActivity" />
+        <activity android:name=".ui.login.MeetActivity" />
+        <activity android:name=".ui.login.ContactsActivity" />
 
         <activity
             android:name=".ui.login.LoginActivity"
