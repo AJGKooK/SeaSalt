@@ -9,6 +9,7 @@ backend-build:
   only:
     changes:
       - Backend/*
+      - Backend/**/*
   before_script:
     - export GRADLE_USER_HOME=`pwd`/.gradle
     - chmod +x ./Backend/gradlew
@@ -35,6 +36,7 @@ backend-test:
   only:
     changes:
       - Backend/*
+      - Backend/**/*
   before_script:
     - export GRADLE_USER_HOME=`pwd`/.gradle
     - chmod +x ./Backend/gradlew
@@ -57,6 +59,7 @@ backend-deploy:
   only:
     changes:
       - Backend/*
+      - Backend/**/*
     refs:
       - master
   before_script:
@@ -77,6 +80,7 @@ nginx-test:
   only:
     changes:
       - Documents/nginx/*
+      - Documents/nginx/**/*
   script:
     - sudo mkdir -p /tmp/nginx-gitlab
     - sudo cp -r Documents/nginx/* /tmp/nginx-gitlab/.
@@ -92,6 +96,7 @@ nginx-deploy:
   only:
     changes:
       - Documents/nginx/*
+      - Documents/nginx/**/*
     refs:
       - master
   script:
@@ -136,6 +141,7 @@ android-build:
   only:
     changes:
       - Frontend/*
+      - Frontend/**/*
   before_script:
     - export GRADLE_USER_HOME=`pwd`/.gradle
     - chmod +x ./Frontend/gradlew
@@ -157,6 +163,7 @@ android-test:
   only:
     changes:
       - Frontend/*
+      - Frontend/**/*
   before_script:
     - export GRADLE_USER_HOME=`pwd`/.gradle
     - chmod +x ./Frontend/gradlew
