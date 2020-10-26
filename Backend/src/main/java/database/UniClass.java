@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import java.util.ArrayList;
 
 @Entity
-public class Class {
+public class UniClass {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
