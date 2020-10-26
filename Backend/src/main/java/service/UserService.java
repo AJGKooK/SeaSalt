@@ -5,6 +5,7 @@ import database.UserDatabase;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -15,8 +16,8 @@ public class UserService {
         return userDatabase.findAll();
     }
 
-    public User getUserByUsername(String username) {
-        return userDatabase.findByUsername(username);
+    public Optional<User> getUserByUsername(String username) {
+        return userDatabase.findById(username);
     }
 
     public void addUser(User user) {
@@ -24,13 +25,17 @@ public class UserService {
     }
 
     public int isAuthorized(String username, String password) {
-        User user = getUserByUsername(username);
-        if(user == null) {
+        Optional<User> user = getUserByUsername(username);
+        if(user.isEmpty()) {
             return 2;
-        } else if (user.getPassword().equals(password)) {
+        } else if (user.get().getPassword().equals(password)) {
             return 0;
         } else {
             return 1;
         }
     }
+
+   // public List<Class> getUserClasses(String username) {
+        // TODO
+   // }
 }

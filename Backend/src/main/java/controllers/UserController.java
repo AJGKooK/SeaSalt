@@ -26,12 +26,10 @@ public class UserController {
 
     @PostMapping(path = "/register")
     public @ResponseBody int register (@RequestParam String username, @RequestParam String password) {
-        if (userService.getUserByUsername(username) == null) {
+        if (userService.getUserByUsername(username).isPresent()) {
             return 1;
         } else {
-            User user = new User();
-            user.setUsername(username);
-            user.setPassword(password);
+            User user = new User(username, password);
             userService.addUser(user);
             return 0;
         }
