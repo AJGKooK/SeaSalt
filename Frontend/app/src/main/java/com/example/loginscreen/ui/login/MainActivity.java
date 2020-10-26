@@ -39,7 +39,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     private Button chat;
-    private ImageButton chatButton, eventsButton, uploadButton;
+    private ImageButton chatButton, eventsButton, uploadButton, meetButton, contactsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +69,20 @@ public class MainActivity extends AppCompatActivity {
                 openEvents();
             }
         });
+        meetButton = (ImageButton) findViewById(R.id.meetButton);
+        meetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openEvents();
+            }
+        });
+        contactsButton = (ImageButton) findViewById(R.id.contactsButton);
+        contactsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openEvents();
+            }
+        });
 
 
     }
@@ -84,6 +98,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openEvents(){
+        Intent intent = new Intent(this, ChatActivity.class);
+        startActivity(intent);
+    }
+
+    public void openMeet(){
+        Intent intent = new Intent(this, ChatActivity.class);
+        startActivity(intent);
+    }
+
+    public void openContacts(){
         Intent intent = new Intent(this, ChatActivity.class);
         startActivity(intent);
     }

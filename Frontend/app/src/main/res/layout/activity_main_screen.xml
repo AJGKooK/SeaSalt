@@ -45,4 +45,26 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/maineventsbutton" />
 
+    <ImageButton
+        android:id="@+id/meetButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="312dp"
+        android:layout_marginEnd="28dp"
+        android:background="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/mainmeetbutton" />
+
+    <ImageButton
+        android:id="@+id/contactsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="488dp"
+        android:background="@null"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/maincontactsbutton" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
