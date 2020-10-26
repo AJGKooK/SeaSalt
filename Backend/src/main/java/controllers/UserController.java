@@ -21,7 +21,7 @@ public class UserController {
     @PostMapping(path = "/login")
     public @ResponseBody
     int login (@RequestParam String username, @RequestParam String password) {
-        return userService.isAuthorized(username, password);
+        return userService.userLogin(username, password);
     }
 
     @PostMapping(path = "/register")

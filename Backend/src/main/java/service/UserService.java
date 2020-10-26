@@ -25,7 +25,7 @@ public class UserService {
         userDatabase.save(user);
     }
 
-    public int isAuthorized(String username, String password) {
+    public int userLogin(String username, String password) {
         Optional<User> user = getUserByUsername(username);
         if(user.isEmpty()) {
             return 2;
@@ -34,6 +34,13 @@ public class UserService {
         } else {
             return 1;
         }
+    }
+
+    public boolean isAuthorized(String username, String password) {
+        Optional<User> user = getUserByUsername(username);
+        if(user.isEmpty()) {
+            return false;
+        } else return user.get().getPassword().equals(password);
     }
 
    // public List<Class> getUserClasses(String username) {
