@@ -73,14 +73,14 @@ public class MainActivity extends AppCompatActivity {
         meetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openEvents();
+                openMeet();
             }
         });
         contactsButton = (ImageButton) findViewById(R.id.contactsButton);
         contactsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openEvents();
+                openContacts();
             }
         });
 
