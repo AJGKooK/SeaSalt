@@ -102,6 +102,7 @@ nginx-deploy:
   script:
     - sudo cp -r Documents/nginx/* /etc/nginx/.
     - sudo chown root:root /etc/nginx/*
+    - sudo restorecon -R /etc/nginx/*
     - sudo systemctl reload nginx
 
 systemd-test:
