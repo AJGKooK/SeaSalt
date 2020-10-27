@@ -17,8 +17,8 @@ public class User implements Serializable {
     @Column(name = "role_id")
     private Integer role_id;
 
-    @ManyToMany(mappedBy = "students")
-    private Set<Course> courses;
+    @ManyToMany(mappedBy = "classUsers")
+    private Set<Course> userCourses;
 
     public User() {
         this.username = String.valueOf(System.currentTimeMillis());
