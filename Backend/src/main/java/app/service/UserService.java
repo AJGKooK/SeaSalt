@@ -1,5 +1,6 @@
 package app.service;
 
+import app.controllers.ForbiddenException;
 import app.database.User;
 import app.database.UserDatabase;
 
@@ -26,26 +27,4 @@ public class UserService {
     public void addUser(User user) {
         userDatabase.save(user);
     }
-
-    public int userLogin(String username, String password) {
-        Optional<User> user = getUserByUsername(username);
-        if(user.isEmpty()) {
-            return 2;
-        } else if (user.get().getPassword().equals(password)) {
-            return 0;
-        } else {
-            return 1;
-        }
-    }
-
-    public boolean isAuthorized(String username, String password) {
-        Optional<User> user = getUserByUsername(username);
-        if(user.isEmpty()) {
-            return false;
-        } else return user.get().getPassword().equals(password);
-    }
-
-   // public List<Class> getUserClasses(String username) {
-        // TODO
-   // }
 }

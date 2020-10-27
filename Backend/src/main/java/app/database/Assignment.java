@@ -9,13 +9,13 @@ public class Assignment implements Serializable {
     @Id
     @Column(name = "assignment_id", nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Integer assignmentId;
 
     @Column(name = "assignment_name")
-    private String homeworkName;
+    private String assignmentName;
 
     @Column(name = "assignment_desc", precision = 2048)
-    private String homeworkDesc;
+    private String assignmentDesc;
 
     @Column(name = "due_time")
     private Integer dueTime;
@@ -24,13 +24,22 @@ public class Assignment implements Serializable {
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
-    public String getHomeworkName() { return homeworkName; }
-    public String getHomeworkDesc() { return homeworkDesc; }
-    public Course getCourse() { return course; }
-    public Integer getDueTime() { return dueTime; }
+    public Assignment() {}
 
-    public void setHomeworkName(String name) { this.homeworkName = name; }
-    public void setHomeworkDesc(String desc) { this.homeworkDesc = desc; }
-    public void setClassId(Course course) { this.course = course; }
+    public Assignment(Course course, String assignmentName, String assignmentDesc, Integer dueTime) {
+        this.course = course;
+        this.assignmentName = assignmentName;
+        this.assignmentDesc = assignmentDesc;
+        this.dueTime = dueTime;
+    }
+
+    public Integer getAssignmentId() { return this.assignmentId; }
+    public String getAssignmentName() { return this.assignmentName; }
+    public String getAssignmentDesc() { return this.assignmentDesc; }
+    public Integer getDueTime() { return this.dueTime; }
+    public Course getCourse() { return this.course; }
+
+    public void setAssignmentName(String name) { this.assignmentName = name; }
+    public void setAssignmentDesc(String desc) { this.assignmentDesc = desc; }
     public void setDueTime(Integer dueTime) { this.dueTime = dueTime; }
 }
