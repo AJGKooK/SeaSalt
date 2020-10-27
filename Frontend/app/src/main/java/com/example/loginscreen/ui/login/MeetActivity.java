@@ -21,7 +21,7 @@ public class MeetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meet);
 
-        button = (Button) findViewById(R.id.chatButton);
+        button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
