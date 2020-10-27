@@ -1,28 +1,32 @@
+/*
 package app.database;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class Event {
+@Table()
+public class Event implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     private String eventName;
     private String eventDesc;
-    private Integer classId;
     private Integer eventTime;
+
+    private Course course;
 
     public String getEventName() { return eventName; }
     public String getEventDesc() { return eventDesc; }
-    public Integer getClassId() { return classId; }
+    public Course getUniClass() { return course; }
     public Integer getEventTime() { return eventTime; }
 
     public void setEventName(String name) { this.eventName = name; }
     public void setEventDesc(String desc) { this.eventDesc = desc; }
-    public void setClassId(Integer id) { classId = id; }
+    public void setUniClass(Course course) { this.course = course; }
     public void setDueTime(Integer time) { this.eventTime = time; }
 }
+
+ */
