@@ -3,13 +3,16 @@ package app.controllers;
 import app.database.Assignment;
 import app.database.Course;
 import app.database.User;
+import app.excpetions.NotFoundException;
 import app.service.CourseService;
 import app.service.SecurityService;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -27,7 +30,7 @@ public class CourseController {
     @Autowired
     ObjectMapper objectMapper;
 
-    @PostMapping(path = "/discover")
+    @GetMapping(path = "/discover")
     public ArrayList<Integer> discover(@RequestParam String username, @RequestParam String password) {
         securityService.isAuthorizedHttp(username, password);
         ArrayList<Integer> courses = new ArrayList<>();
@@ -37,7 +40,7 @@ public class CourseController {
         return courses;
     }
 
-    @PostMapping(path = "/info")
+    @GetMapping(path = "/info")
     public ObjectNode info(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
         securityService.isAuthorizedHttp(username, password);
         Optional<Course> course = courseService.getCourseById(id);
@@ -53,7 +56,7 @@ public class CourseController {
         }
     }
 
-    @PostMapping(path = "/users")
+    @GetMapping(path = "/users")
     public ArrayList<String> users(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
         Optional<Course> course = courseService.getCourseById(id);
         if(course.isPresent()) {
@@ -69,7 +72,7 @@ public class CourseController {
         }
     }
 
-    @PostMapping(path = "/assignment")
+    @GetMapping(path = "/assignment")
     public ArrayList<Integer> assignments(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
         Optional<Course> course = courseService.getCourseById(id);
         if(course.isPresent()) {

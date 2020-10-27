@@ -1,9 +1,7 @@
 package app.service;
 
-import app.controllers.ForbiddenException;
 import app.database.User;
 import app.database.UserDatabase;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
