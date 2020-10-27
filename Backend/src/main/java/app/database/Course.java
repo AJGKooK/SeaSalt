@@ -18,8 +18,8 @@ public class Course implements Serializable {
     @Column(name = "course_desc", precision = 2048)
     private String classDesc;
 
-    // TODO: foreign to key user
-    @Column(name = "teacher")
+    @OneToOne
+    @JoinColumn(name = "teacher_id", nullable = false)
     private Integer teacher;
 
     @Column(name = "course_time")
