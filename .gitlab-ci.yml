@@ -111,9 +111,9 @@ systemd-test:
     - Shell
   only:
     changes:
-      - Documents/app.app.service
+      - Documents/app.service
   script:
-    - sudo systemd-analyze verify ./Documents/app.app.service
+    - sudo systemd-analyze verify ./Documents/app.service
 
 systemd-deploy:
   stage: deploy

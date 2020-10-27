@@ -1,11 +1,14 @@
 package app.controllers;
 
 import app.database.Assignment;
+import app.excpetions.NotFoundException;
 import app.service.AssignmentService;
 import app.service.SecurityService;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
@@ -19,11 +22,11 @@ public class AssignmentController {
     @Autowired
     AssignmentService assignmentService;
 
-    @PostMapping(path = "/info")
+    @GetMapping(path = "/info")
     public Assignment info(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
         Optional<Assignment> assignment = assignmentService.getAssignmentById(id);
         if(assignment.isPresent()) {
-            securityService.isAuthorizedHttp(username, password, assignment.get().getCourse());
+            securityService.isAuthorizedHttp(username, password, assignment.get().getAssignmentCourse());
             return assignment.get();
         } else {
             securityService.isAuthorizedHttp(username, password);
