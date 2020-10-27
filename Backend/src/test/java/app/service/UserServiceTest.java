@@ -1,6 +1,4 @@
-/*
 package app.service;
-
 
 import app.database.User;
 import org.junit.Assert;
@@ -22,17 +20,4 @@ public class UserServiceTest {
         Assert.assertTrue(optionalUser.isPresent());
         Assert.assertEquals(optionalUser.get(), user);
     }
-
-    @Test
-    public void checkIfAdmin()
-    {
-        User user = new User("ugohar", "!MTH383$T");
-        service.addUser(user);
-
-        Assert.assertEquals(service.userLogin("ugohar", "!MTH383$T"), 0);
-        Assert.assertEquals(service.userLogin("ugohar", "ManISuck"), 1);
-        Assert.assertEquals(service.userLogin("handsoap", "LemmeGittemNiceNSqueaky"), 2);
-    }
-
 }
-*/
