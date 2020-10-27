@@ -21,11 +21,7 @@ public class Course implements Serializable {
     @Column(name = "course_time")
     private String classTime;
 
-    @ManyToMany
-    @JoinTable(
-            name = "users_in_course",
-            joinColumns = @JoinColumn(name = "username"),
-            inverseJoinColumns = @JoinColumn(name = "course_id"))
+    @ManyToMany(mappedBy = "userCourses")
     private Set<User> classUsers;
 
     @OneToMany(mappedBy = "course")

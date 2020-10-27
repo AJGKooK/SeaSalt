@@ -17,7 +17,11 @@ public class User implements Serializable {
     @Column(name = "role_id")
     private Integer role_id;
 
-    @ManyToMany(mappedBy = "classUsers")
+    @ManyToMany
+    @JoinTable(
+            name = "users_in_course",
+            joinColumns = @JoinColumn(name = "username"),
+            inverseJoinColumns = @JoinColumn(name = "course_id"))
     private Set<Course> userCourses;
 
     public User() {
