@@ -1,7 +1,10 @@
 package app.database;
 
+import app.service.CourseService;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -9,7 +12,7 @@ import java.util.Set;
 public class User implements Serializable {
     @Id
     @Column(name = "username", nullable = false, unique = true)
-    private final String username;
+    private String username;
 
     @Column(name = "password")
     private String password;
@@ -24,22 +27,17 @@ public class User implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "course_id"))
     private Set<Course> userCourses;
 
-    public User() {
-        this.username = String.valueOf(System.currentTimeMillis());
-    }
-
-    public User(String username) {
-        this.username = username;
-    }
+    public User() {}
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-    public String getUsername() { return username; }
-    public String getPassword() { return password; }
-    public Integer getRole() { return role_id; }
+    public String getUsername() { return this.username; }
+    public String getPassword() { return this.password; }
+    public Integer getRole() { return this.role_id; }
+    public Set<Course> getUserCourses() { return userCourses; }
 
     public void setPassword(String password)
     {
@@ -49,4 +47,13 @@ public class User implements Serializable {
     {
         this.role_id = role;
     }
+
+    public void addCourse(Course course) {
+        this.userCourses.add(course);
+    }
+
+    public void deleteCourse(Course course) {
+        this.userCourses.remove(course);
+    }
+
 }

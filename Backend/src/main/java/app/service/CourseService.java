@@ -15,11 +15,11 @@ public class CourseService {
     @Autowired
     CourseDatabase courseDatabase;
 
-    public List<Course> getAllClasses() {
+    public List<Course> getAllCourses() {
         return courseDatabase.findAll();
     }
 
-    public Optional<Course> getClassById(Integer id) {
+    public Optional<Course> getCourseById(Integer id) {
         return courseDatabase.findById(id);
     }
 
