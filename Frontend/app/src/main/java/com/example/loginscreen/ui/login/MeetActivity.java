@@ -1,6 +1,7 @@
 package com.example.loginscreen.ui.login;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -32,10 +33,13 @@ public class MeetActivity extends AppCompatActivity {
 
     }
 
-    public void openChat(){
-        Uri number = Uri.parse("tel:5551234");
-        Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+    public void openChat() {
 
+        PackageManager pm = getPackageManager();
+        Intent intent = pm.getLaunchIntentForPackage("us.zoom.videomeetings");
+        if (intent != null) {
+            startActivity(intent);
+
+        }
     }
-
 }
