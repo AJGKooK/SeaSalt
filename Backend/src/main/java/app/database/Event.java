@@ -11,18 +11,18 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private String name;
-    private String desc;
+    private String eventName;
+    private String eventDesc;
     private Integer classId;
-    private Integer time;
+    private Integer eventTime;
 
-    public String getName() { return name; }
-    public String getDesc() { return desc; }
+    public String getEventName() { return eventName; }
+    public String getEventDesc() { return eventDesc; }
     public Integer getClassId() { return classId; }
-    public Integer getTime() { return time; }
+    public Integer getEventTime() { return eventTime; }
 
-    public void setName(String name) { this.name = name; }
-    public void setDesc(String desc) { this.desc = desc; }
+    public void setEventName(String name) { this.eventName = name; }
+    public void setEventDesc(String desc) { this.eventDesc = desc; }
     public void setClassId(Integer id) { classId = id; }
-    public void setDueTime(Integer time) { this.time = time; }
+    public void setDueTime(Integer time) { this.eventTime = time; }
 }

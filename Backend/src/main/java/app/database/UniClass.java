@@ -11,18 +11,18 @@ public class UniClass {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private String name;
-    private String desc;
+    private String className;
+    private String classDesc;
     private Integer teacher;
     private String classTime;
 
-    public String getName() { return name; }
-    public String getDesc() { return desc; }
+    public String getClassName() { return className; }
+    public String getClassDesc() { return classDesc; }
     public Integer getTeacherID() { return teacher; }
     public String getClassTime() { return classTime; }
 
-    public void setName(String pName) { name = pName; }
-    public void setDesc(String pDesc) { desc = pDesc; }
+    public void setClassName(String pName) { className = pName; }
+    public void setClassDesc(String pDesc) { classDesc = pDesc; }
     public void setTeacher(Integer teachID) { teacher = teachID; }
     public void setClassTime(String newTime) { classTime = newTime; }
 }
