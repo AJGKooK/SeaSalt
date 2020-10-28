@@ -111,6 +111,4 @@ public class EventsActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-
-
 }
