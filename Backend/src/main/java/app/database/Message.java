@@ -13,11 +13,11 @@ public class Message implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "username", nullable = false)
-    private User user;
+    private User msgUser;
 
     @Column(name = "timestamp", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date timestamp;
+    private Date msgTimestamp;
 
     @Column(name = "content", precision = 2048)
     private String msgContent;
@@ -33,11 +33,11 @@ public class Message implements Serializable {
     public Integer getMsgId() {
         return this.msgId;
     }
-    public User getUser() {
-        return this.user;
+    public User getMsgUser() {
+        return this.msgUser;
     }
-    public Date getTimestamp() {
-        return this.timestamp;
+    public Date getMsgTimestamp() {
+        return this.msgTimestamp;
     }
     public String getMsgContent() {
         return this.msgContent;

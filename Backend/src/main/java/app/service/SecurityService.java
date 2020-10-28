@@ -59,7 +59,7 @@ public class SecurityService {
     public User isAuthorizedHttp(String username, String password, Message message) {
         Optional<User> user = userService.getUserByUsername(username);
         if(user.isPresent()) {
-            if(!(isAuthorized(user.get(), password)) || (message.getUser() != user.get()))  {
+            if(!(isAuthorized(user.get(), password)) || (message.getMsgUser() != user.get()))  {
                 throw new ForbiddenException();
             }
             return user.get();

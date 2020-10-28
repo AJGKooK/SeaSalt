@@ -36,7 +36,7 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "eventOwner")
     private Set<Event> userOwnsEvents;
 
-    @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "msgUser", cascade = CascadeType.ALL)
     private Set<Message> msgHistory;
 
     // Constructors
