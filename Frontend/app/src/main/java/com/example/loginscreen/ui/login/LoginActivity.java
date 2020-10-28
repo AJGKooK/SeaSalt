@@ -45,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     private Map<String, String> map;
     private Button newaccount, login;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

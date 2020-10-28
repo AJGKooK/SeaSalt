@@ -38,8 +38,11 @@ import java.util.Locale;
 import java.util.Map;
 
 public class EventsActivity extends AppCompatActivity {
-    private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/users/events/";
+
+    private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/event/add/";
+
     EditText title,time,description;
+    String owner = "true";
     Button addEvent;
     private Map<String, String> map;
 
@@ -75,15 +78,11 @@ public class EventsActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        String success = response;
 
-                        if (success.equals("0") && (UserActivity.checkUsername == UserActivity.loginUsername) && (UserActivity.checkPassword == UserActivity.loginPassword)) {
+                        String success = response;
+                        if ((success != (" ")) && (UserActivity.checkUsername == UserActivity.loginUsername) && (UserActivity.checkPassword == UserActivity.loginPassword)) {
 
                             Toast.makeText(EventsActivity.this, "Event Added", Toast.LENGTH_SHORT).show();
-
-                        }
-                        else if(success.equals("1")){
-                            Toast.makeText(EventsActivity.this, "Login? Already registered", Toast.LENGTH_SHORT).show();
                         }
                         else {
                             Toast.makeText(EventsActivity.this, "Event Couldn't be added, are you still logged in?", Toast.LENGTH_SHORT).show();
@@ -104,6 +103,7 @@ public class EventsActivity extends AppCompatActivity {
                 map.put("eventName", title);
                 map.put("eventTime", time);
                 map.put("eventDesc", description);
+                map.put("owner", owner);
                 return map;
             }
         };
