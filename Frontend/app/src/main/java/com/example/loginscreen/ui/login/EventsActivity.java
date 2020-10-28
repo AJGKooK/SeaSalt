@@ -42,6 +42,7 @@ public class EventsActivity extends AppCompatActivity {
     private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/event/add/";
 
     EditText title,time,description;
+    String owner = "true";
     Button addEvent;
     private Map<String, String> map;
 
@@ -77,7 +78,7 @@ public class EventsActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        
+
                         String success = response;
                         if ((success != (" ")) && (UserActivity.checkUsername == UserActivity.loginUsername) && (UserActivity.checkPassword == UserActivity.loginPassword)) {
 
@@ -102,6 +103,7 @@ public class EventsActivity extends AppCompatActivity {
                 map.put("eventName", title);
                 map.put("eventTime", time);
                 map.put("eventDesc", description);
+                map.put("owner", owner);
                 return map;
             }
         };
