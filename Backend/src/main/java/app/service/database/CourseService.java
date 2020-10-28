@@ -22,7 +22,7 @@ public class CourseService {
         return courseDatabase.findById(id);
     }
 
-    public void addClass(Course course) {
+    public void saveCourse(Course course) {
         courseDatabase.save(course);
     }
 }

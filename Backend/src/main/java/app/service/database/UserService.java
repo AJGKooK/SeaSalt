@@ -22,7 +22,7 @@ public class UserService {
         return userDatabase.findById(username);
     }
 
-    public void addUser(User user) {
+    public void saveUser(User user) {
         userDatabase.save(user);
     }
 }

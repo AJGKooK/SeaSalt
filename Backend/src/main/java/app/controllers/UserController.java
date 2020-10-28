@@ -45,7 +45,7 @@ public class UserController {
             return 1;
         } else {
             User user = new User(username, password, firstName, lastName);
-            userService.addUser(user);
+            userService.saveUser(user);
             return 0;
         }
     }

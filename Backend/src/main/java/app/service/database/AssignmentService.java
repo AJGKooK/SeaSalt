@@ -22,7 +22,7 @@ public class AssignmentService {
         return assignmentDatabase.findById(id);
     }
 
-    public void addAssignment(Assignment assignment) {
+    public void saveAssignment(Assignment assignment) {
         assignmentDatabase.save(assignment);
     }
 }

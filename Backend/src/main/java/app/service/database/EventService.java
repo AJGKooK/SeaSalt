@@ -22,7 +22,7 @@ public class EventService {
         return eventDatabase.findById(id);
     }
 
-    public void addEvent(Event event) {
+    public void saveEvent(Event event) {
         eventDatabase.save(event);
     }
 }

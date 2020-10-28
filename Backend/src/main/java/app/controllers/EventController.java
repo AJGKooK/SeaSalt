@@ -104,7 +104,7 @@ public class EventController {
                 if(course.isPresent()) {
                     User user = securityService.isAuthorizedHttp(username, password, course.get());
                     Event event = new Event(eventName, eventDesc, eventTime, user, course.get());
-                    eventService.addEvent(event);
+                    eventService.saveEvent(event);
                     return event.getEventId();
                 } else {
                     securityService.isAuthorizedHttp(username, password);
@@ -114,7 +114,7 @@ public class EventController {
                 if(course.isPresent()) {
                     securityService.isAuthorizedHttp(username, password, course.get());
                     Event event = new Event(eventName, eventDesc, eventTime, course.get());
-                    eventService.addEvent(event);
+                    eventService.saveEvent(event);
                     return event.getEventId();
                 } else {
                     securityService.isAuthorizedHttp(username, password);
@@ -125,23 +125,61 @@ public class EventController {
             if(owner) {
                 User user = securityService.isAuthorizedHttp(username, password);
                 Event event = new Event(eventName, eventDesc, eventTime, user);
-                eventService.addEvent(event);
+                eventService.saveEvent(event);
                 return event.getEventId();
             } else {
                 securityService.isAuthorizedHttp(username, password);
                 Event event = new Event(eventName, eventDesc, eventTime);
-                eventService.addEvent(event);
+                eventService.saveEvent(event);
                 return event.getEventId();
             }
         }
     }
 
     @PostMapping(path = "/edit")
-    public Integer edit(@RequestParam String username, @RequestParam String password, @RequestParam String eventName, @RequestParam String eventDesc) {
-        // TODO
-        return null;
+    public Integer edit(@RequestParam String username, @RequestParam String password, @RequestParam Integer id, @RequestParam(required = false) String eventName,
+                        @RequestParam(required = false) String eventDesc, @RequestParam(required = false) Integer eventTime, @RequestParam(required = false) Integer courseId) {
+        Optional<Event> event = eventService.getEventById(id);
+        if(event.isPresent()) {
+            if(courseId != null) {
+                Optional<Course> course = courseService.getCourseById(courseId);
+                if(course.isPresent()) {
+                    securityService.isAuthorizedOwnerHttp(username, password, event.get(), course.get());
+                    if(eventName != null) {
+                        event.get().setEventName(eventName);
+                    }
+                    if(eventDesc != null) {
+                        event.get().setEventDesc(eventDesc);
+                    }
+                    if(eventTime != null) {
+                        event.get().setEventTime(eventTime);
+                    }
+                    event.get().setEventCourse(course.get());
+                    eventService.saveEvent(event.get());
+                    return event.get().getEventId();
+                } else {
+                    securityService.isAuthorizedHttp(username, password);
+                    throw new NotFoundException();
+                }
+            } else {
+                securityService.isAuthorizedOwnerHttp(username, password, event.get());
+                if(eventName != null) {
+                    event.get().setEventName(eventName);
+                }
+                if(eventDesc != null) {
+                    event.get().setEventDesc(eventDesc);
+                }
+                if(eventTime != null) {
+                    event.get().setEventTime(eventTime);
+                }
+                eventService.saveEvent(event.get());
+                return event.get().getEventId();
+            }
+        } else {
+            securityService.isAuthorizedHttp(username, password);
+            throw new NotFoundException();
+        }
     }
-
 
     private ObjectNode getJsonNodes(Event event) {
         ObjectNode response = objectMapper.createObjectNode();
