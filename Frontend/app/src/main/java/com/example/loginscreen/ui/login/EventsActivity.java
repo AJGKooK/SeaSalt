@@ -72,11 +72,11 @@ public class EventsActivity extends AppCompatActivity {
 
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, API_URL,
-                new Response.Listener<int>() {
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(int response) {
-                        int success = response;
-                        if (success == 0) {
+                    public void onResponse(String response) {
+                        String success = response;
+                        if (success.contains("true")) {
                             Toast.makeText(EventsActivity.this, "Event Added", Toast.LENGTH_SHORT).show();
 
                         } else {
