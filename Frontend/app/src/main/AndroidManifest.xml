@@ -18,6 +18,7 @@
         <activity android:name=".ui.login.EventsActivity" />
         <activity android:name=".ui.login.MeetActivity" />
         <activity android:name=".ui.login.ContactsActivity" />
+        <activity android:name=".ui.login.EventsMainActivity" />
 
         <activity
             android:name=".ui.login.LoginActivity"

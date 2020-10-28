@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openEvents(){
-        Intent intent = new Intent(this, EventsActivity.class);
+        Intent intent = new Intent(this, EventsMainActivity.class);
         startActivity(intent);
     }
 
@@ -126,12 +126,3 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
-
-
-
-
-
-
-
-
-
