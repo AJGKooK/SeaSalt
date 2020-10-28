@@ -24,6 +24,9 @@ public class Register {
     public String gettingLastName(){
         return service.getLast();
     }
+    public void settingUser(String username){
+        service.setUser(username);
+    }
 
 
 

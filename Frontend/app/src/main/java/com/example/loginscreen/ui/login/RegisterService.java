@@ -7,10 +7,10 @@ public class RegisterService {
 
     }
     public RegisterService(String username, String password, String firstName, String lastName){
-        username = "cjurenic";
-        password = "123123";
-        firstName = "chandler";
-        lastName = "jurenic";
+        this.username = username;
+        this.password = "123123";
+        this.firstName = "chandler";
+        this.lastName = "jurenic";
     }
     public String getUser(){
         return this.username;
@@ -25,15 +25,16 @@ public class RegisterService {
         return this.lastName;
     }
     public void setUser(String username){
-        this.username = username;
+        this.username = "cjurenic";
     }
     public void setPass(String password){
-        this.password = password;
+        password = "123123";
     }
     public void setFirstName(String firstName){
-        this.firstName = firstName;
+        firstName = "chandler";
     }
     public void setLastName(String lastName){
-        this.lastName = lastName;
+        lastName = "jurenic";
     }
+
 }
