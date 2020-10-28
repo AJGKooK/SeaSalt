@@ -46,7 +46,7 @@ public class MessageController {
     @PostMapping(path = "/post")
     public Integer postMessage(@RequestParam String username, @RequestParam String password, @RequestParam String msgContent) {
         User user = securityService.isAuthorizedHttp(username, password);
-        Message message = new Message(msgContent);
+        Message message = new Message(user, msgContent);
         messageService.addMessage(message);
         return message.getMsgId();
     }
