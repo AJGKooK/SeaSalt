@@ -76,11 +76,15 @@ public class EventsActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         String success = response;
-                        if (success.equals("0")) {
+                        if (success.equals("0") && (UserActivity.checkUsername == UserActivity.loginUsername) && (UserActivity.checkPassword == UserActivity.loginPassword)) {
                             Toast.makeText(EventsActivity.this, "Event Added", Toast.LENGTH_SHORT).show();
 
-                        } else {
-                            Toast.makeText(EventsActivity.this, "Event Couldn't be added", Toast.LENGTH_SHORT).show();
+                        }
+                        else if(success.equals("1")){
+                            Toast.makeText(EventsActivity.this, "Login? Already registered", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Toast.makeText(EventsActivity.this, "Event Couldn't be added, are you still logged in?", Toast.LENGTH_SHORT).show();
                         }
                     }
                 },

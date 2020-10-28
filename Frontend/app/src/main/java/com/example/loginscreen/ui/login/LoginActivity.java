@@ -84,7 +84,11 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         String success = response;
                         if(success.equals("0")){
-                            Toast.makeText(LoginActivity.this, "Welcome" + " " + username, Toast.LENGTH_SHORT).show();
+                            UserActivity.loginUsername = username;
+                            UserActivity.loginPassword = password;
+                            UserActivity.checkUsername = username;
+                            UserActivity.checkPassword = password;
+                            Toast.makeText(LoginActivity.this, "Welcome" + " " + username.toUpperCase().charAt(0), Toast.LENGTH_SHORT).show();
                             openMainMenu();
 
                         }
@@ -93,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         }
                         else if(success.equals("2")){
-                            Toast.makeText(LoginActivity.this, "Username incorrect", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Username doesn't exist, Register!", Toast.LENGTH_SHORT).show();
 
                         }
                         else{

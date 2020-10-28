@@ -54,7 +54,7 @@ public class ChatActivity extends AppCompatActivity {
     private ArrayList<String> list;
     private ImageButton msgButton;
     private EditText editText;
-    private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/database/add/";
+    private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/messages/";
 
 
     @Override
@@ -92,7 +92,7 @@ public class ChatActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(String response) {
                             String success = response;
-                            if(success.equals("true")){
+                            if(success.equals("true") && (UserActivity.checkUsername == UserActivity.loginUsername) && (UserActivity.checkPassword == UserActivity.loginPassword)){
                                 // Do nothing, message sent successfully
                             }
                             else{
