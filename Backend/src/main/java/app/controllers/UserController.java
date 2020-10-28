@@ -50,6 +50,13 @@ public class UserController {
         }
     }
 
+    @PostMapping(path = "/password")
+    public Integer password(@RequestParam String username, @RequestParam String currentpassword, @RequestParam String newpassword) {
+        User user = securityService.isAuthorizedHttp(username, currentpassword);
+        user.setPassword(newpassword);
+        return 0;
+    }
+
     @GetMapping(path = "/info")
     public ObjectNode info(@RequestParam String username, @RequestParam String password, @RequestParam("info") String usernameInfo) {
         securityService.isAuthorizedHttp(username, password);
