@@ -2,6 +2,7 @@ package app.database;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -51,6 +52,8 @@ public class Event implements Serializable {
         this.eventName = eventName;
         this.eventDesc = eventDesc;
         this.eventTime = eventTime;
+        this.eventUsers = new HashSet<>();
+        this.eventAssignments = new HashSet<>();
     }
 
     public Event(String eventName, String eventDesc, Integer eventTime, Course eventCourse) {
@@ -58,6 +61,8 @@ public class Event implements Serializable {
         this.eventDesc = eventDesc;
         this.eventTime = eventTime;
         this.eventCourse = eventCourse;
+        this.eventUsers = new HashSet<>();
+        this.eventAssignments = new HashSet<>();
     }
 
     public Event(String eventName, String eventDesc, Integer eventTime, User eventOwner) {
@@ -65,6 +70,8 @@ public class Event implements Serializable {
         this.eventDesc = eventDesc;
         this.eventTime = eventTime;
         this.eventOwner = eventOwner;
+        this.eventUsers = new HashSet<>();
+        this.eventAssignments = new HashSet<>();
     }
 
     public Event(String eventName, String eventDesc, Integer eventTime, User eventOwner, Course eventCourse) {
@@ -73,6 +80,8 @@ public class Event implements Serializable {
         this.eventTime = eventTime;
         this.eventOwner = eventOwner;
         this.eventCourse = eventCourse;
+        this.eventUsers = new HashSet<>();
+        this.eventAssignments = new HashSet<>();
     }
 
     // Get functions

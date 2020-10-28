@@ -2,6 +2,7 @@ package app.database;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -47,6 +48,10 @@ public class User implements Serializable {
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.userCourses = new HashSet<>();
+        this.userInvolvedEvents = new HashSet<>();
+        this.userOwnsEvents = new HashSet<>();
+        this.msgHistory = new HashSet<>();
     }
 
     // Get functions

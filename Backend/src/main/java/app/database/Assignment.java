@@ -2,6 +2,7 @@ package app.database;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -36,6 +37,7 @@ public class Assignment implements Serializable {
         this.assignmentName = assignmentName;
         this.assignmentDesc = assignmentDesc;
         this.dueTime = dueTime;
+        this.assignmentEvents = new HashSet<>();
     }
 
     // Get functions

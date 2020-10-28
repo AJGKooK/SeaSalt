@@ -40,6 +40,9 @@ public class Course implements Serializable {
         this.courseName = courseName;
         this.courseDesc = courseDesc;
         this.courseTime = courseTime;
+        this.courseUsers = new HashSet<>();
+        this.assignments = new HashSet<>();
+        this.courseEvents = new HashSet<>();
     }
 
     // Get functions
