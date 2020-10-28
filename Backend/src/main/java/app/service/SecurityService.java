@@ -2,6 +2,7 @@ package app.service;
 
 import app.database.Course;
 import app.database.Event;
+import app.database.Message;
 import app.database.User;
 import app.excpetions.ForbiddenException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,18 @@ public class SecurityService {
         Optional<User> user = userService.getUserByUsername(username);
         if(user.isPresent()) {
             if(!(isAuthorized(user.get(), password)) || !(user.get().getUserInvolvedEvents().contains(event))) {
+                throw new ForbiddenException();
+            }
+            return user.get();
+        } else {
+            throw new ForbiddenException();
+        }
+    }
+
+    public User isAuthorizedHttp(String username, String password, Message message) {
+        Optional<User> user = userService.getUserByUsername(username);
+        if(user.isPresent()) {
+            if(!(isAuthorized(user.get(), password)) || (message.getUser() != user.get()))  {
                 throw new ForbiddenException();
             }
             return user.get();

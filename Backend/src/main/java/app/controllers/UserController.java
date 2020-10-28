@@ -18,7 +18,7 @@ public class UserController {
     UserService userService;
 
     @PostMapping(path = "/login")
-    public int login(@RequestParam String username, @RequestParam String password) {
+    public Integer login(@RequestParam String username, @RequestParam String password) {
         Optional<User> user = userService.getUserByUsername(username);
         if(user.isEmpty()) {
             return 2;
@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/register")
-    public int register(@RequestParam String username, @RequestParam String password) {
+    public Integer register(@RequestParam String username, @RequestParam String password) {
         if (userService.getUserByUsername(username).isPresent()) {
             return 1;
         } else {

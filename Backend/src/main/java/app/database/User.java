@@ -30,6 +30,9 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "eventOwner")
     private Set<Event> userOwnsEvents;
 
+    @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL)
+    private Set<Message> msgHistory;
+
     // Constructors
     public User() {}
 
@@ -56,6 +59,9 @@ public class User implements Serializable {
     }
     public Set<Event> getUserOwnsEvents() {
         return this.userOwnsEvents;
+    }
+    public Set<Message> getUserMessages() {
+        return this.msgHistory;
     }
 
     // Set functions
