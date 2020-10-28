@@ -5,12 +5,14 @@ import app.database.Event;
 import app.database.User;
 import app.excpetions.NotFoundException;
 import app.service.SecurityService;
+import app.service.database.CourseService;
 import app.service.database.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -23,6 +25,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    CourseService courseService;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -101,5 +106,18 @@ public class UserController {
             owns.add(event.getEventId());
         }
         return owns;
+    }
+
+    @PostMapping(path = "/addcourse")
+    public Integer addcourse(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
+        User user = securityService.isAuthorizedHttp(username, password);
+        Optional<Course> course = courseService.getCourseById(id);
+        if(course.isPresent()) {
+            user.addCourse(course.get());
+            userService.saveUser(user);
+            return course.get().getCourseId();
+        } else {
+            throw new NotFoundException();
+        }
     }
 }
