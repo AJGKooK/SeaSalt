@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.web.client.RestTemplate;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.AsyncTask;
 
@@ -26,7 +28,7 @@ import java.util.Map;
 
 
 public class RegisterActivity extends AppCompatActivity {
-    private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/database/add/";
+    private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/user/register/";
     private EditText username, password, password_verify, name_first, name_last;
     private Button submit;
     private Map<String, String> map;
@@ -66,8 +68,13 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         String success = response;
-                        if(success.equals("true")){
+                        if(success.equals("0")){
                             Toast.makeText(RegisterActivity.this, "Register Success", Toast.LENGTH_SHORT).show();
+                            openLogin();
+                        }
+                        else if(success.equals("1")){
+                            Toast.makeText(RegisterActivity.this, "Login? Already registered", Toast.LENGTH_SHORT).show();
+                            openLogin();
                         }
                         else{
                             Toast.makeText(RegisterActivity.this, "Register Failed", Toast.LENGTH_SHORT).show();
@@ -124,5 +131,10 @@ public class RegisterActivity extends AppCompatActivity {
             return passwordString;
         }
         return null;
+    }
+
+    public void openLogin(){
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 }
