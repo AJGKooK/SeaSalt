@@ -50,14 +50,14 @@ public class EventsMainActivity  extends AppCompatActivity {
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openChat();
+                createEvent();
             }
         });
 
     }
 
 
-    public void openChat(){
+    public void createEvent(){
         Intent intent = new Intent(this, EventsActivity.class);
         startActivity(intent);
     }
