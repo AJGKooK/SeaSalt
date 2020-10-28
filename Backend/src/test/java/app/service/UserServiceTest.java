@@ -13,7 +13,7 @@ public class UserServiceTest {
     @Test
     public void canFindUser()
     {
-        User user = new User("XYZ123", "XYZ123");
+        User user = new User("XYZ123", "XYZ123", "Test", "Test");
         service.addUser(user);
         Optional<User> optionalUser = service.getUserByUsername("XYZ123");
 
