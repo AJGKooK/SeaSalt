@@ -1,19 +1,13 @@
 package com.example.loginscreen.ui.login;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.springframework.web.client.RestTemplate;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.AsyncTask;
-
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -23,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.loginscreen.R;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,10 +51,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void register() {
         final String username = this.username.getText().toString().trim();
-        passwordCheck(this.password.getText().toString().trim(), this.password_verify.getText().toString().trim());
         final String password = this.password.getText().toString().trim();
         final String name_first = this.name_first.getText().toString().trim();
         final String name_last = this.name_last.getText().toString().trim();
+        passwordCheck(this.password.getText().toString().trim(), this.password_verify.getText().toString().trim());
 
 
 
