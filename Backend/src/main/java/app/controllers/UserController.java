@@ -5,7 +5,7 @@ import app.database.Event;
 import app.database.User;
 import app.excpetions.NotFoundException;
 import app.service.SecurityService;
-import app.service.UserService;
+import app.service.database.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package app.service;
+package app.service.database;
 
 import app.database.Message;
 import app.database.MessageDatabase;

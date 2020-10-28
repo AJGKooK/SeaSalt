@@ -2,7 +2,7 @@ package app.controllers;
 
 import app.database.Assignment;
 import app.excpetions.NotFoundException;
-import app.service.AssignmentService;
+import app.service.database.AssignmentService;
 import app.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

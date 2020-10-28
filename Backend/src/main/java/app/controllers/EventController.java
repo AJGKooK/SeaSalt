@@ -4,7 +4,7 @@ import app.database.Assignment;
 import app.database.Event;
 import app.database.User;
 import app.excpetions.NotFoundException;
-import app.service.EventService;
+import app.service.database.EventService;
 import app.service.SecurityService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -91,8 +91,8 @@ public class EventController {
     }
 
     @PostMapping(path = "/add")
-    public Integer add(){
-        // TODO
+    public Integer add(@RequestParam String username, @RequestParam String password, @RequestParam String eventName, @RequestParam String eventDesc,
+                       @RequestParam Integer eventTime, @RequestParam(required = false) String owner, @RequestParam(required = false) Integer courseId) {
         return null;
     }
 

@@ -5,6 +5,7 @@ import app.database.Event;
 import app.database.Message;
 import app.database.User;
 import app.excpetions.ForbiddenException;
+import app.service.database.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

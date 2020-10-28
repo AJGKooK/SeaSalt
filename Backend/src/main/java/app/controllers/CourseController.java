@@ -4,7 +4,7 @@ import app.database.Assignment;
 import app.database.Course;
 import app.database.User;
 import app.excpetions.NotFoundException;
-import app.service.CourseService;
+import app.service.database.CourseService;
 import app.service.SecurityService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;

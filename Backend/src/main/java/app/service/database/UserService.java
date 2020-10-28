@@ -1,4 +1,4 @@
-package app.service;
+package app.service.database;
 
 import app.database.User;
 import app.database.UserDatabase;
