@@ -5,14 +5,17 @@ import app.database.Course;
 import app.database.Event;
 import app.database.User;
 import app.excpetions.NotFoundException;
+import app.service.database.AssignmentService;
 import app.service.database.CourseService;
 import app.service.database.EventService;
 import app.service.SecurityService;
+import app.service.database.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -28,6 +31,12 @@ public class EventController {
 
     @Autowired
     EventService eventService;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    AssignmentService assignmentService;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -104,6 +113,7 @@ public class EventController {
                 if(course.isPresent()) {
                     User user = securityService.isAuthorizedHttp(username, password, course.get());
                     Event event = new Event(eventName, eventDesc, eventTime, user, course.get());
+                    event.addUser(user);
                     eventService.saveEvent(event);
                     return event.getEventId();
                 } else {
@@ -112,8 +122,9 @@ public class EventController {
                 }
             } else {
                 if(course.isPresent()) {
-                    securityService.isAuthorizedHttp(username, password, course.get());
+                    User user = securityService.isAuthorizedHttp(username, password, course.get());
                     Event event = new Event(eventName, eventDesc, eventTime, course.get());
+                    event.addUser(user);
                     eventService.saveEvent(event);
                     return event.getEventId();
                 } else {
@@ -125,11 +136,13 @@ public class EventController {
             if(owner) {
                 User user = securityService.isAuthorizedHttp(username, password);
                 Event event = new Event(eventName, eventDesc, eventTime, user);
+                event.addUser(user);
                 eventService.saveEvent(event);
                 return event.getEventId();
             } else {
-                securityService.isAuthorizedHttp(username, password);
+                User user = securityService.isAuthorizedHttp(username, password);
                 Event event = new Event(eventName, eventDesc, eventTime);
+                event.addUser(user);
                 eventService.saveEvent(event);
                 return event.getEventId();
             }
@@ -174,6 +187,82 @@ public class EventController {
                 }
                 eventService.saveEvent(event.get());
                 return event.get().getEventId();
+            }
+        } else {
+            securityService.isAuthorizedHttp(username, password);
+            throw new NotFoundException();
+        }
+    }
+
+    @PostMapping(path = "/adduser")
+    public Integer addUser(@RequestParam String username, @RequestParam String password, @RequestParam Integer id, @RequestParam String usernameToAdd) {
+        Optional<Event> event = eventService.getEventById(id);
+        if(event.isPresent()) {
+            securityService.isAuthorizedHttp(username, password, event.get());
+            Optional<User> user = userService.getUserByUsername(usernameToAdd);
+            if(user.isPresent()) {
+                event.get().addUser(user.get());
+                return event.get().getEventId();
+            } else {
+                securityService.isAuthorizedHttp(username, password);
+                throw new NotFoundException();
+            }
+        } else {
+            securityService.isAuthorizedHttp(username, password);
+            throw new NotFoundException();
+        }
+    }
+
+    @PostMapping(path = "/deluser")
+    public Integer delUser(@RequestParam String username, @RequestParam String password, @RequestParam Integer id, @RequestParam String usernameToDel) {
+        Optional<Event> event = eventService.getEventById(id);
+        if(event.isPresent()) {
+            securityService.isAuthorizedOwnerHttp(username, password, event.get());
+            Optional<User> user = userService.getUserByUsername(usernameToDel);
+            if(user.isPresent()) {
+                event.get().delUser(user.get());
+                return event.get().getEventId();
+            } else {
+                securityService.isAuthorizedHttp(username, password);
+                throw new NotFoundException();
+            }
+        } else {
+            securityService.isAuthorizedHttp(username, password);
+            throw new NotFoundException();
+        }
+    }
+
+    @PostMapping(path = "/addassignment")
+    public Integer addAssignment(@RequestParam String username, @RequestParam String password, @RequestParam Integer id, @RequestParam Integer assignmentId) {
+        Optional<Event> event = eventService.getEventById(id);
+        if(event.isPresent()) {
+            securityService.isAuthorizedOwnerHttp(username, password, event.get());
+            Optional<Assignment> assignment = assignmentService.getAssignmentById(assignmentId);
+            if(assignment.isPresent()) {
+                event.get().addAssignment(assignment.get());
+                return event.get().getEventId();
+            } else {
+                securityService.isAuthorizedHttp(username, password);
+                throw new NotFoundException();
+            }
+        } else {
+            securityService.isAuthorizedHttp(username, password);
+            throw new NotFoundException();
+        }
+    }
+
+    @PostMapping(path = "/delassignment")
+    public Integer delAssignment(@RequestParam String username, @RequestParam String password, @RequestParam Integer id, @RequestParam Integer assignmentId) {
+        Optional<Event> event = eventService.getEventById(id);
+        if(event.isPresent()) {
+            securityService.isAuthorizedOwnerHttp(username, password, event.get());
+            Optional<Assignment> assignment = assignmentService.getAssignmentById(assignmentId);
+            if(assignment.isPresent()) {
+                event.get().delAssignment(assignment.get());
+                return event.get().getEventId();
+            } else {
+                securityService.isAuthorizedHttp(username, password);
+                throw new NotFoundException();
             }
         } else {
             securityService.isAuthorizedHttp(username, password);
