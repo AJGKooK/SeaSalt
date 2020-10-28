@@ -56,6 +56,15 @@ public class UploadController {
         return response;
     }
 
+    @PostMapping("/user/profile")
+    public ObjectNode profileUpload(@RequestParam String username, @RequestParam String password, @RequestParam("file") MultipartFile file) {
+        securityService.isAuthorizedHttp(username, password);
+        fileUploadService.profileUpload(username, file);
+        ObjectNode response = objectMapper.createObjectNode();
+        response.put("upload", this.scheme + this.hostname + "/static/profiles/" + username + ".png");
+        return response;
+    }
+
     @PostMapping("/course")
     public ObjectNode courseUpload(@RequestParam String username, @RequestParam String password, @RequestParam Integer id, @RequestParam("file") MultipartFile file) {
         Optional<Course> course = courseService.getCourseById(id);
