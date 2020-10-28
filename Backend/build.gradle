@@ -10,7 +10,7 @@ group = 'com.backend'
 version = '0.1'
 
 if(JavaVersion.current() != javaVersion) {
-//    throw new GradleException("This build must be run with Java 15!")
+    throw new GradleException("This build must be run with Java 15!")
 }
 
 repositories {
