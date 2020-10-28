@@ -1,4 +1,4 @@
-package app.service;
+package app.service.database;
 
 import app.database.Course;
 import app.database.CourseDatabase;
@@ -22,7 +22,7 @@ public class CourseService {
         return courseDatabase.findById(id);
     }
 
-    public void addClass(Course course) {
+    public void saveCourse(Course course) {
         courseDatabase.save(course);
     }
 }

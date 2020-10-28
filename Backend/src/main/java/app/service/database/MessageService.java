@@ -1,4 +1,4 @@
-package app.service;
+package app.service.database;
 
 import app.database.Message;
 import app.database.MessageDatabase;
@@ -22,7 +22,7 @@ public class MessageService {
         return messageDatabase.findById(msgKey);
     }
 
-    public void addMessage(Message message) {
+    public void saveMessage(Message message) {
         messageDatabase.save(message);
     }
 }
