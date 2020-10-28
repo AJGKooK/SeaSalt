@@ -26,11 +26,21 @@ public class FileUploadService {
         try {
             if(file.getOriginalFilename() == null) {
                 String timestamp = String.valueOf(System.currentTimeMillis());
-                Path path = Paths.get(uploadDir + File.separator + "uploads" + File.separator + type.toString().toLowerCase() + File.separator + id + File.separator + timestamp);
+                Path path = Paths.get(uploadDir
+                        + File.separator + "uploads"
+                        + File.separator + type.toString().toLowerCase()
+                        + File.separator + id
+                        + File.separator + timestamp);
+
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
                 return timestamp;
             } else {
-                Path path = Paths.get(uploadDir + File.separator + "uploads" + File.separator + type.toString().toLowerCase() + File.separator + id + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
+                Path path = Paths.get(uploadDir
+                        + File.separator + "uploads"
+                        + File.separator + type.toString().toLowerCase()
+                        + File.separator + id
+                        + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
+
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
                 return StringUtils.cleanPath(file.getOriginalFilename());
             }
@@ -44,11 +54,23 @@ public class FileUploadService {
         try {
             if(file.getOriginalFilename() == null) {
                 String timestamp = String.valueOf(System.currentTimeMillis());
-                Path path = Paths.get(uploadDir + File.separator + "uploads" + File.separator + type.toString().toLowerCase() + File.separator + id + File.separator + username + File.separator + timestamp);
+                Path path = Paths.get(uploadDir
+                        + File.separator + "uploads"
+                        + File.separator + type.toString().toLowerCase()
+                        + File.separator + id
+                        + File.separator + username
+                        + File.separator + timestamp);
+
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
                 return timestamp;
             } else {
-                Path path = Paths.get(uploadDir + File.separator + "uploads" + File.separator + type.toString().toLowerCase() + File.separator + id + File.separator + username + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
+                Path path = Paths.get(uploadDir
+                        + File.separator + "uploads"
+                        + File.separator + type.toString().toLowerCase()
+                        + File.separator + id
+                        + File.separator + username
+                        + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
+
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
                 return StringUtils.cleanPath(file.getOriginalFilename());
             }
@@ -60,7 +82,10 @@ public class FileUploadService {
 
     public void profileUpload(String username, MultipartFile file) {
         try {
-            Path path = Paths.get(uploadDir + File.separator + "profiles" + File.separator + username + ".png");
+            Path path = Paths.get(uploadDir
+                    + File.separator + "profiles"
+                    + File.separator + username + ".png");
+
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             e.printStackTrace();
