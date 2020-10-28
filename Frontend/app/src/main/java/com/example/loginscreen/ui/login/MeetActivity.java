@@ -1,6 +1,7 @@
 package com.example.loginscreen.ui.login;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +14,7 @@ import com.example.loginscreen.R;
 
 public class MeetActivity extends AppCompatActivity {
 
-    Button button;
+    ImageButton buttonZoom, buttonWebex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,21 +22,43 @@ public class MeetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meet);
 
-        button = (Button) findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
+        buttonZoom = (ImageButton) findViewById(R.id.buttonZoom);
+        buttonZoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openChat();
+                openZoom();
+            }
+        });
+
+        buttonWebex = (ImageButton) findViewById(R.id.buttonWebex);
+        buttonWebex.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openWebex();
             }
         });
 
 
     }
 
-    public void openChat(){
-        Uri number = Uri.parse("tel:5551234");
-        Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+    public void openZoom() {
 
+        PackageManager pm = getPackageManager();
+        Intent intent = pm.getLaunchIntentForPackage("us.zoom.videomeetings");
+        if (intent != null) {
+            startActivity(intent);
+
+        }
+    }
+
+    public void openWebex() {
+
+        PackageManager pm = getPackageManager();
+        Intent intent = pm.getLaunchIntentForPackage("com.cisco.webex.meetings");
+        if (intent != null) {
+            startActivity(intent);
+
+        }
     }
 
 }
