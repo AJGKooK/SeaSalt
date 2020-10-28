@@ -76,11 +76,17 @@ public class EventsActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         String success = response;
-                        if (success.contains("true")) {
+
+                        if (success.equals("0") && (UserActivity.checkUsername == UserActivity.loginUsername) && (UserActivity.checkPassword == UserActivity.loginPassword)) {
+
                             Toast.makeText(EventsActivity.this, "Event Added", Toast.LENGTH_SHORT).show();
 
-                        } else {
-                            Toast.makeText(EventsActivity.this, "Event Couldn't be added", Toast.LENGTH_SHORT).show();
+                        }
+                        else if(success.equals("1")){
+                            Toast.makeText(EventsActivity.this, "Login? Already registered", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Toast.makeText(EventsActivity.this, "Event Couldn't be added, are you still logged in?", Toast.LENGTH_SHORT).show();
                         }
                     }
                 },
@@ -93,6 +99,8 @@ public class EventsActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
+                map.put("username", UserActivity.loginUsername);
+                map.put("password", UserActivity.loginPassword);
                 map.put("eventName", title);
                 map.put("eventTime", time);
                 map.put("eventDesc", description);

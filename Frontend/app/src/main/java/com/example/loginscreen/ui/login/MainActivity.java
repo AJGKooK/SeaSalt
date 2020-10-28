@@ -39,6 +39,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     private ImageButton chatButton, eventsButton, uploadButton, meetButton, contactsButton;
+    private Button logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
 
-
+        logout = (Button) findViewById(R.id.logout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
+            }
+        });
         chatButton = (ImageButton) findViewById(R.id.chatButton);
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +116,13 @@ public class MainActivity extends AppCompatActivity {
     public void openContacts(){
         Intent intent = new Intent(this, ContactsActivity.class);
         startActivity(intent);
+    }
+    public void logout(){
+        UserActivity.loginUsername = null;
+        UserActivity.loginPassword = null;
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+
     }
 
 }
