@@ -9,10 +9,7 @@ import app.service.SecurityService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -93,6 +90,19 @@ public class EventController {
         }
     }
 
+    @PostMapping(path = "/add")
+    public Integer add(){
+        // TODO
+        return null;
+    }
+
+    @PostMapping(path = "/edit")
+    public Integer edit() {
+        // TODO
+        return null;
+    }
+
+
     private ObjectNode getJsonNodes(Event event) {
         ObjectNode response = objectMapper.createObjectNode();
         response.put("id", event.getEventId());
@@ -101,6 +111,9 @@ public class EventController {
         response.put("time", event.getEventDesc());
         if(event.getEventOwner() != null) {
             response.put("owner", event.getEventOwner().getUsername());
+        }
+        if(event.getEventCourse() != null) {
+            response.put("course", event.getEventCourse().getCourseId());
         }
         return response;
     }
