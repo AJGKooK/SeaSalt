@@ -68,6 +68,7 @@ public class ChatActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.listview);
         msgButton = (ImageButton) findViewById(R.id.msgButton);
+        editText = (EditText) findViewById(R.id.chatLog);
         msgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,12 +77,11 @@ public class ChatActivity extends AppCompatActivity {
                 list.add(logText);
                 listView.setAdapter(arrayAdapter);
                 arrayAdapter.notifyDataSetChanged();
-                editText.getText().clear();
                 sendMessage();
             }
+
         });
 
-        editText = (EditText) findViewById(R.id.chatLog);
 
         list = new ArrayList<String>();
         arrayAdapter = new ArrayAdapter<String>(getApplicationContext(),
@@ -98,7 +98,6 @@ public class ChatActivity extends AppCompatActivity {
                             String success = response;
                             if ((success != " ") && (UserActivity.checkUsername == UserActivity.loginUsername) && (UserActivity.checkPassword == UserActivity.loginPassword)) {
                                 // Do nothing, message sent successfully
-                                Toast.makeText(ChatActivity.this, "Message delivered", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(ChatActivity.this, "Message not delivered", Toast.LENGTH_SHORT).show();
                             }
@@ -116,7 +115,7 @@ public class ChatActivity extends AppCompatActivity {
                     Map<String, String> map = new HashMap<>();
                     map.put("username", UserActivity.loginUsername);
                     map.put("password", UserActivity.loginPassword);
-                    map.put("msg", message);
+                    map.put("msgContent", message);
                     return map;
                 }
             };
