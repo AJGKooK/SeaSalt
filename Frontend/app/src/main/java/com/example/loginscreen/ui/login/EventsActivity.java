@@ -97,6 +97,8 @@ public class EventsActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
+                map.put("username", UserActivity.loginUsername);
+                map.put("password", UserActivity.loginPassword);
                 map.put("eventName", title);
                 map.put("eventTime", time);
                 map.put("eventDesc", description);

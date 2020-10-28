@@ -84,7 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(RegisterActivity.this, "Register Error!" + error.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "Register Error!" + " " + error.toString(), Toast.LENGTH_SHORT).show();
                     }
                 })
         {
@@ -93,8 +93,8 @@ public class RegisterActivity extends AppCompatActivity {
                 Map<String, String> map = new HashMap<>();
                 map.put("username", username);
                 map.put("password", password);
-                map.put("name_first", name_first);
-                map.put("name_last", name_last);
+                map.put("firstName", name_first);
+                map.put("lastName", name_last);
                 return map;
             }
         };

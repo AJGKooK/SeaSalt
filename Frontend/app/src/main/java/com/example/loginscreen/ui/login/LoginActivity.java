@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                             UserActivity.loginPassword = password;
                             UserActivity.checkUsername = username;
                             UserActivity.checkPassword = password;
-                            Toast.makeText(LoginActivity.this, "Welcome" + " " + username.toUpperCase().charAt(0), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Welcome" + " " + username, Toast.LENGTH_SHORT).show();
                             openMainMenu();
 
                         }
@@ -108,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(LoginActivity.this, "Register Error!" + error.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Login Error!" + " " + error.toString(), Toast.LENGTH_SHORT).show();
                     }
                 })
         {
