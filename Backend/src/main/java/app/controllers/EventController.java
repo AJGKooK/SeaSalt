@@ -1,9 +1,11 @@
 package app.controllers;
 
 import app.database.Assignment;
+import app.database.Course;
 import app.database.Event;
 import app.database.User;
 import app.excpetions.NotFoundException;
+import app.service.database.CourseService;
 import app.service.database.EventService;
 import app.service.SecurityService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +22,9 @@ public class EventController {
 
     @Autowired
     SecurityService securityService;
+
+    @Autowired
+    CourseService courseService;
 
     @Autowired
     EventService eventService;
@@ -92,12 +97,47 @@ public class EventController {
 
     @PostMapping(path = "/add")
     public Integer add(@RequestParam String username, @RequestParam String password, @RequestParam String eventName, @RequestParam String eventDesc,
-                       @RequestParam Integer eventTime, @RequestParam(required = false) String owner, @RequestParam(required = false) Integer courseId) {
-        return null;
+                       @RequestParam Integer eventTime, @RequestParam boolean owner, @RequestParam(required = false) Integer courseId) {
+        if(courseId != null) {
+            Optional<Course> course = courseService.getCourseById(courseId);
+            if(owner) {
+                if(course.isPresent()) {
+                    User user = securityService.isAuthorizedHttp(username, password, course.get());
+                    Event event = new Event(eventName, eventDesc, eventTime, user, course.get());
+                    eventService.addEvent(event);
+                    return event.getEventId();
+                } else {
+                    securityService.isAuthorizedHttp(username, password);
+                    throw new NotFoundException();
+                }
+            } else {
+                if(course.isPresent()) {
+                    securityService.isAuthorizedHttp(username, password, course.get());
+                    Event event = new Event(eventName, eventDesc, eventTime, course.get());
+                    eventService.addEvent(event);
+                    return event.getEventId();
+                } else {
+                    securityService.isAuthorizedHttp(username, password);
+                    throw new NotFoundException();
+                }
+            }
+        } else {
+            if(owner) {
+                User user = securityService.isAuthorizedHttp(username, password);
+                Event event = new Event(eventName, eventDesc, eventTime, user);
+                eventService.addEvent(event);
+                return event.getEventId();
+            } else {
+                securityService.isAuthorizedHttp(username, password);
+                Event event = new Event(eventName, eventDesc, eventTime);
+                eventService.addEvent(event);
+                return event.getEventId();
+            }
+        }
     }
 
     @PostMapping(path = "/edit")
-    public Integer edit() {
+    public Integer edit(@RequestParam String username, @RequestParam String password, @RequestParam String eventName, @RequestParam String eventDesc) {
         // TODO
         return null;
     }
