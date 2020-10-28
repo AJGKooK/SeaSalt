@@ -42,13 +42,8 @@ public class LoginActivity extends AppCompatActivity {
     private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/user/login/";
     private EditText username, password;
     private LoginViewModel loginViewModel;
-<<<<<<< HEAD
-    private Button newaccount;
-    private static String API_URL = "coms-309-ug-09.cs.iastate.edu/user/login/";
-=======
     private Map<String, String> map;
     private Button newaccount, login;
->>>>>>> chandler_branch
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
