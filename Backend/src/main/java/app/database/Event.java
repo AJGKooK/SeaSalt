@@ -1,28 +1,134 @@
 package app.database;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Set;
 
 @Entity
-public class Event {
+@Table(name = "events")
+public class Event implements Serializable {
     @Id
+    @Column(name = "event_id", nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Integer eventId;
 
+    @Column(name = "event_name")
     private String eventName;
+
+    @Column(name = "event_desc")
     private String eventDesc;
-    private Integer classId;
+
+    @Column(name = "event_time")
     private Integer eventTime;
 
-    public String getEventName() { return eventName; }
-    public String getEventDesc() { return eventDesc; }
-    public Integer getClassId() { return classId; }
-    public Integer getEventTime() { return eventTime; }
+    @ManyToMany
+    @JoinTable(
+            name = "users_in_event",
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "username"))
+    private Set<User> eventUsers;
 
-    public void setEventName(String name) { this.eventName = name; }
-    public void setEventDesc(String desc) { this.eventDesc = desc; }
-    public void setClassId(Integer id) { classId = id; }
-    public void setDueTime(Integer time) { this.eventTime = time; }
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course eventCourse;
+
+    @ManyToOne
+    @JoinColumn(name = "username")
+    private User eventOwner;
+
+    @ManyToMany
+    @JoinTable(
+            name = "assignemts_in_event",
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "assignment_id")
+    )
+    private Set<Assignment> eventAssignments;
+
+    // Constructors
+    public Event() {}
+
+    public Event(String eventName, String eventDesc, Integer eventTime) {
+        this.eventName = eventName;
+        this.eventDesc = eventDesc;
+        this.eventTime = eventTime;
+    }
+
+    public Event(String eventName, String eventDesc, Integer eventTime, Course eventCourse) {
+        this.eventName = eventName;
+        this.eventDesc = eventDesc;
+        this.eventTime = eventTime;
+        this.eventCourse = eventCourse;
+    }
+
+    public Event(String eventName, String eventDesc, Integer eventTime, User eventOwner) {
+        this.eventName = eventName;
+        this.eventDesc = eventDesc;
+        this.eventTime = eventTime;
+        this.eventOwner = eventOwner;
+    }
+
+    public Event(String eventName, String eventDesc, Integer eventTime, User eventOwner, Course eventCourse) {
+        this.eventName = eventName;
+        this.eventDesc = eventDesc;
+        this.eventTime = eventTime;
+        this.eventOwner = eventOwner;
+        this.eventCourse = eventCourse;
+    }
+
+    // Get functions
+    public Integer getEventId() {
+        return this.eventId;
+    }
+    public String getEventName() {
+        return this.eventName;
+    }
+    public String getEventDesc() {
+        return this.eventDesc;
+    }
+    public Integer getEventTime() {
+        return this.eventTime;
+    }
+    public Set<User> getEventUsers() {
+        return this.eventUsers;
+    }
+    public Course getEventCourse() {
+        return this.eventCourse;
+    }
+    public User getEventOwner() {
+        return this.eventOwner;
+    }
+    public Set<Assignment> getEventAssignments() {
+        return this.eventAssignments;
+    }
+
+    // Set functions
+    public void setEventName(String name) {
+        this.eventName = name;
+    }
+    public void setEventDesc(String desc) {
+        this.eventDesc = desc;
+    }
+    public void setDueTime(Integer time) {
+        this.eventTime = time;
+    }
+    public void setEventCourse(Course course) {
+        this.eventCourse = course;
+    }
+    public void setEventOwner(User user) {
+        this.eventOwner = user;
+    }
+
+    // Collection functions
+    public void addUser(User user) {
+        this.eventUsers.add(user);
+    }
+    public void delUser(User user) {
+        this.eventUsers.remove(user);
+    }
+    public void addAssignment(Assignment assignment) {
+        this.eventAssignments.add(assignment);
+    }
+    public void delAssignment(Assignment assignment) {
+        this.eventAssignments.add(assignment);
+    }
 }

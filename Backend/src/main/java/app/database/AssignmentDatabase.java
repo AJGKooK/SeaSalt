@@ -4,4 +4,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserDatabase extends JpaRepository<User, String> {}
+public interface AssignmentDatabase extends JpaRepository<Assignment, Integer> {}

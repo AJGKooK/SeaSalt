@@ -1,37 +1,98 @@
 package app.controllers;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
+import app.database.Course;
+import app.database.Event;
 import app.database.User;
+import app.excpetions.NotFoundException;
+import app.service.SecurityService;
 import app.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.ArrayList;
+import java.util.Optional;
+
+@RestController
 @RequestMapping(path = "/user")
 public class UserController {
 
     @Autowired
+    SecurityService securityService;
+
+    @Autowired
     UserService userService;
 
+    @Autowired
+    ObjectMapper objectMapper;
+
     @PostMapping(path = "/login")
-    public @ResponseBody
-    int login (@RequestParam String username, @RequestParam String password) {
-        return userService.userLogin(username, password);
+    public Integer login(@RequestParam String username, @RequestParam String password) {
+        Optional<User> user = userService.getUserByUsername(username);
+        if(user.isEmpty()) {
+            return 2;
+        } else if (user.get().getPassword().equals(password)) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 
     @PostMapping(path = "/register")
-    public @ResponseBody int register (@RequestParam String username, @RequestParam String password) {
+    public Integer register(@RequestParam String username, @RequestParam String password, @RequestParam String firstName, @RequestParam String lastName) {
         if (userService.getUserByUsername(username).isPresent()) {
             return 1;
         } else {
-            User user = new User(username, password);
+            User user = new User(username, password, firstName, lastName);
             userService.addUser(user);
             return 0;
         }
+    }
+
+    @GetMapping(path = "/info")
+    public ObjectNode info(@RequestParam String username, @RequestParam String password, @RequestParam("info") String usernameInfo) {
+        securityService.isAuthorizedHttp(username, password);
+        Optional<User> info = userService.getUserByUsername(usernameInfo);
+        if(info.isPresent()) {
+            ObjectNode response = objectMapper.createObjectNode();
+            response.put("username", info.get().getUsername());
+            response.put("firstname", info.get().getFirstName());
+            response.put("lastname", info.get().getLastName());
+            response.put("role", info.get().getRole().toString());
+            return response;
+        } else {
+            throw new NotFoundException();
+        }
+    }
+
+    @GetMapping(path = "/courses")
+    public ArrayList<Integer> courses(@RequestParam String username, @RequestParam String password) {
+        User user = securityService.isAuthorizedHttp(username, password);
+        ArrayList<Integer> courses = new ArrayList<>();
+        for(Course course : user.getUserCourses()) {
+            courses.add(course.getCourseId());
+        }
+        return courses;
+    }
+
+    @GetMapping(path = "/events/involved")
+    public ArrayList<Integer> involved(@RequestParam String username, @RequestParam String password) {
+        User user = securityService.isAuthorizedHttp(username, password);
+        ArrayList<Integer> involved = new ArrayList<>();
+        for(Event event : user.getUserInvolvedEvents()) {
+            involved.add(event.getEventId());
+        }
+        return involved;
+    }
+
+    @GetMapping(path = "/events/owns")
+    public ArrayList<Integer> owns(@RequestParam String username, @RequestParam String password) {
+        User user = securityService.isAuthorizedHttp(username, password);
+        ArrayList<Integer> owns = new ArrayList<>();
+        for(Event event : user.getUserOwnsEvents()) {
+            owns.add(event.getEventId());
+        }
+        return owns;
     }
 }

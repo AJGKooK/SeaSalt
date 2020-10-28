@@ -13,3 +13,4 @@ public class UserActivity extends AppCompatActivity {
 //UserActivity.loginPassword
 //UserActivity.checkUsername == UserActivity.loginUsername
 //UserActivity.checkPassword == UserActivity.loginPassword
+
