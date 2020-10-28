@@ -38,7 +38,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class EventsActivity extends AppCompatActivity {
-    private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/users/register/";
+    private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/event/add/";
     EditText title,time,description;
     Button addEvent;
     private Map<String, String> map;
@@ -76,12 +76,9 @@ public class EventsActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         String success = response;
-                        if (success.equals("0") && (UserActivity.checkUsername == UserActivity.loginUsername) && (UserActivity.checkPassword == UserActivity.loginPassword)) {
+                        if ((success != (" ")) && (UserActivity.checkUsername == UserActivity.loginUsername) && (UserActivity.checkPassword == UserActivity.loginPassword)) {
                             Toast.makeText(EventsActivity.this, "Event Added", Toast.LENGTH_SHORT).show();
 
-                        }
-                        else if(success.equals("1")){
-                            Toast.makeText(EventsActivity.this, "Login? Already registered", Toast.LENGTH_SHORT).show();
                         }
                         else {
                             Toast.makeText(EventsActivity.this, "Event Couldn't be added, are you still logged in?", Toast.LENGTH_SHORT).show();
