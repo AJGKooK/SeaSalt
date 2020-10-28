@@ -75,8 +75,8 @@ public class EventsActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        String success = response;
-                        if (success.equals("true")) {
+                        int success = 1;
+                        if (success == 0) {
                             Toast.makeText(EventsActivity.this, "Event Added", Toast.LENGTH_SHORT).show();
 
                         } else {
