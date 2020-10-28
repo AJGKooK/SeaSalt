@@ -1,6 +1,7 @@
 package app.service;
 
 import app.database.Message;
+import app.service.database.MessageService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -18,7 +19,7 @@ public class MessageServiceTest {
     @Test
     public void messageSent()
     {
-        service.addMessage(message);
+        service.saveMessage(message);
 
         List<Message> messageList = service.getAllMessages();
 

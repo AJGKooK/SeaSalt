@@ -1,6 +1,7 @@
 package app.service;
 
 import app.database.Assignment;
+import app.service.database.AssignmentService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -17,7 +18,7 @@ public class AssignmentServiceTest {
     @Test
     public void canFindCourse()
     {
-        service.addAssignment(assignment);
+        service.saveAssignment(assignment);
 
         Optional<Assignment> optionalAssignment = service.getAssignmentById(assignment.getAssignmentId());
 

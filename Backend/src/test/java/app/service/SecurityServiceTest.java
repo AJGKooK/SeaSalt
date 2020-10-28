@@ -27,7 +27,7 @@ public class SecurityServiceTest {
     @Test
     public void userAuthorized()
     {
-        service.userService.addUser(user);
+        service.userService.saveUser(user);
         Assert.assertTrue(service.isAuthorizedHttp(user.getUsername(), user.getPassword()).equals(user));
     }
 
@@ -35,7 +35,7 @@ public class SecurityServiceTest {
     public void userInCourse()
     {
         user.addCourse(course);
-        service.userService.addUser(user);
+        service.userService.saveUser(user);
 
         Assert.assertTrue(service.isAuthorizedHttp(user.getUsername(), user.getPassword(), course).equals(course));
     }
@@ -44,7 +44,7 @@ public class SecurityServiceTest {
     public void userInEvent()
     {
         event.addUser(user);
-        service.userService.addUser(user);
+        service.userService.saveUser(user);
 
         Assert.assertTrue(service.isAuthorizedHttp(user.getUsername(), user.getPassword(), event).equals(event));
     }
@@ -53,7 +53,7 @@ public class SecurityServiceTest {
     public void userHasMessage()
     {
         user.getUserMessages().add(message);
-        service.userService.addUser(user);
+        service.userService.saveUser(user);
 
         Assert.assertTrue(service.isAuthorizedHttp(user.getUsername(), user.getPassword(), message).equals(message));
     }

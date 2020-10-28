@@ -1,6 +1,7 @@
 package app.service;
 
 import app.database.Course;
+import app.service.database.CourseService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -17,7 +18,7 @@ public class CourseServiceTest {
     @Test
     public void canFindCourse()
     {
-        service.addClass(course);
+        service.saveCourse(course);
 
         Optional<Course> optionalCourse = service.getCourseById(course.getCourseId());
 

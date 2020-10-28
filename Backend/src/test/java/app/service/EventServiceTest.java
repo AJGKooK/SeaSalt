@@ -1,6 +1,7 @@
 package app.service;
 
 import app.database.Event;
+import app.service.database.EventService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -17,7 +18,7 @@ public class EventServiceTest {
     @Test
     public void canFindEvent()
     {
-        service.addEvent(event);
+        service.saveEvent(event);
 
         Optional<Event> optionalEvent = service.getEventById(event.getEventId());
 
