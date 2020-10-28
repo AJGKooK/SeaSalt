@@ -3,7 +3,7 @@ package app.controllers;
 import app.database.Message;
 import app.database.User;
 import app.excpetions.NotFoundException;
-import app.service.MessageService;
+import app.service.database.MessageService;
 import app.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +47,7 @@ public class MessageController {
     public Integer postMessage(@RequestParam String username, @RequestParam String password, @RequestParam String msgContent) {
         User user = securityService.isAuthorizedHttp(username, password);
         Message message = new Message(user, msgContent);
-        messageService.addMessage(message);
+        messageService.saveMessage(message);
         return message.getMsgId();
     }
 }

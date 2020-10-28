@@ -5,7 +5,7 @@ import app.database.Event;
 import app.database.User;
 import app.excpetions.NotFoundException;
 import app.service.SecurityService;
-import app.service.UserService;
+import app.service.database.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +45,16 @@ public class UserController {
             return 1;
         } else {
             User user = new User(username, password, firstName, lastName);
-            userService.addUser(user);
+            userService.saveUser(user);
             return 0;
         }
+    }
+
+    @PostMapping(path = "/password")
+    public Integer password(@RequestParam String username, @RequestParam String currentpassword, @RequestParam String newpassword) {
+        User user = securityService.isAuthorizedHttp(username, currentpassword);
+        user.setPassword(newpassword);
+        return 0;
     }
 
     @GetMapping(path = "/info")

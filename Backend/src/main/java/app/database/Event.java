@@ -108,7 +108,7 @@ public class Event implements Serializable {
     public void setEventDesc(String desc) {
         this.eventDesc = desc;
     }
-    public void setDueTime(Integer time) {
+    public void setEventTime(Integer time) {
         this.eventTime = time;
     }
     public void setEventCourse(Course course) {

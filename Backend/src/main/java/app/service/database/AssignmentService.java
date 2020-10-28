@@ -1,4 +1,4 @@
-package app.service;
+package app.service.database;
 
 import app.database.Assignment;
 import app.database.AssignmentDatabase;
@@ -22,7 +22,7 @@ public class AssignmentService {
         return assignmentDatabase.findById(id);
     }
 
-    public void addAssignment(Assignment assignment) {
+    public void saveAssignment(Assignment assignment) {
         assignmentDatabase.save(assignment);
     }
 }
