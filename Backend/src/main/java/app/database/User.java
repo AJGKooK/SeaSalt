@@ -11,11 +11,17 @@ public class User implements Serializable {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "role")
     private Enum<Role> role;
+
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
     @ManyToMany
     @JoinTable(
@@ -36,9 +42,11 @@ public class User implements Serializable {
     // Constructors
     public User() {}
 
-    public User(String username, String password) {
+    public User(String username, String password, String firstName, String lastName) {
         this.username = username;
         this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     // Get functions
@@ -50,6 +58,12 @@ public class User implements Serializable {
     }
     public Enum<Role> getRole() {
         return this.role;
+    }
+    public String getFirstName() {
+        return this.firstName;
+    }
+    public String getLastName() {
+        return this.lastName;
     }
     public Set<Course> getUserCourses() {
         return this.userCourses;

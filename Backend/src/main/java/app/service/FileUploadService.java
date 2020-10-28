@@ -57,5 +57,15 @@ public class FileUploadService {
             throw new FileStorageException("Could not store file " + file.getOriginalFilename() + ". Please try again!");
         }
     }
+
+    public void profileUpload(String username, MultipartFile file) {
+        try {
+            Path path = Paths.get(uploadDir + File.separator + "profiles" + File.separator + username + ".png");
+            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new FileStorageException("Could not store profile picture. Please try again!");
+        }
+    }
 }
 
