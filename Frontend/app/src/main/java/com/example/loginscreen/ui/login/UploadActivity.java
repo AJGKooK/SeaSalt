@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 public class UploadActivity extends AppCompatActivity {
 
     private Uri selectedImage;
+    private Button uploadButton;
     private ImageButton fileFinderButton;
 
     @Override
@@ -29,8 +31,15 @@ public class UploadActivity extends AppCompatActivity {
                 openFileFinder();
             }
         });
-    }
 
+        uploadButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                submitEvent();
+            }
+        });
+
+    }
     private void openFileFinder() {
         Intent var1 = new Intent("android.intent.action.PICK");
         var1.setType("image/*");
@@ -51,5 +60,13 @@ public class UploadActivity extends AppCompatActivity {
             }
         }
     }
+
+    public void submitEvent(){
+        Intent intent = new Intent(this, EventsActivity.class);
+        startActivity(intent);
+    }
+
+
+
 }
 
