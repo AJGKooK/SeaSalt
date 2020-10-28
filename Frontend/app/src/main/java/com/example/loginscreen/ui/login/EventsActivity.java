@@ -38,7 +38,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class EventsActivity extends AppCompatActivity {
-    private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/users/register/";
+    private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/users/events/";
     EditText title,time,description;
     Button addEvent;
     private Map<String, String> map;

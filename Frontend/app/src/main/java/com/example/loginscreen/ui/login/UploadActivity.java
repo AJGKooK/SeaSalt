@@ -38,7 +38,6 @@ public class UploadActivity extends AppCompatActivity {
         var1.putExtra("android.intent.extra.MIME_TYPES", mimeTypes);
         this.startActivityForResult(var1, 100);
     }
-
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == -1) {

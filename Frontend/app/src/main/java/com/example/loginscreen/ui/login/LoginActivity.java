@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
     private Button newaccount;
-    private static String API_URL = "coms-309-ug-09.cs.iastate.edu/static/";
+    private static String API_URL = "coms-309-ug-09.cs.iastate.edu/user/login/";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

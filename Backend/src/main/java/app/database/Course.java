@@ -5,6 +5,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import static app.database.Role.TEACHER;
+
 @Entity
 @Table(name = "courses")
 public class Course implements Serializable {
@@ -25,9 +27,13 @@ public class Course implements Serializable {
     @ManyToMany(mappedBy = "userCourses")
     private Set<User> courseUsers;
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "assignmentCourse")
     private Set<Assignment> assignments;
 
+    @OneToMany(mappedBy = "eventCourse")
+    private Set<Event> courseEvents;
+
+    // Constructors
     public Course() {}
 
     public Course(String courseName, String courseDesc, String courseTime) {
@@ -36,24 +42,47 @@ public class Course implements Serializable {
         this.courseTime = courseTime;
     }
 
-    public Integer getCourseId() { return this.courseId; }
-    public String getCourseName() { return this.courseName; }
-    public String getCourseDesc() { return this.courseDesc; }
-    public String getCourseTime() { return this.courseTime; }
-    public Set<User> getCourseUsers() { return this.courseUsers; }
-    public Set<Assignment> getAssignments() { return this.assignments; }
+    // Get functions
+    public Integer getCourseId() {
+        return this.courseId;
+    }
+    public String getCourseName() {
+        return this.courseName;
+    }
+    public String getCourseDesc() {
+        return this.courseDesc;
+    }
+    public String getCourseTime() {
+        return this.courseTime;
+    }
+    public Set<User> getCourseUsers() {
+        return this.courseUsers;
+    }
+    public Set<Assignment> getAssignments() {
+        return this.assignments;
+    }
+    public Set<Event> getCourseEvents() {
+        return this.courseEvents;
+    }
 
     public Set<User> getTeachers() {
         Set<User> teachers = new HashSet<>();
         for (User user : this.courseUsers) {
-            if(user.getRole() == 1) {
+            if(user.getRole() == TEACHER) {
                 teachers.add(user);
             }
         }
         return teachers;
     }
 
-    public void setCourseName(String courseName) { this.courseName = courseName; }
-    public void setCourseDesc(String courseDesc) { this.courseDesc = courseDesc; }
-    public void setCourseTime(String courseTime) { this.courseTime = courseTime; }
+    // Set functions
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+    public void setCourseDesc(String courseDesc) {
+        this.courseDesc = courseDesc;
+    }
+    public void setCourseTime(String courseTime) {
+        this.courseTime = courseTime;
+    }
 }
