@@ -2,7 +2,9 @@ package app.controllers;
 
 import app.database.Course;
 import app.database.Event;
+import app.database.Role;
 import app.database.User;
+import app.excpetions.BadRequestException;
 import app.excpetions.NotFoundException;
 import app.service.SecurityService;
 import app.service.database.CourseService;
@@ -12,7 +14,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -108,12 +109,49 @@ public class UserController {
         return owns;
     }
 
+    @PostMapping(path = "/setrole")
+    public Role setRole(@RequestParam String username, @RequestParam String password, @RequestParam String role, @RequestParam String usernameToSet) {
+        securityService.isAuthorizedAdminHttp(username, password);
+        Optional<User> user = userService.getUserByUsername(username);
+        if (user.isPresent()) {
+            Role roleEnum = null;
+            for (Role e : Role.values()) {
+                if (e.toString().equals(role)) {
+                    roleEnum = e;
+                    break;
+                }
+            }
+            if (roleEnum != null) {
+                user.get().setRole(roleEnum);
+                userService.saveUser(user.get());
+                return roleEnum;
+            } else {
+                throw new BadRequestException();
+            }
+        } else {
+            throw new NotFoundException();
+        }
+    }
+
     @PostMapping(path = "/addcourse")
     public Integer addcourse(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
         User user = securityService.isAuthorizedHttp(username, password);
         Optional<Course> course = courseService.getCourseById(id);
         if(course.isPresent()) {
             user.addCourse(course.get());
+            userService.saveUser(user);
+            return course.get().getCourseId();
+        } else {
+            throw new NotFoundException();
+        }
+    }
+
+    @PostMapping(path = "/delcourse")
+    public Integer delcourse(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
+        User user = securityService.isAuthorizedHttp(username, password);
+        Optional<Course> course = courseService.getCourseById(id);
+        if(course.isPresent()) {
+            user.delCourse(course.get());
             userService.saveUser(user);
             return course.get().getCourseId();
         } else {

@@ -95,7 +95,7 @@ public class User implements Serializable {
     public void addCourse(Course course) {
         this.userCourses.add(course);
     }
-    public void deleteCourse(Course course) {
+    public void delCourse(Course course) {
         this.userCourses.remove(course);
     }
 
