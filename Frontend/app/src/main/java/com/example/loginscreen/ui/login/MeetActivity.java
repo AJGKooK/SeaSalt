@@ -10,29 +10,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.loginscreen.R;
-import androidx.test.core.app.*;
-import android.content.Context;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import static org.hamcrest.MatcherAssert.assertThat;
-import org.junit.Test;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import org.mockito.Mock;
-import org.mockito.Mockito.*;
-import org.mockito.junit.MockitoJUnitRunner;
 
 
-
-import android.content.Context;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.List;
 
