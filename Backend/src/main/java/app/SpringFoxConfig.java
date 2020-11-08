@@ -29,8 +29,7 @@ public class SpringFoxConfig {
         return new ApiInfoBuilder()
                 .title("SeaSalt_Backend")
                 .description("This is the API for the backend of the SeaSalt app.")
-                .contact(new Contact("Edward Mahone", "https://git.linux.iastate.edu/cs309/fall2020/ug_09/", "ermahone@iastate.edu"))
-                .contact(new Contact("William Blanchard", "https://git.linux.iastate.edu/cs309/fall2020/ug_09/", "wsb@iastate.edu"))
+                .contact(new Contact("UG09 Backend Team", "https://git.linux.iastate.edu/cs309/fall2020/ug_09/", "wsb@iastate.edu"))
                 .version("0.1")
                 .build();
     }
