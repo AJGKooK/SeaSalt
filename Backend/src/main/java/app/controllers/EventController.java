@@ -202,6 +202,7 @@ public class EventController {
             Optional<User> user = userService.getUserByUsername(usernameToAdd);
             if(user.isPresent()) {
                 event.get().addUser(user.get());
+                eventService.saveEvent(event.get());
                 return event.get().getEventId();
             } else {
                 securityService.isAuthorizedHttp(username, password);
@@ -221,6 +222,7 @@ public class EventController {
             Optional<User> user = userService.getUserByUsername(usernameToDel);
             if(user.isPresent()) {
                 event.get().delUser(user.get());
+                eventService.saveEvent(event.get());
                 return event.get().getEventId();
             } else {
                 securityService.isAuthorizedHttp(username, password);
@@ -240,6 +242,7 @@ public class EventController {
             Optional<Assignment> assignment = assignmentService.getAssignmentById(assignmentId);
             if(assignment.isPresent()) {
                 event.get().addAssignment(assignment.get());
+                eventService.saveEvent(event.get());
                 return event.get().getEventId();
             } else {
                 securityService.isAuthorizedHttp(username, password);
@@ -259,6 +262,7 @@ public class EventController {
             Optional<Assignment> assignment = assignmentService.getAssignmentById(assignmentId);
             if(assignment.isPresent()) {
                 event.get().delAssignment(assignment.get());
+                eventService.saveEvent(event.get());
                 return event.get().getEventId();
             } else {
                 securityService.isAuthorizedHttp(username, password);

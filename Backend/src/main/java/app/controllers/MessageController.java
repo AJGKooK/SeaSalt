@@ -50,4 +50,18 @@ public class MessageController {
         messageService.saveMessage(message);
         return message.getMsgId();
     }
+
+    @PostMapping(path = "/edit")
+    public Integer editMessage(@RequestParam String username, @RequestParam String password, @RequestParam Integer id, @RequestParam String msgContent) {
+        Optional<Message> message = messageService.getMessageById(id);
+        if(message.isPresent()) {
+            securityService.isAuthorizedHttp(username, password, message.get());
+            message.get().setContent(msgContent);
+            messageService.saveMessage(message.get());
+            return message.get().getMsgId();
+        } else {
+            securityService.isAuthorizedHttp(username, password);
+            throw new NotFoundException();
+        }
+    }
 }
