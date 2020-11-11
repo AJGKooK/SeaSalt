@@ -24,7 +24,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * The user activity page for Sea Salt
+ * @author Chandler Jurenic and Aaron Goff
+ * UserAcitivty holds the string values forcheckUsername, checkPassword, loginUsername, loginPassword to be used in the ChatActivity page
+ */
 public class UploadActivity extends AppCompatActivity {
 
     private Uri selectedImage;
@@ -32,6 +36,10 @@ public class UploadActivity extends AppCompatActivity {
     private ImageButton fileFinderButton;
     private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/messages/post/";
 
+    /**
+     * onCreate allows user to press a button in order to upload the selected file to the server
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +47,10 @@ public class UploadActivity extends AppCompatActivity {
 
         fileFinderButton = (ImageButton) findViewById(R.id.fileFinderButton);
         fileFinderButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * allows user to open the file finder to locate the file to be uploaded
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 openFileFinder();
@@ -46,6 +58,10 @@ public class UploadActivity extends AppCompatActivity {
         });
         uploadButton = (Button) findViewById(R.id.uploadButton);
         uploadButton.setOnClickListener(new View.OnClickListener(){
+            /**
+             * uploads file on click
+             * @param v
+             */
             @Override
             public void onClick(View v){
                 fileUpload();
@@ -53,6 +69,10 @@ public class UploadActivity extends AppCompatActivity {
         });
 
     }
+
+    /**
+     * openFileFinder gives the parameters for the file to be uploaded
+     */
     private void openFileFinder() {
         Intent var1 = new Intent("android.intent.action.PICK");
         var1.setType("image/*");
@@ -60,6 +80,13 @@ public class UploadActivity extends AppCompatActivity {
         var1.putExtra("android.intent.extra.MIME_TYPES", mimeTypes);
         this.startActivityForResult(var1, 100);
     }
+
+    /**
+     * onActivityResult readies the file within the app
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == -1) {
@@ -74,6 +101,9 @@ public class UploadActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * fileUpload sends the file to the server
+     */
     public void fileUpload() {
 //        final String message = "this.editText.getText().toString()";
 //        if (message.length() > 0) {
