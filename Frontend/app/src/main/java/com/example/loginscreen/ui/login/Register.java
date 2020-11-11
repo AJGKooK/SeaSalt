@@ -1,6 +1,7 @@
 package com.example.loginscreen.ui.login;
 
 public class Register {
+
     private String username, password, firstName, lastName;
 
     RegisterService service;
@@ -27,10 +28,5 @@ public class Register {
     public void settingUser(String username){
         service.setUser(username);
     }
-
-
-
-
-
 
 }
