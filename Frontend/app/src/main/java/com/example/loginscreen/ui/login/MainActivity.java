@@ -1,52 +1,40 @@
 package com.example.loginscreen.ui.login;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import org.springframework.web.client.RestTemplate;
-import android.os.Bundle;
-import android.app.Activity;
-import android.os.AsyncTask;
-import android.os.StrictMode;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.StrictMode;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 import com.example.loginscreen.R;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
+/**
+ * The main page activity page for Sea Salt
+ * @author Chandler Jurenic and Aaron Goff
+ * This page is displayed once the user logins in successfully.
+ * The page offers all the features that the app has and can bring you to every one of them
+ */
 public class MainActivity extends AppCompatActivity {
 
     private ImageButton chatButton, eventsButton, uploadButton, meetButton, contactsButton;
     private Button logout;
 
+    /**
+     * When a user logs in successfully or returns from a different feature back to the main
+     * menu, this creates the page for the user to be able to choose further navigation around the app
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
 
+        /**
+         * Logs the user out of the application
+         */
         logout = (Button) findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,30 +81,52 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * opens the messenger interface
+     */
     public void openChat(){
         Intent intent = new Intent(this, ChatActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * opens the upload interface
+     */
     public void openUpload(){
         Intent intent = new Intent(this, UploadActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * opens the events interface
+     */
     public void openEvents(){
         Intent intent = new Intent(this, EventsMainActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * opens the meetings interface
+     */
     public void openMeet(){
         Intent intent = new Intent(this, MeetActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * opens the contacts interface
+     */
     public void openContacts(){
         Intent intent = new Intent(this, ContactsActivity.class);
         startActivity(intent);
     }
+
+    /**
+     * logs the user out of the application
+     * this function sets the login username and pass to null, but doesnt change the temp
+     * username and password to null to prevent the user from still being able to access
+     * application features while logged out. This then leads the user back to the login page.
+     */
     public void logout(){
         UserActivity.loginUsername = null;
         UserActivity.loginPassword = null;

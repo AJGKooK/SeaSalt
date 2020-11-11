@@ -3,10 +3,8 @@ package com.example.loginscreen.ui.login;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.loginscreen.R;
@@ -20,6 +18,10 @@ public class MeetActivity extends AppCompatActivity {
 
     ImageButton buttonZoom, buttonWebex;
 
+    /**
+     * creates the meeting page when the user navigates there from the main menu
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -45,6 +47,9 @@ public class MeetActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * opens the zoom application when the user clicks the button for Zoom meetings
+     */
     public void openZoom() {
 
         PackageManager pm = getPackageManager();
@@ -55,6 +60,9 @@ public class MeetActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * opens the webex application when the user clicks the button for Webex meetings
+     */
     public void openWebex() {
 
         PackageManager pm = getPackageManager();
