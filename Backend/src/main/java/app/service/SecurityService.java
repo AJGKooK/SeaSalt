@@ -11,20 +11,26 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static app.database.Role.ADMIN;
+
 @Service
 public class SecurityService {
 
     @Autowired
     UserService userService;
 
-    public boolean isAuthorized(User user, String password) {
-        return user.getPassword().equals(password);
+    private boolean isNotAuthorized(User user, String password) {
+        return !user.getPassword().equals(password);
+    }
+
+    private boolean isNotAdmin(User user) {
+        return user.getRole() != ADMIN;
     }
 
     public User isAuthorizedHttp(String username, String password) {
         Optional<User> user = userService.getUserByUsername(username);
         if(user.isPresent()) {
-            if(!isAuthorized(user.get(), password)) {
+            if(isNotAuthorized(user.get(), password)) {
                 throw new ForbiddenException();
             }
             return user.get();
@@ -36,7 +42,7 @@ public class SecurityService {
     public User isAuthorizedHttp(String username, String password, Course course) {
         Optional<User> user = userService.getUserByUsername(username);
         if(user.isPresent()) {
-            if(!(isAuthorized(user.get(), password)) || !(user.get().getUserCourses().contains(course))) {
+            if(isNotAuthorized(user.get(), password) || (!user.get().getUserCourses().contains(course) && isNotAdmin(user.get()))) {
                 throw new ForbiddenException();
             }
             return user.get();
@@ -48,7 +54,7 @@ public class SecurityService {
     public User isAuthorizedHttp(String username, String password, Event event) {
         Optional<User> user = userService.getUserByUsername(username);
         if(user.isPresent()) {
-            if(!(isAuthorized(user.get(), password)) || !(user.get().getUserInvolvedEvents().contains(event))) {
+            if(isNotAuthorized(user.get(), password) || (!user.get().getUserInvolvedEvents().contains(event) && isNotAdmin(user.get())))  {
                 throw new ForbiddenException();
             }
             return user.get();
@@ -60,7 +66,7 @@ public class SecurityService {
     public User isAuthorizedHttp(String username, String password, Message message) {
         Optional<User> user = userService.getUserByUsername(username);
         if(user.isPresent()) {
-            if(!(isAuthorized(user.get(), password)) || (message.getMsgUser() != user.get()))  {
+            if(isNotAuthorized(user.get(), password) || (message.getMsgUser() != user.get() && isNotAdmin(user.get())))  {
                 throw new ForbiddenException();
             }
             return user.get();
@@ -72,7 +78,7 @@ public class SecurityService {
     public User isAuthorizedOwnerHttp(String username, String password, Event event) {
         Optional<User> user = userService.getUserByUsername(username);
         if(user.isPresent()) {
-            if(!(isAuthorized(user.get(), password)) || (event.getEventOwner() != user.get()))  {
+            if(isNotAuthorized(user.get(), password) || (event.getEventOwner() != user.get() && isNotAdmin(user.get())))  {
                 throw new ForbiddenException();
             }
             return user.get();
@@ -84,7 +90,31 @@ public class SecurityService {
     public User isAuthorizedOwnerHttp(String username, String password, Event event, Course course) {
         Optional<User> user = userService.getUserByUsername(username);
         if(user.isPresent()) {
-            if(!(isAuthorized(user.get(), password)) || (event.getEventOwner() != user.get()) || !(user.get().getUserCourses().contains(course)))  {
+            if(isNotAuthorized(user.get(), password) || ((event.getEventOwner() != user.get() || !user.get().getUserCourses().contains(course)) && isNotAdmin(user.get()))) {
+                throw new ForbiddenException();
+            }
+            return user.get();
+        } else {
+            throw new ForbiddenException();
+        }
+    }
+
+    public User isAuthorizedAdminHttp(String username, String password) {
+        Optional<User> user = userService.getUserByUsername(username);
+        if(user.isPresent()) {
+            if(isNotAuthorized(user.get(), password) || isNotAdmin(user.get())) {
+                throw new ForbiddenException();
+            }
+            return user.get();
+        } else {
+            throw new ForbiddenException();
+        }
+    }
+
+    public User isAuthorizedTeacherHttp(String username, String password, Course course) {
+        Optional<User> user = userService.getUserByUsername(username);
+        if(user.isPresent()) {
+            if(isNotAuthorized(user.get(), password) || (!course.getTeachers().contains(user.get()) && isNotAdmin(user.get()))) {
                 throw new ForbiddenException();
             }
             return user.get();

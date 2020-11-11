@@ -1,22 +1,19 @@
 package com.example.loginscreen.ui.login;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.loginscreen.R;
 
-/**
- * The meeting activity page for Sea Salt
- * @author Chandler Jurenic and Aaron Goff
- * this is the main page for meetings on Sea Salt, this page displays options of other
- * applications that offer online meetings that uses the respective sites api to lead the user
- * straight to the other application to start their meetings!
- */
+
+
+import java.util.List;
+
+
 public class MeetActivity extends AppCompatActivity {
 
     ImageButton buttonZoom, buttonWebex;
@@ -77,3 +74,19 @@ public class MeetActivity extends AppCompatActivity {
     }
 
 }
+
+//class mockitoTest{
+//
+//    //mock creation
+//    List mockedList = mock(List.class);
+//
+//    //using mock object
+// mockedList.add("one");
+// mockedList.clear();
+//
+//    //verification
+//    verify(mockedList).add("one");
+//    verify(mockedList).clear();
+//
+//}
+
