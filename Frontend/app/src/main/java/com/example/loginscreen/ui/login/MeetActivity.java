@@ -13,7 +13,11 @@ import com.example.loginscreen.R;
 
 import java.util.List;
 
-
+/**
+ * The Meet page activity page for Sea Salt
+ * @author Chandler Jurenic and Aaron Goff
+ * This page allows the user to connect to Zoom or Webex depending on the users needs
+ */
 public class MeetActivity extends AppCompatActivity {
 
     ImageButton buttonZoom, buttonWebex;

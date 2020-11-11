@@ -9,8 +9,6 @@ import com.example.loginscreen.R;
  * @author Chandler Jurenic and Aaron Goff
  * The main screen for contacts when a user navigates to their friends list
  */
-
-
 public class ContactsActivity extends AppCompatActivity {
 
     /**
