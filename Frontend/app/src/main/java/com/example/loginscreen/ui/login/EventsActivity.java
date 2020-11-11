@@ -1,22 +1,11 @@
 package com.example.loginscreen.ui.login;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.provider.CalendarContract;
-import android.util.EventLog;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.util.AttributeSet;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
@@ -28,15 +17,16 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.loginscreen.R;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
+/**
+ * The Event activity for Sea Salt
+ * @author Chandler Jurenic and Aaron Goff
+ * This is the secondary events page that communicates with
+ * the backend in order to take the users event request and store that
+ * data to the database
+ */
 public class EventsActivity extends AppCompatActivity {
 
     private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/event/add/";
@@ -46,6 +36,11 @@ public class EventsActivity extends AppCompatActivity {
     Button addEvent;
     private Map<String, String> map;
 
+    /**
+     * This page is created once the user presses the make an event button
+     * on the main event page
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -67,6 +62,10 @@ public class EventsActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This function takes the user input from the page then sends
+     * the information via hashmap to the back end using Volley Rest Api
+     */
     private void submitEvent() {
         final String title = this.title.getText().toString().trim();
         final String time = this.time.getText().toString().trim();
@@ -95,6 +94,11 @@ public class EventsActivity extends AppCompatActivity {
                         Toast.makeText(EventsActivity.this, "Event Adding Error!" + error.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }) {
+            /**
+             * holds the values the user entered when creating a new event
+             * @return the map holding the values for username, pass for login verification, event title, time, description, and owner of event
+             * @throws AuthFailureError
+             */
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
@@ -107,6 +111,9 @@ public class EventsActivity extends AppCompatActivity {
                 return map;
             }
         };
+        /**
+         * adding a string request to the queue
+         */
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
