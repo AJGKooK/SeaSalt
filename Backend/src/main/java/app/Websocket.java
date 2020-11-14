@@ -8,45 +8,46 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import java.io.IOException;
 import java.util.Map;
 
-@ServerEndpoint("/websocket/{username}")
+@ServerEndpoint("/chat/{username}")
 @Component
 public class Websocket {
 
     private Map<Session, String> sessionToUsernameMap;
-    private Map<String, Session> usernameToSessionMap;
 
     @OnOpen
     public void onOpen (Session session, @PathParam("username") String username)
     {
         sessionToUsernameMap.put(session, username);
-        usernameToSessionMap.put(username, session);
     }
 
     //It actually looks like we already have things set up for a separate system in MessageController.
     //How do we want to go about sending messages?
+    //I'd suggest storing the message object in the database, but handling the IM part separately in websockets.
     @OnMessage
-    public void onMessage(String username, String message)
+    public void onMessage(Session session, String message)
     {
-
+        String username = sessionToUsernameMap.get(session);
+        broadcast(username + ": " + message);
     }
 
     @OnClose
     public void onClose(Session session)
     {
-        String username = sessionToUsernameMap.get(session);
         sessionToUsernameMap.remove(session);
-        usernameToSessionMap.remove(username);
     }
 
-    private void sendToClient()
+    private void broadcast(String message)
     {
-
-    }
-
-    private void broadcast()
-    {
-
+            sessionToUsernameMap.forEach((session, username) -> {
+                try {
+                    session.getBasicRemote().sendText(message);
+                } catch(IOException e)
+                {
+                    //TODO: Add something here that indicates an exception
+                }
+            });
     }
 }
