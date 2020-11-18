@@ -39,7 +39,7 @@ import java.util.Map;
 public class UploadActivity extends AppCompatActivity {
 
 
-    private static final String ROOT_URL = "http://coms-309-ug-09.cs.iastate.edu/messages/post/";
+    private static final String ROOT_URL = "http://coms-309-ug-09.cs.iastate.edu/";
     private static final int REQUEST_PERMISSIONS = 100;
     private static final int PICK_IMAGE_REQUEST =1 ;
     private Bitmap bitmap;
@@ -164,18 +164,13 @@ public class UploadActivity extends AppCompatActivity {
 
 
             @Override
-            protected Map<String, DataPart> getByteData() {
-                Map<String, DataPart> params = new HashMap<>();
-                long imagename = System.currentTimeMillis();
-                params.put("image", new DataPart(imagename + ".png", getFileDataFromDrawable(bitmap)));
-                return params;
-            }
-            @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> map = new HashMap<>();
+                long imagename = System.currentTimeMillis();
                     map.put("username", UserActivity.loginUsername);
                     map.put("password", UserActivity.loginPassword);
-                    return map;
+                    map.put("/upload/assignment", new DataPart(imagename + ".png", getFileDataFromDrawable(bitmap)).toString());
+                return map;
                 }
 
         };
