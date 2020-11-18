@@ -54,6 +54,11 @@ public class User implements Serializable {
         this.msgHistory = new HashSet<>();
     }
 
+    public User(String username, String password, String firstName, String lastName, Enum<Role> role) {
+        this(username, password, firstName, lastName);
+        this.role = role;
+    }
+
     // Get functions
     public String getUsername() {
         return this.username;
