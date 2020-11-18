@@ -1,33 +1,30 @@
 package com.example.loginscreen.ui.login;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.loginscreen.R;
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import org.jetbrains.annotations.Nullable;
+
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,146 +35,176 @@ import java.util.Map;
  */
 public class UploadActivity extends AppCompatActivity {
 
+    private Uri selectedImage;
+    private Button uploadButton;
+    private ImageButton fileFinderButton;
+    private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/upload/user/";
 
-    private static final String ROOT_URL = "http://coms-309-ug-09.cs.iastate.edu/";
-    private static final int REQUEST_PERMISSIONS = 100;
-    private static final int PICK_IMAGE_REQUEST =1 ;
-    private Bitmap bitmap;
-    private String filePath;
-    ImageView imageView;
-    TextView textView;
-
+    /**
+     * onCreate allows user to press a button in order to upload the selected file to the server
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
 
-        //initializing views
-        imageView =  findViewById(R.id.imageView);
-        textView =  findViewById(R.id.textview);
-
-        //adding click listener to button
-        findViewById(R.id.buttonUploadImage).setOnClickListener(new View.OnClickListener() {
+        fileFinderButton = (ImageButton) findViewById(R.id.fileFinderButton);
+        fileFinderButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * allows user to open the file finder to locate the file to be uploaded
+             * @param view
+             */
             @Override
             public void onClick(View view) {
-                if ((ContextCompat.checkSelfPermission(getApplicationContext(),
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) && (ContextCompat.checkSelfPermission(getApplicationContext(),
-                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
-                    if ((ActivityCompat.shouldShowRequestPermissionRationale(UploadActivity.this,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE)) && (ActivityCompat.shouldShowRequestPermissionRationale(UploadActivity.this,
-                            Manifest.permission.READ_EXTERNAL_STORAGE))) {
-
-                    } else {
-                        ActivityCompat.requestPermissions(UploadActivity.this,
-                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
-                                REQUEST_PERMISSIONS);
-                    }
-                } else {
-                    Log.e("Else", "Else");
-                    showFileChooser();
-                }
-
-
+                openFileFinder();
             }
         });
-    }
-
-    private void showFileChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri picUri = data.getData();
-            filePath = getPath(picUri);
-            if (filePath != null) {
-                try {
-
-                    textView.setText("File Selected");
-                    Log.d("filePath", String.valueOf(filePath));
-                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), picUri);
-                    uploadBitmap(bitmap);
-                    imageView.setImageBitmap(bitmap);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        uploadButton = (Button) findViewById(R.id.uploadButton);
+        uploadButton.setOnClickListener(new View.OnClickListener(){
+            /**
+             * uploads file on click
+             * @param v
+             */
+            @Override
+            public void onClick(View v){
+                fileUpload();
             }
-            else
-            {
-                Toast.makeText(
-                        UploadActivity.this,"no image selected",
-                        Toast.LENGTH_LONG).show();
+        });
+
+    }
+
+    /**
+     * openFileFinder gives the parameters for the file to be uploaded
+     */
+    private void openFileFinder() {
+        Intent var1 = new Intent("android.intent.action.PICK");
+        var1.setType("image/*");
+        String[] mimeTypes = new String[]{"image/jpeg", "image/png"};
+        var1.putExtra("android.intent.extra.MIME_TYPES", mimeTypes);
+        this.startActivityForResult(var1, 100);
+    }
+
+    /**
+     * onActivityResult readies the file within the app
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == -1) {
+            switch(requestCode) {
+                case 100:
+                    this.selectedImage = data != null ? data.getData() : null;
+                    ImageButton fileFinderButton = this.fileFinderButton;
+                    if (fileFinderButton != null) {
+                        fileFinderButton.setImageURI(this.selectedImage);
+                    }
             }
         }
-
-    }
-    public String getPath(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        String document_id = cursor.getString(0);
-        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
-        cursor.close();
-
-        cursor = getContentResolver().query(
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
-        cursor.moveToFirst();
-        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-        cursor.close();
-
-        return path;
     }
 
-
-    public byte[] getFileDataFromDrawable(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
-        return byteArrayOutputStream.toByteArray();
-    }
-
-    private void uploadBitmap(final Bitmap bitmap) {
-
-        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, ROOT_URL,
-                new Response.Listener<NetworkResponse>() {
-                    @Override
-                    public void onResponse(NetworkResponse response) {
-                        try {
-                            JSONObject obj = new JSONObject(new String(response.data));
-                            Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+    /**
+     * fileUpload sends the file to the server
+     */
+    public void fileUpload() {
+        final String message = "this.editText.getText().toString()";
+        if (message.length() > 0) {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, API_URL,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            String success = response;
+                            if ((success != " ") && (UserActivity.checkUsername == UserActivity.loginUsername) && (UserActivity.checkPassword == UserActivity.loginPassword)) {
+                                Toast.makeText(UploadActivity.this, "File uploaded succesfully", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(UploadActivity.this, "File not uploaded", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-                        Log.e("GotError",""+error.getMessage());
-                    }
-                }) {
-
-
-            @Override
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(UploadActivity.this, "Upload Error!" + error.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }) {
+                /*
+                Push <String, String>
+                 */
+                @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> map = new HashMap<>();
-                long imagename = System.currentTimeMillis();
                     map.put("username", UserActivity.loginUsername);
                     map.put("password", UserActivity.loginPassword);
-                    map.put("/upload/assignment", new DataPart(imagename + ".png", getFileDataFromDrawable(bitmap)).toString());
-                return map;
+                    return map;
+                }
+                /*
+                Push <String, DataPart>
+                 */
+//                @Override
+                protected Map<String, DataPart> getByteData() throws IOException {
+                    Map<String, DataPart> params = new HashMap<>();
+                    InputStream iStream =   getContentResolver().openInputStream(selectedImage);
+                    byte[] inputData;
+                        inputData = getBytes(iStream);
+                    long imagename = System.currentTimeMillis();
+                    params.put("file", new DataPart(imagename + ".png", inputData));
+                    return params;
                 }
 
-        };
+                /*
+                Convert URI to Byte[]
+                 */
 
-        //adding the request to volley
-        Volley.newRequestQueue(this).add(volleyMultipartRequest);
+                public byte[] getBytes(InputStream inputStream) throws IOException {
+                    ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+                    int bufferSize = 1024;
+                    byte[] buffer = new byte[bufferSize];
+
+                    int len;
+                    while ((len = inputStream.read(buffer)) != -1) {
+                        byteBuffer.write(buffer, 0, len);
+                    }
+                    return byteBuffer.toByteArray();
+                }
+
+                class DataPart {
+                    private String fileName;
+                    private byte[] content;
+                    private String type;
+
+                    public DataPart() {
+                    }
+
+                    DataPart(String name, byte[] data) {
+                        fileName = name;
+                        content = data;
+                    }
+
+                    String getFileName() {
+                        return fileName;
+                    }
+
+                    byte[] getContent() {
+                        return content;
+                    }
+
+                    String getType() {
+                        return type;
+                    }
+
+                }
+
+
+
+            };
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(stringRequest);
+        }
+
+
+
+
     }
-
 }
-
