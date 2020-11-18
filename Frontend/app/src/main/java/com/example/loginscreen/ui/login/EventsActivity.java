@@ -52,6 +52,11 @@ public class EventsActivity extends AppCompatActivity {
         description = findViewById(R.id.descriptionEvent);
         addEvent = findViewById(R.id.addEvent);
 
+        //Send a request to /event/discover using the username and password
+        //Assign the result to an integer array list (the values stored in the array list are now the IDs of the events)
+        //For each of the elements in the list, send requests for the event to find the different elements of the events you need.
+        //Do what you need to do to add the info from each of the events to the events screen
+
         addEvent.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
