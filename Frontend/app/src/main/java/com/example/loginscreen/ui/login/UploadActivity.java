@@ -16,6 +16,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -168,6 +170,14 @@ public class UploadActivity extends AppCompatActivity {
                 params.put("image", new DataPart(imagename + ".png", getFileDataFromDrawable(bitmap)));
                 return params;
             }
+            @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("username", UserActivity.loginUsername);
+                    map.put("password", UserActivity.loginPassword);
+                    return map;
+                }
+
         };
 
         //adding the request to volley
