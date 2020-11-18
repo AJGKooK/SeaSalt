@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
     private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/user/register/";
-    private EditText username, password, password_verify, name_first, name_last;
+    private EditText username, password, password_verify, name_first, name_last, accRole;
     private Button submit;
     private Map<String, String> map;
     @Override
@@ -38,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
         password_verify = findViewById(R.id.password_verify);
         name_first = findViewById(R.id.name_first);
         name_last = findViewById(R.id.name_last);
+        accRole = findViewById(R.id.accRole);
 
         submit = (Button) findViewById(R.id.submit);
         submit.setOnClickListener(new View.OnClickListener() {
@@ -54,6 +55,7 @@ public class RegisterActivity extends AppCompatActivity {
         final String password = this.password.getText().toString().trim();
         final String name_first = this.name_first.getText().toString().trim();
         final String name_last = this.name_last.getText().toString().trim();
+        final String accRole = this.accRole.getText().toString().trim();
         passwordCheck(this.password.getText().toString().trim(), this.password_verify.getText().toString().trim());
 
 
@@ -90,13 +92,13 @@ public class RegisterActivity extends AppCompatActivity {
                 map.put("password", password);
                 map.put("firstName", name_first);
                 map.put("lastName", name_last);
+                map.put("role", accRole);
                 return map;
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
 
-        //push
     }
     public static Boolean stringCompare (String str1, String str2){
         if (str1.length() == str2.length()){
