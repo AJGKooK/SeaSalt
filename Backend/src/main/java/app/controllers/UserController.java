@@ -46,9 +46,24 @@ public class UserController {
     }
 
     @PostMapping(path = "/register")
-    public Integer register(@RequestParam String username, @RequestParam String password, @RequestParam String firstName, @RequestParam String lastName) {
+    public Integer register(@RequestParam String username, @RequestParam String password, @RequestParam String firstName, @RequestParam String lastName, @RequestParam(required = false) String role) {
         if (userService.getUserByUsername(username).isPresent()) {
             return 1;
+        } else if(role != null) {
+            Role roleEnum = null;
+            for (Role e : Role.values()) {
+                if (e.toString().equals(role)) {
+                    roleEnum = e;
+                    break;
+                }
+            }
+            if (roleEnum != null) {
+                User user = new User(username, password, firstName, lastName, roleEnum);
+                userService.saveUser(user);
+                return 0;
+            } else {
+                throw new BadRequestException();
+            }
         } else {
             User user = new User(username, password, firstName, lastName);
             userService.saveUser(user);
@@ -112,7 +127,7 @@ public class UserController {
     @PostMapping(path = "/setrole")
     public Role setRole(@RequestParam String username, @RequestParam String password, @RequestParam String role, @RequestParam String usernameToSet) {
         securityService.isAuthorizedAdminHttp(username, password);
-        Optional<User> user = userService.getUserByUsername(username);
+        Optional<User> user = userService.getUserByUsername(usernameToSet);
         if (user.isPresent()) {
             Role roleEnum = null;
             for (Role e : Role.values()) {
