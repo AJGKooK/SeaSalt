@@ -52,7 +52,7 @@ public class UserController {
         } else if(role != null) {
             Role roleEnum = null;
             for (Role e : Role.values()) {
-                if (e.toString().equals(role)) {
+                if (e.toString().equals(role.toUpperCase())) {
                     roleEnum = e;
                     break;
                 }
@@ -131,7 +131,7 @@ public class UserController {
         if (user.isPresent()) {
             Role roleEnum = null;
             for (Role e : Role.values()) {
-                if (e.toString().equals(role)) {
+                if (e.toString().equals(role.toUpperCase())) {
                     roleEnum = e;
                     break;
                 }
