@@ -131,6 +131,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onMessage(String message) {
                 Log.i("Websocket", "Message Received");
+                editText.append("\n" + message);
             }
 
             @Override
