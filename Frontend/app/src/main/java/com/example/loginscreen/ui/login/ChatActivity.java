@@ -2,6 +2,7 @@ package com.example.loginscreen.ui.login;
 
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -35,12 +36,12 @@ import java.util.Map;
 
 public class ChatActivity extends AppCompatActivity {
     private WebSocketClient webSocket;
-    private TextView listView;
+    private ListView listView;
+    private TextView textView;
     private ArrayAdapter<String> arrayAdapter;
     private ArrayList<String> list;
     private ImageButton msgButton;
     private EditText editText;
-    private String text;
     private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/messages/post/";
 
 
@@ -50,7 +51,9 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         connectWebSocket();
 
-        listView = (TextView) findViewById(R.id.listview);
+        textView = (TextView) findViewById(R.id.textView);
+        textView.setMovementMethod(new ScrollingMovementMethod());
+        listView = (ListView) findViewById(R.id.listview);
         msgButton = (ImageButton) findViewById(R.id.msgButton);
         editText = (EditText) findViewById(R.id.chatLog);
         msgButton.setOnClickListener(new View.OnClickListener() {
@@ -59,9 +62,9 @@ public class ChatActivity extends AppCompatActivity {
                 String logText = editText.getText().toString();
 
                 list.add(logText);
+                listView.setAdapter(arrayAdapter);
                 arrayAdapter.notifyDataSetChanged();
                 sendMessage();
-                webSocket.send(editText.getText().toString());
 
             }
 
@@ -75,6 +78,7 @@ public class ChatActivity extends AppCompatActivity {
 
     public void sendMessage() {
         final String message = this.editText.getText().toString();
+        webSocket.send(message);
         if (message.length() > 0) {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, API_URL,
                     new Response.Listener<String>() {
@@ -113,7 +117,7 @@ public class ChatActivity extends AppCompatActivity {
     private void connectWebSocket(){
         URI uri;
         try{
-            uri = new URI("ws://coms-309-ug-09.cs.iastate.edu/chat/" + UserActivity.loginUsername);
+            uri = new URI("ws://echo.websocket.org");
         }catch(URISyntaxException e){
             e.printStackTrace();
             return;
@@ -121,19 +125,18 @@ public class ChatActivity extends AppCompatActivity {
         webSocket = new WebSocketClient(uri){
 
             @Override
-            public void onOpen(ServerHandshake handshakedata) {
+            public void onOpen(ServerHandshake serverHandshake) {
                 Log.i("Websocket", "Opened");
             }
 
             @Override
-            public void onMessage(String message) {
-                Log.i("Websocket", "Message Received");
-                list.add(message);
-                listView.append("\n" + message);
+            public void onMessage(String msg) {
+                Log.i("Websocket", "Message Received" + " " + msg);
+                textView.append("\n" + msg);
             }
 
             @Override
-            public void onClose(int code, String reason, boolean remote) {
+            public void onClose(int errorCode, String reason, boolean remote) {
                 Log.i("Websocket", "Closed" + reason);
             }
 
