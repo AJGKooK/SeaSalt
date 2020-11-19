@@ -31,7 +31,9 @@ public class FileUploadService {
                         + File.separator + type.toString().toLowerCase()
                         + File.separator + id
                         + File.separator + timestamp);
-
+                if (!Files.exists(path)) {
+                    Files.createDirectories(path);
+                }
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
                 return timestamp;
             } else {
@@ -40,7 +42,9 @@ public class FileUploadService {
                         + File.separator + type.toString().toLowerCase()
                         + File.separator + id
                         + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
-
+                if (!Files.exists(path)) {
+                    Files.createDirectories(path);
+                }
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
                 return StringUtils.cleanPath(file.getOriginalFilename());
             }
@@ -60,7 +64,9 @@ public class FileUploadService {
                         + File.separator + id
                         + File.separator + username
                         + File.separator + timestamp);
-
+                if (!Files.exists(path)) {
+                    Files.createDirectories(path);
+                }
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
                 return timestamp;
             } else {
@@ -70,7 +76,9 @@ public class FileUploadService {
                         + File.separator + id
                         + File.separator + username
                         + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
-
+                if (!Files.exists(path)) {
+                    Files.createDirectories(path);
+                }
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
                 return StringUtils.cleanPath(file.getOriginalFilename());
             }
@@ -85,7 +93,9 @@ public class FileUploadService {
             Path path = Paths.get(uploadDir
                     + File.separator + "profiles"
                     + File.separator + username + ".png");
-
+            if (!Files.exists(path)) {
+                Files.createDirectories(path);
+            }
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             e.printStackTrace();
