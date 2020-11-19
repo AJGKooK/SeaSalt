@@ -10,12 +10,13 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Hashtable;
 
 @ServerEndpoint("/chat/{username}")
 @Component
 public class Websocket {
 
-    private Map<Session, String> sessionToUsernameMap;
+    private Map<Session, String> sessionToUsernameMap = new Hashtable<>();
 
     @OnOpen
     public void onOpen (Session session, @PathParam("username") String username)
