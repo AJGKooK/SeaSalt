@@ -129,7 +129,6 @@ public class ChatActivity extends AppCompatActivity {
             public void onMessage(String message) {
                 Log.i("Websocket", "Message Received");
                 arrayAdapter.add("\n" + message);
-                arrayAdapter.notifyDataSetChanged();
             }
 
             @Override
