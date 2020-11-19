@@ -3,7 +3,7 @@ package com.example.loginscreen.ui.login;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
- * Simple data container use for passing byte file
+ *  DataPart class to accept and set a String and byte[]
  */
 public class DataPart extends AppCompatActivity {
     private String fileName;
@@ -11,16 +11,8 @@ public class DataPart extends AppCompatActivity {
     private String type;
 
     /**
-     * Default data part
-     */
-    public DataPart() {
-    }
-
-    /**
-     * Constructor with data.
-     *
-     * @param name label of data
-     * @param data byte data
+     * @param name
+     * @param data
      */
     public DataPart(String name, byte[] data) {
         fileName = name;
@@ -28,69 +20,30 @@ public class DataPart extends AppCompatActivity {
     }
 
     /**
-     * Constructor with mime data type.
-     *
-     * @param name     label of data
-     * @param data     byte data
-     * @param mimeType mime data like "image/jpeg"
-     */
-    public DataPart(String name, byte[] data, String mimeType) {
-        fileName = name;
-        content = data;
-        type = mimeType;
-    }
-
-    /**
-     * Getter file name.
-     *
-     * @return file name
+     * @return
      */
     public String getFileName() {
         return fileName;
     }
 
     /**
-     * Setter file name.
-     *
-     * @param fileName string file name
-     */
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    /**
-     * Getter content.
-     *
-     * @return byte file data
+     * @return
      */
     public byte[] getContent() {
         return content;
     }
 
     /**
-     * Setter content.
-     *
-     * @param content byte file data
+     * @param content
      */
     public void setContent(byte[] content) {
         this.content = content;
     }
 
     /**
-     * Getter mime type.
-     *
-     * @return mime type
+     * @return
      */
     public String getType() {
         return type;
-    }
-
-    /**
-     * Setter mime type.
-     *
-     * @param type mime type
-     */
-    public void setType(String type) {
-        this.type = type;
     }
 }

@@ -76,19 +76,11 @@ public class VolleySingleton {
     /**
      * Add new request depend on type like string, json object, json array request.
      *
-     * @param req new request
-     * @param <T> request type
+     * @param req
+     * @param <T>
      */
     public <T> void addToRequestQueue(Request<T> req) {
         getRequestQueue().add(req);
     }
 
-    /**
-     * Get image loader.
-     *
-     * @return ImageLoader
-     */
-    public ImageLoader getImageLoader() {
-        return mImageLoader;
-    }
 }

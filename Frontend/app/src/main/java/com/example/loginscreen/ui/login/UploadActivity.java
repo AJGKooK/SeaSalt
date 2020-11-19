@@ -16,9 +16,11 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.loginscreen.R;
 
 import org.jetbrains.annotations.Nullable;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -107,7 +109,8 @@ public class UploadActivity extends AppCompatActivity {
         }
     }
 
-    /**
+
+                /**
      * fileUpload sends the file to the server
      */
     public void fileUpload() throws IOException {
@@ -118,7 +121,7 @@ public class UploadActivity extends AppCompatActivity {
                         public void onResponse(NetworkResponse response) {
                             String success = response.toString();
                             if ((success != " ") && (UserActivity.checkUsername == UserActivity.loginUsername) && (UserActivity.checkPassword == UserActivity.loginPassword)) {
-                                Toast.makeText(UploadActivity.this, "File uploaded succesfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(UploadActivity.this, "File uploaded successfully", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(UploadActivity.this, "File not uploaded", Toast.LENGTH_SHORT).show();
                             }
@@ -150,16 +153,14 @@ public class UploadActivity extends AppCompatActivity {
                     InputStream iStream =   getContentResolver().openInputStream(selectedImage);
                     final byte[] inputData;
                     inputData = getBytes(iStream);
-                    long imagename = System.currentTimeMillis();
+//                    long imagename = System.currentTimeMillis();
+                      long imagename = 3;
                     params.put("file", new DataPart(imagename + ".png", inputData));
-//                    Looper.loop();
                     return params;
                 }
-
                                     /*
                 Convert URI to Byte[]
                  */
-
                 public byte[] getBytes(InputStream inputStream) throws IOException {
                     ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
                     int bufferSize = 1024;
