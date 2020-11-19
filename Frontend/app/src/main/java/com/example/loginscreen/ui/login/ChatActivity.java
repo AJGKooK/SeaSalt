@@ -1,6 +1,8 @@
 package com.example.loginscreen.ui.login;
 
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -19,6 +21,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.loginscreen.R;
 
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +33,7 @@ import java.util.Map;
 
 
 public class ChatActivity extends AppCompatActivity {
-
+    private WebSocketClient webSocket;
     private ListView listView;
     private ArrayAdapter<String> arrayAdapter;
     private ArrayList<String> list;
@@ -37,6 +44,7 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        connectWebSocket();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
@@ -66,6 +74,7 @@ public class ChatActivity extends AppCompatActivity {
     public void sendMessage() {
         final String message = this.editText.getText().toString();
         if (message.length() > 0) {
+            webSocket.send(message);
             StringRequest stringRequest = new StringRequest(Request.Method.POST, API_URL,
                     new Response.Listener<String>() {
                         @Override
@@ -100,4 +109,40 @@ public class ChatActivity extends AppCompatActivity {
             editText.getText().clear();
         }
     }
+
+    private void connectWebSocket(){
+        URI uri;
+        try{
+            uri = new URI("ws://cs309.ug_09.xyz/chat/{username}");
+        }catch(URISyntaxException e){
+            e.printStackTrace();
+            return;
+        }
+        webSocket = new WebSocketClient(uri){
+
+            @Override
+            public void onOpen(ServerHandshake handshakedata) {
+                Log.i("Websocket", "Opened");
+            }
+
+            @Override
+            public void onMessage(String message) {
+                Log.i("Websocket", "Message Received");
+            }
+
+            @Override
+            public void onClose(int code, String reason, boolean remote) {
+                Log.i("Websocket", "Closed" + reason);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.i("Websocket", "Closed" + e.getMessage());
+            }
+        };
+        webSocket.connect();
+    }
+
+
+
 }
