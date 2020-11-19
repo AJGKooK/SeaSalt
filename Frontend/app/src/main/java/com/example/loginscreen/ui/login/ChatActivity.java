@@ -39,19 +39,21 @@ public class ChatActivity extends AppCompatActivity {
     private ArrayList<String> list;
     private ImageButton msgButton;
     private EditText editText;
+    private String text;
     private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/messages/post/";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        connectWebSocket();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        connectWebSocket();
 
         listView = (ListView) findViewById(R.id.listview);
         msgButton = (ImageButton) findViewById(R.id.msgButton);
         editText = (EditText) findViewById(R.id.chatLog);
+        final String message = editText.getText().toString();
         msgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,6 +63,9 @@ public class ChatActivity extends AppCompatActivity {
                 listView.setAdapter(arrayAdapter);
                 arrayAdapter.notifyDataSetChanged();
                 sendMessage();
+                if(message != null && message.length() > 0){
+                webSocket.send(message);
+                }
             }
 
         });
@@ -74,7 +79,6 @@ public class ChatActivity extends AppCompatActivity {
     public void sendMessage() {
         final String message = this.editText.getText().toString();
         if (message.length() > 0) {
-            webSocket.send(message);
             StringRequest stringRequest = new StringRequest(Request.Method.POST, API_URL,
                     new Response.Listener<String>() {
                         @Override
@@ -105,7 +109,6 @@ public class ChatActivity extends AppCompatActivity {
             };
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(stringRequest);
-
             editText.getText().clear();
         }
     }
@@ -113,7 +116,7 @@ public class ChatActivity extends AppCompatActivity {
     private void connectWebSocket(){
         URI uri;
         try{
-            uri = new URI("ws://cs309.ug_09.xyz/chat/{username}");
+            uri = new URI("ws://coms-309-ug-09.cs.iastate.edu/chat/" + UserActivity.loginUsername);
         }catch(URISyntaxException e){
             e.printStackTrace();
             return;
