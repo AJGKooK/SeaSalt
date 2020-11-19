@@ -107,7 +107,7 @@ public class VolleyMultiPartRequest extends Request<NetworkResponse> {
      * @return Map data part label with data byte
      * @throws AuthFailureError
      */
-    protected Map<String, DataPart> getByteData() throws AuthFailureError {
+    protected Map<String, DataPart> getByteData() throws AuthFailureError, IOException {
         return null;
     }
 

@@ -3,6 +3,7 @@ package com.example.loginscreen.ui.login;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -23,7 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import com.example.loginscreen.ui.login.DataPart;
 
 /**
  * The user activity page for Sea Salt
@@ -106,38 +107,16 @@ public class UploadActivity extends AppCompatActivity {
         }
     }
 
-
-                    /*
-                Convert URI to Byte[]
-                 */
-
-    public byte[] getBytes(InputStream inputStream) throws IOException {
-        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-        int bufferSize = 1024;
-        byte[] buffer = new byte[bufferSize];
-
-        int len;
-        while ((len = inputStream.read(buffer)) != -1) {
-            byteBuffer.write(buffer, 0, len);
-        }
-        return byteBuffer.toByteArray();
-    }
-
-
     /**
      * fileUpload sends the file to the server
      */
     public void fileUpload() throws IOException {
         final String message = "this.editText.getText().toString()";
-        InputStream iStream =   getContentResolver().openInputStream(selectedImage);
-        final byte[] inputData;
-        inputData = getBytes(iStream);
         if (message.length() > 0) {
-            final VolleyMultiPartRequest multipartRequest = new VolleyMultiPartRequest(Request.Method.POST, API_URL,
-                    new Response.Listener<String>() {
+            final VolleyMultiPartRequest multipartRequest = new VolleyMultiPartRequest(Request.Method.POST, API_URL, new Response.Listener<NetworkResponse>() {
                         @Override
-                        public void onResponse(String response) {
-                            String success = response;
+                        public void onResponse(NetworkResponse response) {
+                            String success = response.toString();
                             if ((success != " ") && (UserActivity.checkUsername == UserActivity.loginUsername) && (UserActivity.checkPassword == UserActivity.loginPassword)) {
                                 Toast.makeText(UploadActivity.this, "File uploaded succesfully", Toast.LENGTH_SHORT).show();
                             } else {
@@ -157,6 +136,7 @@ public class UploadActivity extends AppCompatActivity {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> map = new HashMap<>();
+                    Looper.prepare();
                     map.put("username", UserActivity.loginUsername);
                     map.put("password", UserActivity.loginPassword);
                     return map;
@@ -167,45 +147,37 @@ public class UploadActivity extends AppCompatActivity {
                 @Override
                 protected Map<String, DataPart> getByteData() throws IOException {
                     Map<String, DataPart> params = new HashMap<>();
+                    InputStream iStream =   getContentResolver().openInputStream(selectedImage);
+                    final byte[] inputData;
+                    inputData = getBytes(iStream);
                     long imagename = System.currentTimeMillis();
                     params.put("file", new DataPart(imagename + ".png", inputData));
+//                    Looper.loop();
                     return params;
                 }
 
-                class DataPart {
-                    private String fileName;
-                    private byte[] content;
-                    private String type;
+                                    /*
+                Convert URI to Byte[]
+                 */
 
-                    public DataPart() {
+                public byte[] getBytes(InputStream inputStream) throws IOException {
+                    ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+                    int bufferSize = 1024;
+                    byte[] buffer = new byte[bufferSize];
+
+                    int len;
+                    while ((len = inputStream.read(buffer)) != -1) {
+                        byteBuffer.write(buffer, 0, len);
                     }
-
-                    DataPart(String name, byte[] data) {
-                        fileName = name;
-                        content = data;
-                    }
-
-                    String getFileName() {
-                        return fileName;
-                    }
-
-                    byte[] getContent() {
-                        return content;
-                    }
-
-                    String getType() {
-                        return type;
-                    }
-
+                    return byteBuffer.toByteArray();
                 }
 
-
-
             };
+
             VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(multipartRequest);
+
+
         }
-
-
 
 
     }
