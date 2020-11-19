@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,7 +35,7 @@ import java.util.Map;
 
 public class ChatActivity extends AppCompatActivity {
     private WebSocketClient webSocket;
-    private ListView listView;
+    private TextView listView;
     private ArrayAdapter<String> arrayAdapter;
     private ArrayList<String> list;
     private ImageButton msgButton;
@@ -49,7 +50,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         connectWebSocket();
 
-        listView = (ListView) findViewById(R.id.listview);
+        listView = (TextView) findViewById(R.id.listview);
         msgButton = (ImageButton) findViewById(R.id.msgButton);
         editText = (EditText) findViewById(R.id.chatLog);
         final String message = editText.getText().toString();
@@ -59,7 +60,6 @@ public class ChatActivity extends AppCompatActivity {
                 String logText = editText.getText().toString();
 
                 list.add(logText);
-                listView.setAdapter(arrayAdapter);
                 arrayAdapter.notifyDataSetChanged();
                 sendMessage();
                 webSocket.send(message);
@@ -130,9 +130,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onMessage(String message) {
                 Log.i("Websocket", "Message Received");
                 list.add(message);
-                listView.setAdapter(arrayAdapter);
-                arrayAdapter.notifyDataSetChanged();
-                editText.append("\n" + message);
+                listView.append("\n" + message);
             }
 
             @Override
