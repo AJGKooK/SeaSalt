@@ -12,21 +12,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.loginscreen.R;
 
 import org.jetbrains.annotations.Nullable;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import com.example.loginscreen.ui.login.DataPart;
 
 /**
  * The user activity page for Sea Salt
@@ -68,7 +65,11 @@ public class UploadActivity extends AppCompatActivity {
              */
             @Override
             public void onClick(View v){
-                fileUpload();
+                try {
+                    fileUpload();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -105,13 +106,34 @@ public class UploadActivity extends AppCompatActivity {
         }
     }
 
+
+                    /*
+                Convert URI to Byte[]
+                 */
+
+    public byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
+    }
+
+
     /**
      * fileUpload sends the file to the server
      */
-    public void fileUpload() {
+    public void fileUpload() throws IOException {
         final String message = "this.editText.getText().toString()";
+        InputStream iStream =   getContentResolver().openInputStream(selectedImage);
+        final byte[] inputData;
+        inputData = getBytes(iStream);
         if (message.length() > 0) {
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, API_URL,
+            final VolleyMultiPartRequest multipartRequest = new VolleyMultiPartRequest(Request.Method.POST, API_URL,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -142,31 +164,12 @@ public class UploadActivity extends AppCompatActivity {
                 /*
                 Push <String, DataPart>
                  */
-//                @Override
+                @Override
                 protected Map<String, DataPart> getByteData() throws IOException {
                     Map<String, DataPart> params = new HashMap<>();
-                    InputStream iStream =   getContentResolver().openInputStream(selectedImage);
-                    byte[] inputData;
-                        inputData = getBytes(iStream);
                     long imagename = System.currentTimeMillis();
                     params.put("file", new DataPart(imagename + ".png", inputData));
                     return params;
-                }
-
-                /*
-                Convert URI to Byte[]
-                 */
-
-                public byte[] getBytes(InputStream inputStream) throws IOException {
-                    ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-                    int bufferSize = 1024;
-                    byte[] buffer = new byte[bufferSize];
-
-                    int len;
-                    while ((len = inputStream.read(buffer)) != -1) {
-                        byteBuffer.write(buffer, 0, len);
-                    }
-                    return byteBuffer.toByteArray();
                 }
 
                 class DataPart {
@@ -199,8 +202,7 @@ public class UploadActivity extends AppCompatActivity {
 
 
             };
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            requestQueue.add(stringRequest);
+            VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(multipartRequest);
         }
 
 
