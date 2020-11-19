@@ -53,7 +53,6 @@ public class ChatActivity extends AppCompatActivity {
         listView = (TextView) findViewById(R.id.listview);
         msgButton = (ImageButton) findViewById(R.id.msgButton);
         editText = (EditText) findViewById(R.id.chatLog);
-        final String message = editText.getText().toString();
         msgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,7 +61,7 @@ public class ChatActivity extends AppCompatActivity {
                 list.add(logText);
                 arrayAdapter.notifyDataSetChanged();
                 sendMessage();
-                webSocket.send(message);
+                webSocket.send(editText.getText().toString());
 
             }
 
