@@ -45,7 +45,6 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         connectWebSocket();
@@ -63,9 +62,8 @@ public class ChatActivity extends AppCompatActivity {
                 listView.setAdapter(arrayAdapter);
                 arrayAdapter.notifyDataSetChanged();
                 sendMessage();
-                if(message != null && message.length() > 0){
                 webSocket.send(message);
-                }
+
             }
 
         });
