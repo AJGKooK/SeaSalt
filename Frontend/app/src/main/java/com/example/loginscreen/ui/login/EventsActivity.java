@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.loginscreen.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +36,7 @@ import java.util.Map;
  */
 public class EventsActivity extends AppCompatActivity {
 
-    private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/event/add/";
+    private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/event/";
 
     EditText title,time,description;
     String owner = "true";
@@ -56,6 +63,54 @@ public class EventsActivity extends AppCompatActivity {
         //Assign the result to an integer array list (the values stored in the array list are now the IDs of the events)
         //For each of the elements in the list, send requests for the event to find the different elements of the events you need.
         //Do what you need to do to add the info from each of the events to the events screen
+/*
+        String discoverUrl = API_URL + "discover/";
+
+        Response.Listener<ArrayList<Integer>> listener = new Response.Listener<ArrayList<Integer>>() {
+
+            ArrayList<Integer> list;
+            ListView eventList;
+
+            View listEntryTemplate;
+
+            @Override
+            public void onResponse(ArrayList<Integer> response) {
+
+
+                eventList = findViewById(R.id.listview);
+                for(int i = 0; i < response.size(); i++)
+                {
+
+                }
+
+                eventList.
+            }
+
+
+        };
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, discoverUrl,
+                listener,
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(EventsActivity.this, "Event Adding Error!" + error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+            /**
+             * holds the values the user entered when creating a new event
+             * @return the map holding the values for username, pass for login verification, event title, time, description, and owner of event
+             * @throws AuthFailureError
+             *//*
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("username", UserActivity.loginUsername);
+                map.put("password", UserActivity.loginPassword);
+                return map;
+            }
+        };
+    */
 
         addEvent.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -77,8 +132,10 @@ public class EventsActivity extends AppCompatActivity {
         //final String date = this.date.getText().toString().trim();
         final String description = this.description.getText().toString().trim();
 
+        String submitUrl = API_URL + "add/";
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, API_URL,
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, submitUrl,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
