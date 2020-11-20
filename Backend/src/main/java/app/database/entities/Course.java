@@ -1,11 +1,11 @@
-package app.database;
+package app.database.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import static app.database.Role.TEACHER;
+import static app.database.entities.Role.TEACHER;
 
 @Entity
 @Table(name = "courses")

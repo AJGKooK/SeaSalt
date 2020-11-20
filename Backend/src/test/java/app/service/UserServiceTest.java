@@ -1,6 +1,6 @@
 package app.service;
 
-import app.database.User;
+import app.database.entities.User;
 import app.service.database.UserService;
 import org.junit.Assert;
 import org.junit.Test;

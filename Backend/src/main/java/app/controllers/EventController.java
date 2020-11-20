@@ -1,21 +1,20 @@
 package app.controllers;
 
-import app.database.Assignment;
-import app.database.Course;
-import app.database.Event;
-import app.database.User;
+import app.database.entities.Assignment;
+import app.database.entities.Course;
+import app.database.entities.Event;
+import app.database.entities.User;
 import app.excpetions.NotFoundException;
+import app.service.SecurityService;
 import app.service.database.AssignmentService;
 import app.service.database.CourseService;
 import app.service.database.EventService;
-import app.service.SecurityService;
 import app.service.database.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.Optional;
 

@@ -1,10 +1,10 @@
 package app.controllers;
 
-import app.database.Message;
-import app.database.User;
+import app.database.entities.Message;
+import app.database.entities.User;
 import app.excpetions.NotFoundException;
-import app.service.database.MessageService;
 import app.service.SecurityService;
+import app.service.database.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

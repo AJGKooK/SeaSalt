@@ -1,9 +1,9 @@
 package app.service;
 
-import app.database.Course;
-import app.database.Event;
-import app.database.Message;
-import app.database.User;
+import app.database.entities.Course;
+import app.database.entities.Event;
+import app.database.entities.Message;
+import app.database.entities.User;
 import app.excpetions.ForbiddenException;
 import app.service.database.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static app.database.Role.ADMIN;
+import static app.database.entities.Role.ADMIN;
 
 @Service
 public class SecurityService {

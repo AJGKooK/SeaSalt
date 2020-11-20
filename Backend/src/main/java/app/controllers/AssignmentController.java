@@ -1,11 +1,11 @@
 package app.controllers;
 
-import app.database.Assignment;
-import app.database.Course;
-import app.database.Event;
+import app.database.entities.Assignment;
+import app.database.entities.Course;
+import app.database.entities.Event;
 import app.excpetions.NotFoundException;
-import app.service.database.AssignmentService;
 import app.service.SecurityService;
+import app.service.database.AssignmentService;
 import app.service.database.CourseService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;

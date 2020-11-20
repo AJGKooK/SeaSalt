@@ -1,4 +1,4 @@
-package app.database;
+package app.database.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;

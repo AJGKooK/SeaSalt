@@ -1,9 +1,9 @@
 package app.controllers;
 
-import app.database.Course;
-import app.database.Event;
-import app.database.Role;
-import app.database.User;
+import app.database.entities.Course;
+import app.database.entities.Event;
+import app.database.entities.Role;
+import app.database.entities.User;
 import app.excpetions.BadRequestException;
 import app.excpetions.NotFoundException;
 import app.service.SecurityService;

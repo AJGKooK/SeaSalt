@@ -1,6 +1,6 @@
 package app.service.database;
 
-import app.database.Course;
+import app.database.entities.Course;
 import app.database.CourseDatabase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

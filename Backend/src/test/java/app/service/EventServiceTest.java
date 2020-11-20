@@ -1,6 +1,6 @@
 package app.service;
 
-import app.database.Event;
+import app.database.entities.Event;
 import app.service.database.EventService;
 import org.junit.Assert;
 import org.junit.Test;

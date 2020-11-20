@@ -1,6 +1,6 @@
 package app.service.database;
 
-import app.database.User;
+import app.database.entities.User;
 import app.database.UserDatabase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
