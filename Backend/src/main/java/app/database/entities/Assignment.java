@@ -30,7 +30,8 @@ public class Assignment implements Serializable {
     private Set<Event> assignmentEvents;
 
     // Constructors
-    public Assignment() {}
+    public Assignment() {
+    }
 
     public Assignment(Course assignmentCourse, String assignmentName, String assignmentDesc, Integer dueTime) {
         this.assignmentCourse = assignmentCourse;
@@ -44,30 +45,37 @@ public class Assignment implements Serializable {
     public Integer getAssignmentId() {
         return this.assignmentId;
     }
+
     public String getAssignmentName() {
         return this.assignmentName;
-    }
-    public String getAssignmentDesc() {
-        return this.assignmentDesc;
-    }
-    public Integer getDueTime() {
-        return this.dueTime;
-    }
-    public Course getAssignmentCourse() {
-        return this.assignmentCourse;
-    }
-    public Set<Event> getAssignmentEvents() {
-        return this.assignmentEvents;
     }
 
     // Set functions
     public void setAssignmentName(String name) {
         this.assignmentName = name;
     }
+
+    public String getAssignmentDesc() {
+        return this.assignmentDesc;
+    }
+
     public void setAssignmentDesc(String desc) {
         this.assignmentDesc = desc;
     }
+
+    public Integer getDueTime() {
+        return this.dueTime;
+    }
+
     public void setDueTime(Integer dueTime) {
         this.dueTime = dueTime;
+    }
+
+    public Course getAssignmentCourse() {
+        return this.assignmentCourse;
+    }
+
+    public Set<Event> getAssignmentEvents() {
+        return this.assignmentEvents;
     }
 }

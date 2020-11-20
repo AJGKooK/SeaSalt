@@ -15,16 +15,12 @@ import java.nio.file.StandardCopyOption;
 @Service
 public class FileUploadService {
 
-    public enum UploadType {
-        USER, COURSE, ASSIGNMENT, EVENT
-    }
-
     @Value("${app.upload.dir:${user.home}}")
     public String uploadDir;
 
     public String uploadFile(Enum<UploadType> type, String id, MultipartFile file) {
         try {
-            if(file.getOriginalFilename() == null) {
+            if (file.getOriginalFilename() == null) {
                 String timestamp = String.valueOf(System.currentTimeMillis());
                 Path path = Paths.get(uploadDir
                         + File.separator + "uploads"
@@ -56,7 +52,7 @@ public class FileUploadService {
 
     public String uploadFile(Enum<UploadType> type, String id, String username, MultipartFile file) {
         try {
-            if(file.getOriginalFilename() == null) {
+            if (file.getOriginalFilename() == null) {
                 String timestamp = String.valueOf(System.currentTimeMillis());
                 Path path = Paths.get(uploadDir
                         + File.separator + "uploads"
@@ -101,6 +97,10 @@ public class FileUploadService {
             e.printStackTrace();
             throw new FileStorageException("Could not store profile picture. Please try again!");
         }
+    }
+
+    public enum UploadType {
+        USER, COURSE, ASSIGNMENT, EVENT
     }
 }
 

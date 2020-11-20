@@ -34,7 +34,8 @@ public class Course implements Serializable {
     private Set<Event> courseEvents;
 
     // Constructors
-    public Course() {}
+    public Course() {
+    }
 
     public Course(String courseName, String courseDesc, String courseTime) {
         this.courseName = courseName;
@@ -49,21 +50,40 @@ public class Course implements Serializable {
     public Integer getCourseId() {
         return this.courseId;
     }
+
     public String getCourseName() {
         return this.courseName;
     }
+
+    // Set functions
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
     public String getCourseDesc() {
         return this.courseDesc;
     }
+
+    public void setCourseDesc(String courseDesc) {
+        this.courseDesc = courseDesc;
+    }
+
     public String getCourseTime() {
         return this.courseTime;
     }
+
+    public void setCourseTime(String courseTime) {
+        this.courseTime = courseTime;
+    }
+
     public Set<User> getCourseUsers() {
         return this.courseUsers;
     }
+
     public Set<Assignment> getAssignments() {
         return this.assignments;
     }
+
     public Set<Event> getCourseEvents() {
         return this.courseEvents;
     }
@@ -71,21 +91,10 @@ public class Course implements Serializable {
     public Set<User> getTeachers() {
         Set<User> teachers = new HashSet<>();
         for (User user : this.courseUsers) {
-            if(user.getRole() == TEACHER) {
+            if (user.getRole() == TEACHER) {
                 teachers.add(user);
             }
         }
         return teachers;
-    }
-
-    // Set functions
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
-    }
-    public void setCourseDesc(String courseDesc) {
-        this.courseDesc = courseDesc;
-    }
-    public void setCourseTime(String courseTime) {
-        this.courseTime = courseTime;
     }
 }
