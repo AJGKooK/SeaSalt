@@ -16,8 +16,7 @@ public class AssignmentServiceTest {
     Assignment assignment;
 
     @Test
-    public void canFindCourse()
-    {
+    public void canFindCourse() {
         service.saveAssignment(assignment);
 
         Optional<Assignment> optionalAssignment = service.getAssignmentById(assignment.getAssignmentId());
