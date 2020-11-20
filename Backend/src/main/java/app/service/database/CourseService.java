@@ -25,4 +25,12 @@ public class CourseService {
     public void saveCourse(Course course) {
         courseDatabase.save(course);
     }
+
+    public void deleteCourse(Course course) {
+        courseDatabase.delete(course);
+    }
+
+    public void deleteCourse(Integer id) {
+        courseDatabase.deleteById(id);
+    }
 }

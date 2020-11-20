@@ -101,4 +101,21 @@ public class AssignmentController {
             throw new NotFoundException();
         }
     }
+
+    @PostMapping(path = "/delassignment")
+    public boolean delAssignment(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
+        Optional<Assignment> assignment = assignmentService.getAssignmentById(id);
+        if (assignment.isPresent()) {
+            securityService.isAuthorizedTeacherHttp(username, password, assignment.get().getAssignmentCourse());
+            try {
+                assignmentService.deleteAssignment(assignment.get());
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        } else {
+            securityService.isAuthorizedHttp(username, password);
+            throw new NotFoundException();
+        }
+    }
 }

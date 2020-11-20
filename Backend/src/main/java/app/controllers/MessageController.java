@@ -64,4 +64,21 @@ public class MessageController {
             throw new NotFoundException();
         }
     }
+
+    @PostMapping(path = "/deletemessage")
+    public boolean deleteMessage(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
+        Optional<Message> message = messageService.getMessageById(id);
+        if (message.isPresent()) {
+            securityService.isAuthorizedHttp(username, password, message.get());
+            try {
+                messageService.deleteMessage(message.get());
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        } else {
+            securityService.isAuthorizedHttp(username, password);
+            throw new NotFoundException();
+        }
+    }
 }

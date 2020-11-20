@@ -16,8 +16,7 @@ public class EventServiceTest {
     Event event;
 
     @Test
-    public void canFindEvent()
-    {
+    public void canFindEvent() {
         service.saveEvent(event);
 
         Optional<Event> optionalEvent = service.getEventById(event.getEventId());

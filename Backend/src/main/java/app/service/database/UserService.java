@@ -25,4 +25,12 @@ public class UserService {
     public void saveUser(User user) {
         userDatabase.save(user);
     }
+
+    public void deleteUser(User user) {
+        userDatabase.delete(user);
+    }
+
+    public void deleteUser(String username) {
+        userDatabase.deleteById(username);
+    }
 }

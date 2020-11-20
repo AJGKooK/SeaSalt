@@ -148,4 +148,21 @@ public class CourseController {
             throw new NotFoundException();
         }
     }
+
+
+    public boolean delCourse(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
+        Optional<Course> course = courseService.getCourseById(id);
+        if (course.isPresent()) {
+            securityService.isAuthorizedTeacherHttp(username, password, course.get());
+            try {
+                courseService.deleteCourse(course.get());
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        } else {
+            securityService.isAuthorizedHttp(username, password);
+            throw new NotFoundException();
+        }
+    }
 }
