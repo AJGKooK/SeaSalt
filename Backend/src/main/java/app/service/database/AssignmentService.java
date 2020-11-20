@@ -1,7 +1,7 @@
 package app.service.database;
 
-import app.database.Assignment;
 import app.database.AssignmentDatabase;
+import app.database.entities.Assignment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
 package app.service;
 
-import app.database.Assignment;
+import app.database.entities.Assignment;
 import app.service.database.AssignmentService;
 import org.junit.Assert;
 import org.junit.Test;

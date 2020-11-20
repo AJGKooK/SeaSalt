@@ -1,4 +1,4 @@
-package app.database;
+package app.database.entities;
 
 public enum Role {
     STUDENT, TEACHER, ADMIN

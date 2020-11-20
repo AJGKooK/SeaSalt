@@ -1,12 +1,12 @@
 package app.controllers;
 
-import app.database.Assignment;
-import app.database.Course;
-import app.database.Event;
-import app.database.User;
+import app.database.entities.Assignment;
+import app.database.entities.Course;
+import app.database.entities.Event;
+import app.database.entities.User;
 import app.excpetions.NotFoundException;
-import app.service.database.CourseService;
 import app.service.SecurityService;
+import app.service.database.CourseService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class CourseController {
     public ObjectNode info(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
         securityService.isAuthorizedHttp(username, password);
         Optional<Course> course = courseService.getCourseById(id);
-        if(course.isPresent()) {
+        if (course.isPresent()) {
             ObjectNode response = objectMapper.createObjectNode();
             response.put("id", course.get().getCourseId());
             response.put("name", course.get().getCourseName());
@@ -57,7 +57,7 @@ public class CourseController {
     @GetMapping(path = "/teachers")
     public ArrayList<String> teachers(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
         Optional<Course> course = courseService.getCourseById(id);
-        if(course.isPresent()) {
+        if (course.isPresent()) {
             securityService.isAuthorizedHttp(username, password, course.get());
             ArrayList<String> teachers = new ArrayList<>();
             for (User user : course.get().getTeachers()) {
@@ -73,10 +73,10 @@ public class CourseController {
     @GetMapping(path = "/users")
     public ArrayList<String> users(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
         Optional<Course> course = courseService.getCourseById(id);
-        if(course.isPresent()) {
+        if (course.isPresent()) {
             securityService.isAuthorizedHttp(username, password, course.get());
             ArrayList<String> users = new ArrayList<>();
-            for(User user : course.get().getCourseUsers()) {
+            for (User user : course.get().getCourseUsers()) {
                 users.add(user.getUsername());
             }
             return users;
@@ -89,10 +89,10 @@ public class CourseController {
     @GetMapping(path = "/assignments")
     public ArrayList<Integer> assignments(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
         Optional<Course> course = courseService.getCourseById(id);
-        if(course.isPresent()) {
+        if (course.isPresent()) {
             securityService.isAuthorizedHttp(username, password, course.get());
             ArrayList<Integer> assignments = new ArrayList<>();
-            for(Assignment assignment : course.get().getAssignments()) {
+            for (Assignment assignment : course.get().getAssignments()) {
                 assignments.add(assignment.getAssignmentId());
             }
             return assignments;
@@ -105,10 +105,10 @@ public class CourseController {
     @GetMapping(path = "/events")
     public ArrayList<Integer> events(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
         Optional<Course> course = courseService.getCourseById(id);
-        if(course.isPresent()) {
+        if (course.isPresent()) {
             securityService.isAuthorizedHttp(username, password, course.get());
             ArrayList<Integer> events = new ArrayList<>();
-            for(Event event : course.get().getCourseEvents()) {
+            for (Event event : course.get().getCourseEvents()) {
                 events.add(event.getEventId());
             }
             return events;
@@ -130,15 +130,15 @@ public class CourseController {
     public Integer edit(@RequestParam String username, @RequestParam String password, @RequestParam Integer id, @RequestParam(required = false) String name,
                         @RequestParam(required = false) String desc, @RequestParam(required = false) String time) {
         Optional<Course> course = courseService.getCourseById(id);
-        if(course.isPresent()) {
+        if (course.isPresent()) {
             securityService.isAuthorizedTeacherHttp(username, password, course.get());
-            if(name != null) {
+            if (name != null) {
                 course.get().setCourseName(name);
             }
-            if(desc != null) {
+            if (desc != null) {
                 course.get().setCourseDesc(desc);
             }
-            if(time != null) {
+            if (time != null) {
                 course.get().setCourseTime(time);
             }
             courseService.saveCourse(course.get());

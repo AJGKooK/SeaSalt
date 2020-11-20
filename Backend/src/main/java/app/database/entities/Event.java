@@ -1,4 +1,4 @@
-package app.database;
+package app.database.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -46,7 +46,8 @@ public class Event implements Serializable {
     private Set<Assignment> eventAssignments;
 
     // Constructors
-    public Event() {}
+    public Event() {
+    }
 
     public Event(String eventName, String eventDesc, Integer eventTime) {
         this.eventName = eventName;
@@ -88,55 +89,69 @@ public class Event implements Serializable {
     public Integer getEventId() {
         return this.eventId;
     }
+
     public String getEventName() {
         return this.eventName;
-    }
-    public String getEventDesc() {
-        return this.eventDesc;
-    }
-    public Integer getEventTime() {
-        return this.eventTime;
-    }
-    public Set<User> getEventUsers() {
-        return this.eventUsers;
-    }
-    public Course getEventCourse() {
-        return this.eventCourse;
-    }
-    public User getEventOwner() {
-        return this.eventOwner;
-    }
-    public Set<Assignment> getEventAssignments() {
-        return this.eventAssignments;
     }
 
     // Set functions
     public void setEventName(String name) {
         this.eventName = name;
     }
+
+    public String getEventDesc() {
+        return this.eventDesc;
+    }
+
     public void setEventDesc(String desc) {
         this.eventDesc = desc;
     }
+
+    public Integer getEventTime() {
+        return this.eventTime;
+    }
+
     public void setEventTime(Integer time) {
         this.eventTime = time;
     }
+
+    public Set<User> getEventUsers() {
+        return this.eventUsers;
+    }
+
+    public Course getEventCourse() {
+        return this.eventCourse;
+    }
+
     public void setEventCourse(Course course) {
         this.eventCourse = course;
     }
+
+    public User getEventOwner() {
+        return this.eventOwner;
+    }
+
     public void setEventOwner(User user) {
         this.eventOwner = user;
+    }
+
+    public Set<Assignment> getEventAssignments() {
+        return this.eventAssignments;
     }
 
     // Collection functions
     public void addUser(User user) {
         this.eventUsers.add(user);
     }
+
     public void delUser(User user) {
         this.eventUsers.remove(user);
     }
+
     public void addAssignment(Assignment assignment) {
         this.eventAssignments.add(assignment);
     }
+
     public void delAssignment(Assignment assignment) {
         this.eventAssignments.add(assignment);
     }
