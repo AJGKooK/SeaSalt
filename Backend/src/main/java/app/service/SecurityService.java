@@ -1,9 +1,6 @@
 package app.service;
 
-import app.database.entities.Course;
-import app.database.entities.Event;
-import app.database.entities.Message;
-import app.database.entities.User;
+import app.database.entities.*;
 import app.excpetions.ForbiddenException;
 import app.service.database.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,6 +112,18 @@ public class SecurityService {
         Optional<User> user = userService.getUserByUsername(username);
         if (user.isPresent()) {
             if (isNotAuthorized(user.get(), password) || (!course.getTeachers().contains(user.get()) && isNotAdmin(user.get()))) {
+                throw new ForbiddenException();
+            }
+            return user.get();
+        } else {
+            throw new ForbiddenException();
+        }
+    }
+
+    public User isAuthorizedTeacherHttp(String username, String password, Assignment assignment) {
+        Optional<User> user = userService.getUserByUsername(username);
+        if (user.isPresent()) {
+            if (isNotAuthorized(user.get(), password) || (!assignment.getAssignmentCourse().getTeachers().contains(user.get()) && isNotAdmin(user.get()))) {
                 throw new ForbiddenException();
             }
             return user.get();
