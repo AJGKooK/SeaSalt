@@ -7,13 +7,15 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.stream.Stream;
 
 @Service
-public class FileUploadService {
+public class FileService {
 
     @Value("${app.upload.dir:${user.home}}")
     public String uploadDir;
@@ -44,7 +46,7 @@ public class FileUploadService {
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
                 return StringUtils.cleanPath(file.getOriginalFilename());
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             throw new FileStorageException("Could not store file " + file.getOriginalFilename() + ". Please try again!");
         }
@@ -78,7 +80,7 @@ public class FileUploadService {
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
                 return StringUtils.cleanPath(file.getOriginalFilename());
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             throw new FileStorageException("Could not store file " + file.getOriginalFilename() + ". Please try again!");
         }
@@ -96,6 +98,109 @@ public class FileUploadService {
         } catch (Exception e) {
             e.printStackTrace();
             throw new FileStorageException("Could not store profile picture. Please try again!");
+        }
+    }
+
+    public String[] getFiles(Enum<UploadType> type, String id) {
+        File folder = new File(uploadDir
+                + File.separator + "uploads"
+                + File.separator + type.toString().toLowerCase()
+                + File.separator + id);
+        return folder.list();
+    }
+
+    public String[] getFiles(Enum<UploadType> type, String id, String username) {
+        File folder = new File(uploadDir
+                + File.separator + "uploads"
+                + File.separator + type.toString().toLowerCase()
+                + File.separator + id
+                + File.separator + username);
+        return folder.list();
+    }
+
+    public boolean deleteFile(Enum<UploadType> type, String id, String name) {
+        try {
+            Path path = Paths.get(uploadDir
+                    + File.separator + "uploads"
+                    + File.separator + type.toString().toLowerCase()
+                    + File.separator + id
+                    + File.separator + name);
+            if (!Files.exists(path)) {
+                return false;
+            }
+            Files.delete(path);
+            Path directory = Paths.get(uploadDir
+                    + File.separator + "uploads"
+                    + File.separator + type.toString().toLowerCase()
+                    + File.separator + id);
+            boolean empty;
+            try (Stream<Path> entries = Files.list(directory)) {
+                empty = entries.findFirst().isEmpty();
+            }
+            if (empty) {
+                Files.delete(directory);
+            }
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new FileStorageException("Could not delete file!");
+        }
+    }
+
+    public boolean deleteFile(Enum<UploadType> type, String id, String username, String name) {
+        try {
+            Path path = Paths.get(uploadDir
+                    + File.separator + "uploads"
+                    + File.separator + type.toString().toLowerCase()
+                    + File.separator + id
+                    + File.separator + username
+                    + File.separator + name);
+            if (!Files.exists(path)) {
+                return false;
+            }
+            Files.delete(path);
+            Path directory = Paths.get(uploadDir
+                    + File.separator + "uploads"
+                    + File.separator + type.toString().toLowerCase()
+                    + File.separator + id
+                    + File.separator + username);
+            boolean empty;
+            try (Stream<Path> entries = Files.list(directory)) {
+                empty = entries.findFirst().isEmpty();
+            }
+            if (empty) {
+                Files.delete(directory);
+                directory = Paths.get(uploadDir
+                        + File.separator + "uploads"
+                        + File.separator + type.toString().toLowerCase()
+                        + File.separator + id);
+                try (Stream<Path> entries = Files.list(directory)) {
+                    empty = entries.findFirst().isEmpty();
+                }
+                if (empty) {
+                    Files.delete(directory);
+                }
+            }
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new FileStorageException("Could not delete file!");
+        }
+    }
+
+    public boolean deleteProfile(String username) {
+        try {
+            Path path = Paths.get(uploadDir
+                    + File.separator + "profiles"
+                    + File.separator + username + ".png");
+            if (!Files.exists(path)) {
+                return false;
+            }
+            Files.delete(path);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new FileStorageException("Could not delete file!");
         }
     }
 
