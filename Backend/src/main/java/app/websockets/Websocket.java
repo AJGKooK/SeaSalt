@@ -37,11 +37,11 @@ public class Websocket {
         sessionToUsernameMap.remove(session);
     }
 
-    @OnError
-    public void onError(Session session)
-    {
-        sessionToUsernameMap.remove(session);
-    }
+    // @OnError
+    // public void onError(Session session)
+    // {
+    //    sessionToUsernameMap.remove(session);
+    //}
 
     private void broadcast(String message)
     {
@@ -50,7 +50,7 @@ public class Websocket {
                     session.getBasicRemote().sendText(message);
                 } catch(IOException e)
                 {
-                    //TODO: Add something here that indicates an exception
+                    throw new WebsocketException();
                 }
             });
     }
