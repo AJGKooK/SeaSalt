@@ -49,10 +49,11 @@ public class ContactsModActivity extends AppCompatActivity {
                 modifyContact();
             }
         });
-        Button removeContactButton = (Button) findViewById(R .id.removeContactButton);
+        removeContactButton = (Button) findViewById(R .id.removeContactButton);
         removeContactButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 removeContact = true;
+                modifyContact();
             }
         });
     }
@@ -63,8 +64,10 @@ public class ContactsModActivity extends AppCompatActivity {
      */
     private void modifyContact() {
         final String contactString = this.contactResult.getText().toString().trim();
-        if(removeContact)
+        if(removeContact){
             API_URL += "delcontact";
+            removeContact = false;
+        }
         else
             API_URL += "addcontact";
         
