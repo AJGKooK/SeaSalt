@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageButton chatButton, eventsButton, uploadButton, meetButton, contactsButton;
     private Button logout;
-    private String events;
+    private final String events = "";
     private int j;
 
     /**
@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
                 for(int i = 0; i <= response.length()-1; i++){
                     events.equals(response.charAt(i));
                     RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-                    String url = "http://coms-309-ug-09.cs.iastate.edu/user/events/involved?username=" + UserActivity.loginUsername +"&password=" + UserActivity.loginPassword;
+                    String url = "http://coms-309-ug-09.cs.iastate.edu/user/events/info/involved?username=" + UserActivity.loginUsername +"&password=" + UserActivity.loginPassword;
                     StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
                         @Override
                         public void onResponse(String response){
