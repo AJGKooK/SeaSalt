@@ -187,7 +187,7 @@ public class EventsActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
             @Override
             public void onResponse(String response){
-
+//pushing comment
                 response = response.replace("[", "");
                 response = response.replace("]", "");
                 response = response.replaceAll(",", "");
