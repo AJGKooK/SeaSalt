@@ -2,13 +2,26 @@ package com.example.loginscreen.ui.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.loginscreen.R;
+import com.example.loginscreen.ui.login.ContactsActivity;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The main page activity page for Sea Salt
@@ -19,6 +32,8 @@ import com.example.loginscreen.R;
 public class MainActivity extends AppCompatActivity {
 
     private ImageButton chatButton, eventsButton, uploadButton, meetButton, contactsButton;
+    private TextView textView;
+    private final String events = "";
     private Button logout;
 
     /**
@@ -119,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
     public void openContacts(){
         Intent intent = new Intent(this, ContactsActivity.class);
         startActivity(intent);
+        getContacts();
     }
 
     /**
@@ -134,5 +150,67 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+
+    public void getContacts(){
+        final String[] responseFinal = new String[1];
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        String url = "http://coms-309-ug-09.cs.iastate.edu/user/events/involved?username=" + UserActivity.loginUsername +"&password=" + UserActivity.loginPassword;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
+            @Override
+            public void onResponse(String response){
+
+//                response = response.replace("[", ",");
+//                response = response.replace("]", ",");
+////                response = response.replaceAll(",", "");
+                responseFinal[0] = response;
+                for(int i = 0; i <= response.length()-1; i++){
+                    events.equals(response.charAt(i));
+                    RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+                    String url = "http://coms-309-ug-09.cs.iastate.edu/user/events/info/involved?username=" + UserActivity.loginUsername +"&password=" + UserActivity.loginPassword;
+                    StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
+                        @Override
+                        public void onResponse(String response){
+                            ContactsActivity.textView.setText(response);
+                        }
+                    }, new Response.ErrorListener(){
+                        @Override
+                        public void onErrorResponse(VolleyError error){
+                            ContactsActivity.textView.setText("Contacts Failed to display: " + responseFinal[0]);
+                            Log.i("Event list", "Contacts adding failed");
+                        }
+                    }){
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> map = new HashMap<>();
+                            map.put("username", UserActivity.loginUsername);
+                            map.put("password", UserActivity.loginPassword);
+                            map.put("id", events);
+                            return map;
+                        }
+                    };
+                    queue.add(stringRequest);
+
+                }
+            }
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error){
+//                ContactsActivity.textView.setText("Events Failed to display");
+                Log.i("Event list", "Event adding failed");
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("username", UserActivity.loginUsername);
+                map.put("password", UserActivity.loginPassword);
+                return map;
+            }
+        };
+        queue.add(stringRequest);
+
+
+    }
+
 
 }

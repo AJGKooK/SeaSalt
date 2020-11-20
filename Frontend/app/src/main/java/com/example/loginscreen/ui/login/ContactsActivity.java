@@ -5,9 +5,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.loginscreen.R;
+
+import org.w3c.dom.Text;
+
+import java.text.BreakIterator;
 
 /**
  * The contacts activity page for Sea Salt
@@ -16,8 +21,8 @@ import com.example.loginscreen.R;
  */
 public class ContactsActivity extends AppCompatActivity {
 
+    public static TextView textView;
     private Button modifyButton;
-    private ListView listView;
 
 
     /**
@@ -30,7 +35,7 @@ public class ContactsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
 
-        listView = (ListView) findViewById(R.id.listview);
+        textView = (TextView) findViewById(R.id.textView);
         modifyButton = (Button) findViewById(R.id.modifyButton);
         modifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
