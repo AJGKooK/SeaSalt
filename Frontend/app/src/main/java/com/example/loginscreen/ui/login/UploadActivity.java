@@ -38,7 +38,7 @@ public class UploadActivity extends AppCompatActivity {
     private Uri selectedImage;
     private Button uploadButton;
     private ImageButton fileFinderButton;
-    private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu:8080/upload/user";
+    private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu:8080/file/user/upload";
 
     /**
      * onCreate allows user to press a button in order to upload the selected file to the server
