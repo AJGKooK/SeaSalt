@@ -24,7 +24,7 @@ public class MessageController {
     @GetMapping(path = "/get")
     public Message getMessage(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
         Optional<Message> message = messageService.getMessageById(id);
-        if(message.isPresent()) {
+        if (message.isPresent()) {
             securityService.isAuthorizedHttp(username, password, message.get());
             return message.get();
         } else {
@@ -35,12 +35,12 @@ public class MessageController {
 
     @GetMapping(path = "/all")
     public ArrayList<Integer> getUserMessages(@RequestParam String username, @RequestParam String password) {
-       User user = securityService.isAuthorizedHttp(username, password);
-       ArrayList<Integer> messages = new ArrayList<>();
-       for(Message message : user.getUserMessages()) {
-           messages.add(message.getMsgId());
-       }
-       return messages;
+        User user = securityService.isAuthorizedHttp(username, password);
+        ArrayList<Integer> messages = new ArrayList<>();
+        for (Message message : user.getUserMessages()) {
+            messages.add(message.getMsgId());
+        }
+        return messages;
     }
 
     @PostMapping(path = "/post")
@@ -54,7 +54,7 @@ public class MessageController {
     @PostMapping(path = "/edit")
     public Integer editMessage(@RequestParam String username, @RequestParam String password, @RequestParam Integer id, @RequestParam String msgContent) {
         Optional<Message> message = messageService.getMessageById(id);
-        if(message.isPresent()) {
+        if (message.isPresent()) {
             securityService.isAuthorizedHttp(username, password, message.get());
             message.get().setContent(msgContent);
             messageService.saveMessage(message.get());

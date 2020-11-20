@@ -57,8 +57,8 @@ public class EventController {
     @GetMapping(path = "/info")
     public ObjectNode info(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
         Optional<Event> event = eventService.getEventById(id);
-        if(event.isPresent()) {
-            if(event.get().getEventCourse() == null) {
+        if (event.isPresent()) {
+            if (event.get().getEventCourse() == null) {
                 securityService.isAuthorizedHttp(username, password);
                 return getJsonNodes(event.get());
             } else {
@@ -74,7 +74,7 @@ public class EventController {
     @GetMapping(path = "/users")
     public ArrayList<String> users(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
         Optional<Event> event = eventService.getEventById(id);
-        if(event.isPresent()) {
+        if (event.isPresent()) {
             securityService.isAuthorizedHttp(username, password, event.get());
             ArrayList<String> users = new ArrayList<>();
             for (User user : event.get().getEventUsers()) {
@@ -106,10 +106,10 @@ public class EventController {
     @PostMapping(path = "/add")
     public Integer add(@RequestParam String username, @RequestParam String password, @RequestParam String eventName, @RequestParam String eventDesc,
                        @RequestParam Integer eventTime, @RequestParam boolean owner, @RequestParam(required = false) Integer courseId) {
-        if(courseId != null) {
+        if (courseId != null) {
             Optional<Course> course = courseService.getCourseById(courseId);
-            if(owner) {
-                if(course.isPresent()) {
+            if (owner) {
+                if (course.isPresent()) {
                     User user = securityService.isAuthorizedHttp(username, password, course.get());
                     Event event = new Event(eventName, eventDesc, eventTime, user, course.get());
                     event.addUser(user);
@@ -120,7 +120,7 @@ public class EventController {
                     throw new NotFoundException();
                 }
             } else {
-                if(course.isPresent()) {
+                if (course.isPresent()) {
                     User user = securityService.isAuthorizedHttp(username, password, course.get());
                     Event event = new Event(eventName, eventDesc, eventTime, course.get());
                     event.addUser(user);
@@ -132,7 +132,7 @@ public class EventController {
                 }
             }
         } else {
-            if(owner) {
+            if (owner) {
                 User user = securityService.isAuthorizedHttp(username, password);
                 Event event = new Event(eventName, eventDesc, eventTime, user);
                 event.addUser(user);
@@ -152,18 +152,18 @@ public class EventController {
     public Integer edit(@RequestParam String username, @RequestParam String password, @RequestParam Integer id, @RequestParam(required = false) String eventName,
                         @RequestParam(required = false) String eventDesc, @RequestParam(required = false) Integer eventTime, @RequestParam(required = false) Integer courseId) {
         Optional<Event> event = eventService.getEventById(id);
-        if(event.isPresent()) {
-            if(courseId != null) {
+        if (event.isPresent()) {
+            if (courseId != null) {
                 Optional<Course> course = courseService.getCourseById(courseId);
-                if(course.isPresent()) {
+                if (course.isPresent()) {
                     securityService.isAuthorizedOwnerHttp(username, password, event.get(), course.get());
-                    if(eventName != null) {
+                    if (eventName != null) {
                         event.get().setEventName(eventName);
                     }
-                    if(eventDesc != null) {
+                    if (eventDesc != null) {
                         event.get().setEventDesc(eventDesc);
                     }
-                    if(eventTime != null) {
+                    if (eventTime != null) {
                         event.get().setEventTime(eventTime);
                     }
                     event.get().setEventCourse(course.get());
@@ -175,13 +175,13 @@ public class EventController {
                 }
             } else {
                 securityService.isAuthorizedOwnerHttp(username, password, event.get());
-                if(eventName != null) {
+                if (eventName != null) {
                     event.get().setEventName(eventName);
                 }
-                if(eventDesc != null) {
+                if (eventDesc != null) {
                     event.get().setEventDesc(eventDesc);
                 }
-                if(eventTime != null) {
+                if (eventTime != null) {
                     event.get().setEventTime(eventTime);
                 }
                 eventService.saveEvent(event.get());
@@ -196,10 +196,10 @@ public class EventController {
     @PostMapping(path = "/adduser")
     public Integer addUser(@RequestParam String username, @RequestParam String password, @RequestParam Integer id, @RequestParam String usernameToAdd) {
         Optional<Event> event = eventService.getEventById(id);
-        if(event.isPresent()) {
+        if (event.isPresent()) {
             securityService.isAuthorizedHttp(username, password, event.get());
             Optional<User> user = userService.getUserByUsername(usernameToAdd);
-            if(user.isPresent()) {
+            if (user.isPresent()) {
                 event.get().addUser(user.get());
                 eventService.saveEvent(event.get());
                 return event.get().getEventId();
@@ -216,10 +216,10 @@ public class EventController {
     @PostMapping(path = "/deluser")
     public Integer delUser(@RequestParam String username, @RequestParam String password, @RequestParam Integer id, @RequestParam String usernameToDel) {
         Optional<Event> event = eventService.getEventById(id);
-        if(event.isPresent()) {
+        if (event.isPresent()) {
             securityService.isAuthorizedOwnerHttp(username, password, event.get());
             Optional<User> user = userService.getUserByUsername(usernameToDel);
-            if(user.isPresent()) {
+            if (user.isPresent()) {
                 event.get().delUser(user.get());
                 eventService.saveEvent(event.get());
                 return event.get().getEventId();
@@ -236,10 +236,10 @@ public class EventController {
     @PostMapping(path = "/addassignment")
     public Integer addAssignment(@RequestParam String username, @RequestParam String password, @RequestParam Integer id, @RequestParam Integer assignmentId) {
         Optional<Event> event = eventService.getEventById(id);
-        if(event.isPresent()) {
+        if (event.isPresent()) {
             securityService.isAuthorizedOwnerHttp(username, password, event.get());
             Optional<Assignment> assignment = assignmentService.getAssignmentById(assignmentId);
-            if(assignment.isPresent()) {
+            if (assignment.isPresent()) {
                 event.get().addAssignment(assignment.get());
                 eventService.saveEvent(event.get());
                 return event.get().getEventId();
@@ -256,10 +256,10 @@ public class EventController {
     @PostMapping(path = "/delassignment")
     public Integer delAssignment(@RequestParam String username, @RequestParam String password, @RequestParam Integer id, @RequestParam Integer assignmentId) {
         Optional<Event> event = eventService.getEventById(id);
-        if(event.isPresent()) {
+        if (event.isPresent()) {
             securityService.isAuthorizedOwnerHttp(username, password, event.get());
             Optional<Assignment> assignment = assignmentService.getAssignmentById(assignmentId);
-            if(assignment.isPresent()) {
+            if (assignment.isPresent()) {
                 event.get().delAssignment(assignment.get());
                 eventService.saveEvent(event.get());
                 return event.get().getEventId();
@@ -279,10 +279,10 @@ public class EventController {
         response.put("name", event.getEventName());
         response.put("desc", event.getEventDesc());
         response.put("time", event.getEventDesc());
-        if(event.getEventOwner() != null) {
+        if (event.getEventOwner() != null) {
             response.put("owner", event.getEventOwner().getUsername());
         }
-        if(event.getEventCourse() != null) {
+        if (event.getEventCourse() != null) {
             response.put("course", event.getEventCourse().getCourseId());
         }
         return response;
