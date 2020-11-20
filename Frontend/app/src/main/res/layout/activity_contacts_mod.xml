@@ -21,7 +21,7 @@
 
 
     <EditText
-        android:id="@+id/eventTitle"
+        android:id="@+id/contactTextBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="164dp"

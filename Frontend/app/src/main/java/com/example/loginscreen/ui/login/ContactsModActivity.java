@@ -22,9 +22,9 @@ import java.util.Map;
 
 public class ContactsModActivity extends AppCompatActivity {
 
-    private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/event/add/";
+    private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/user/";
 
-    EditText title,time,description;
+    EditText contactResult;
     String owner = "true";
     Button addContactButton;
     Button removeContactButton;
@@ -41,9 +41,7 @@ public class ContactsModActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
 
-        title = findViewById(R.id.eventTitle);
-        time = findViewById(R.id.timeEvent);
-        description = findViewById(R.id.descriptionEvent);
+        contactResult = findViewById(R.id.contactTextBox);
         addContactButton = findViewById(R.id.addContactButton);
         addContactButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -64,11 +62,12 @@ public class ContactsModActivity extends AppCompatActivity {
      * the information via hashmap to the back end using Volley Rest Api
      */
     private void modifyContact() {
-        final String title = this.title.getText().toString().trim();
-        final String time = this.time.getText().toString().trim();
-        final String description = this.description.getText().toString().trim();
-
-
+        final String contactString = this.contactResult.getText().toString().trim();
+        if(removeContact)
+            API_URL += "addcontact";
+        else
+            API_URL += "delcontact";
+        
         StringRequest stringRequest = new StringRequest(Request.Method.POST, API_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -100,16 +99,7 @@ public class ContactsModActivity extends AppCompatActivity {
                 Map<String, String> map = new HashMap<>();
                 map.put("username", UserActivity.loginUsername);
                 map.put("password", UserActivity.loginPassword);
-                if(removeContact){
-                    
-                }
-                else{
-                    map.put("eventName", title);
-                    map.put("eventTime", time);
-                    map.put("eventDesc", description);
-                    map.put("owner", owner);
-                }
-
+                map.put("contact", contactString);
                 return map;
             }
         };
