@@ -14,7 +14,7 @@ public class UserServiceTest {
     @Test
     public void canFindUser()
     {
-        User user = new User("XYZ123", "XYZ123", "Test", "Test");
+        User user = new User("XYZ123", "XYZ123", "Test", "Test", null, null, null);
         service.saveUser(user);
         Optional<User> optionalUser = service.getUserByUsername("XYZ123");
 
