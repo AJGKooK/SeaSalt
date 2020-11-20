@@ -64,9 +64,9 @@ public class ContactsModActivity extends AppCompatActivity {
     private void modifyContact() {
         final String contactString = this.contactResult.getText().toString().trim();
         if(removeContact)
-            API_URL += "addcontact";
-        else
             API_URL += "delcontact";
+        else
+            API_URL += "addcontact";
         
         StringRequest stringRequest = new StringRequest(Request.Method.POST, API_URL,
                 new Response.Listener<String>() {
