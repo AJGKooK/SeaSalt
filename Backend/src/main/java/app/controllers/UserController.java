@@ -255,6 +255,16 @@ public class UserController {
         }
     }
 
+    @PostMapping(path = "/deluser")
+    public boolean delUser(@RequestParam String username, @RequestParam String password) {
+        try {
+            userService.deleteUser(securityService.isAuthorizedHttp(username, password));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     private ObjectNode getJsonNodes(User user) {
         ObjectNode response = objectMapper.createObjectNode();
         response.put("username", user.getUsername());
@@ -278,4 +288,6 @@ public class UserController {
 
         return response;
     }
+
+
 }

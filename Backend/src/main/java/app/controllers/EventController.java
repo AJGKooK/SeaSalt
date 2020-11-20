@@ -273,6 +273,28 @@ public class EventController {
         }
     }
 
+    @PostMapping(path = "/delevent")
+    public boolean delEvent(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
+        Optional<Event> event = eventService.getEventById(id);
+        if (event.isPresent()) {
+            Course course = event.get().getEventCourse();
+            if (course != null) {
+                securityService.isAuthorizedOwnerHttp(username, password, event.get(), course);
+            } else {
+                securityService.isAuthorizedOwnerHttp(username, password, event.get());
+            }
+            try {
+                eventService.deleteEvent(event.get());
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        } else {
+            securityService.isAuthorizedHttp(username, password);
+            throw new NotFoundException();
+        }
+    }
+
     private ObjectNode getJsonNodes(Event event) {
         ObjectNode response = objectMapper.createObjectNode();
         response.put("id", event.getEventId());

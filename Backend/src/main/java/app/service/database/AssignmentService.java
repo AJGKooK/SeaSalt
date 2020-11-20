@@ -25,4 +25,12 @@ public class AssignmentService {
     public void saveAssignment(Assignment assignment) {
         assignmentDatabase.save(assignment);
     }
+
+    public void deleteAssignment(Assignment assignment) {
+        assignmentDatabase.delete(assignment);
+    }
+
+    public void deleteAssignment(Integer id) {
+        assignmentDatabase.deleteById(id);
+    }
 }

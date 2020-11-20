@@ -5,6 +5,7 @@ import app.database.entities.Course;
 import app.database.entities.Event;
 import app.database.entities.User;
 import app.excpetions.NotFoundException;
+import app.excpetions.WebsocketException;
 import app.service.SecurityService;
 import app.service.database.CourseService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -143,6 +144,23 @@ public class CourseController {
             }
             courseService.saveCourse(course.get());
             return course.get().getCourseId();
+        } else {
+            securityService.isAuthorizedHttp(username, password);
+            throw new NotFoundException();
+        }
+    }
+
+
+    public boolean delCourse(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
+        Optional<Course> course = courseService.getCourseById(id);
+        if (course.isPresent()) {
+            securityService.isAuthorizedTeacherHttp(username, password, course.get());
+            try {
+                courseService.deleteCourse(course.get());
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
         } else {
             securityService.isAuthorizedHttp(username, password);
             throw new NotFoundException();

@@ -25,4 +25,12 @@ public class MessageService {
     public void saveMessage(Message message) {
         messageDatabase.save(message);
     }
+
+    public void deleteMessage(Message message) {
+        messageDatabase.delete(message);
+    }
+
+    public void deleteMessage(Integer id) {
+        messageDatabase.deleteById(id);
+    }
 }

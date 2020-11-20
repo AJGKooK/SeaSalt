@@ -1,5 +1,7 @@
 package app.database.entities;
 
+import org.springframework.data.jpa.repository.Query;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -32,7 +34,7 @@ public class Course implements Serializable {
 
     @OneToMany(mappedBy = "eventCourse")
     private Set<Event> courseEvents;
-
+    
     // Constructors
     public Course() {
     }
@@ -87,7 +89,7 @@ public class Course implements Serializable {
     public Set<Event> getCourseEvents() {
         return this.courseEvents;
     }
-
+    
     public Set<User> getTeachers() {
         Set<User> teachers = new HashSet<>();
         for (User user : this.courseUsers) {
