@@ -1,5 +1,6 @@
 package app.websockets;
 
+import app.excpetions.WebsocketException;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.OnClose;
@@ -42,7 +43,7 @@ public class Websocket {
             try {
                 session.getBasicRemote().sendText(message);
             } catch (IOException e) {
-                //TODO: Add something here that indicates an exception
+                throw new WebsocketException();
             }
         });
     }
