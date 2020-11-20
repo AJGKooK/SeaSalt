@@ -260,9 +260,22 @@ public class UserController {
         response.put("username", user.getUsername());
         response.put("firstname", user.getFirstName());
         response.put("lastname", user.getLastName());
-        response.put("role", user.getRole().toString());
-        response.put("phoneNum", user.getPhoneNum());
-        response.put("email", user.getEmail());
+        if (user.getRole() == null) {
+            response.put("role", "null");
+        } else {
+            response.put("role", user.getRole().toString());
+        }
+        if (user.getPhoneNum() == null) {
+            response.put("phonenum", "null");
+        } else {
+            response.put("phoneNum", user.getPhoneNum());
+        }
+        if (user.getEmail() == null) {
+            response.put("email", "null");
+        } else {
+            response.put("email", user.getEmail());
+        }
+
         return response;
     }
 }
