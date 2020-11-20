@@ -2,7 +2,6 @@ package com.example.loginscreen.ui.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -161,39 +160,15 @@ public class MainActivity extends AppCompatActivity {
                 response = response.replace("]", "");
                 response = response.replaceAll(",", "");
                 for(int i = 0; i <= response.length()-1; i++){
-                    events.equals(response.charAt(i));
-                    RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-                    String url = "http://coms-309-ug-09.cs.iastate.edu/user/events/info/involved?username=" + UserActivity.loginUsername +"&password=" + UserActivity.loginPassword;
-                    StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
-                        @Override
-                        public void onResponse(String response){
-                            EventsMainActivity.textView.setText(response);
-                        }
-                    }, new Response.ErrorListener(){
-                        @Override
-                        public void onErrorResponse(VolleyError error){
-                            EventsMainActivity.textView.setText("Events Failed to display");
-                            Log.i("Event list", "Event adding failed");
-                        }
-                    }){
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            Map<String, String> map = new HashMap<>();
-                            map.put("username", UserActivity.loginUsername);
-                            map.put("password", UserActivity.loginPassword);
-                            map.put("id", events);
-                            return map;
-                        }
-                    };
-                    queue.add(stringRequest);
-
+                    final char event = response.charAt(i);
+                    final String events = Character.toString(event);
+                    EventsMainActivity.textView.append("\n" + events);
                 }
             }
+
         }, new Response.ErrorListener(){
             @Override
             public void onErrorResponse(VolleyError error){
-                EventsMainActivity.textView.setText("Events Failed to display");
-                Log.i("Event list", "Event adding failed");
             }
         }){
             @Override
@@ -201,9 +176,11 @@ public class MainActivity extends AppCompatActivity {
                 Map<String, String> map = new HashMap<>();
                 map.put("username", UserActivity.loginUsername);
                 map.put("password", UserActivity.loginPassword);
+
                 return map;
             }
         };
+
         queue.add(stringRequest);
 
 
