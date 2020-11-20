@@ -33,7 +33,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-
+/**
+ * The main Events activity page for Sea Salt
+ * @author Chandler Jurenic and Aaron Goff
+ * ChatAcivity brings up a ListView which constantly updates from the backend to bring up messages from
+ * multiple users of the group.  It is also able to send and store messages to other users.
+ */
 public class ChatActivity extends AppCompatActivity {
     private WebSocketClient webSocket;
     private ListView listView;
@@ -45,6 +50,10 @@ public class ChatActivity extends AppCompatActivity {
     private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/messages/post/";
 
 
+    /**
+     * Once a message is entered, the message is sent once the user presses the end button
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,12 +85,21 @@ public class ChatActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1, list);
     }
 
+    /**
+     * sendMessage checks the username and password, checks for connection with the backend, and checks the message length.
+     * Upon entering a message into the chat box, it will send the message to the back end which will store the message and
+     * send it to other users to display on their app.
+     */
     public void sendMessage() {
         final String message = this.editText.getText().toString();
         webSocket.send(message);
         if (message.length() > 0) {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, API_URL,
                     new Response.Listener<String>() {
+                        /**
+                         * onResponse informs the user if the message was not delivered in the case of an error
+                         * @param response
+                         */
                         @Override
                         public void onResponse(String response) {
                             String success = response;
@@ -93,12 +111,22 @@ public class ChatActivity extends AppCompatActivity {
                         }
                     },
                     new Response.ErrorListener() {
+                        /**
+                         * onErrorResponse sends a message to the user that there was a chat message error
+                         * @param error
+                         */
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             Toast.makeText(ChatActivity.this, "Chat Message Error!" + error.toString(), Toast.LENGTH_SHORT).show();
                         }
                     })
             {
+
+                /**
+                 * holds the values the user entered when creating a message
+                 * @return the map holding the values for username, pass for login verification, and the message content
+                 * @throws AuthFailureError
+                 */
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> map = new HashMap<>();
@@ -108,6 +136,9 @@ public class ChatActivity extends AppCompatActivity {
                     return map;
                 }
             };
+            /**
+             * adding a string request to the queue
+             */
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(stringRequest);
             editText.getText().clear();

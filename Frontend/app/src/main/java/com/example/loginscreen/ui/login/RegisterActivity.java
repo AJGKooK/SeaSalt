@@ -21,12 +21,24 @@ import com.example.loginscreen.R;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * The register page activity page for Sea Salt
+ * @author Chandler Jurenic and Aaron Goff
+ * This page is linked from the login page
+ * RegisterActivity allows a user to set up a new username and password, as well as input their first and last name
+ */
 public class RegisterActivity extends AppCompatActivity {
     private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/user/register/";
     private EditText username, password, password_verify, name_first, name_last, accRole;
     private Button submit;
     private Map<String, String> map;
+
+    /**
+     * This onCreate stores the username, password, password_verify, name_first, and name_last to be checked for errors
+     * and passed to register() for upload to the server.
+     * The submit button allows users to submit data when they are finished entering
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -50,6 +62,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * register sets and trims the strings for username, password, name_first, and name_last
+     * register sends password and password_verify to passwordCheck to verify a valid password has been entered
+     */
     private void register() {
         final String username = this.username.getText().toString().trim();
         final String password = this.password.getText().toString().trim();
@@ -62,6 +78,10 @@ public class RegisterActivity extends AppCompatActivity {
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, API_URL,
                 new Response.Listener<String>() {
+                    /**
+                     * onResponse sends the user a message to whether the registration was successful, or if it failed
+                     * @param response
+                     */
                     @Override
                     public void onResponse(String response) {
                         String success = response;
@@ -79,12 +99,21 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 },
                 new Response.ErrorListener() {
+                    /**
+                     * onErrorResponse sends the user a message as to why there was a register error
+                     * @param error
+                     */
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(RegisterActivity.this, "Register Error!" + " " + error.toString(), Toast.LENGTH_SHORT).show();
                     }
                 })
         {
+            /**
+             * sends username, password, name_first, name_last to the backend server
+             * @throws AuthFailureError
+             * @return
+             */
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
@@ -100,6 +129,12 @@ public class RegisterActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
 
     }
+    /**
+     * stringCompare compares two strings to verify they are identical
+     * @param str1
+     * @param str2
+     * @return will return true if both strings are identical, will return false if strings are different
+     */
     public static Boolean stringCompare (String str1, String str2){
         if (str1.length() == str2.length()){
             for (int i = 0; i < str1.length(); i++){
@@ -114,7 +149,12 @@ public class RegisterActivity extends AppCompatActivity {
             return false;
         return false;
     }
-
+    /**
+     * passwordCheck verifies that both passwords input are identical and that the password length isn't too short
+     * @param passwordString
+     * @param passwordVerifyString
+     * @return returns a single valid password as a string
+     */
     public String passwordCheck (String passwordString, String passwordVerifyString){
         if (!stringCompare(passwordString, passwordVerifyString)){
             Toast.makeText(RegisterActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
@@ -129,7 +169,9 @@ public class RegisterActivity extends AppCompatActivity {
         }
         return null;
     }
-
+    /**
+     * openLogin allows the user to click a button to get back to the login page without submitting new user data
+     */
     public void openLogin(){
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);

@@ -10,7 +10,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.loginscreen.R;
 
-
+/**
+ * The Meet page activity page for Sea Salt
+ * @author Chandler Jurenic and Aaron Goff
+ * This page allows the user to connect to Zoom or Webex depending on the users needs
+ */
 public class MeetActivity extends AppCompatActivity {
 
     ImageButton buttonZoom, buttonWebex;
