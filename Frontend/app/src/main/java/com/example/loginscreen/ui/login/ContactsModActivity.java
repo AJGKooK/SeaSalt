@@ -20,15 +20,20 @@ import com.example.loginscreen.R;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The contacts modification activity page for Sea Salt
+ * @author Chandler Jurenic and Aaron Goff
+ * The screen for adding and removing contacts from the contacts list
+ */
 public class ContactsModActivity extends AppCompatActivity {
 
     private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/user/";
 
     EditText contactResult;
-    String owner = "true";
     Button addContactButton;
     Button removeContactButton;
     Boolean removeContact = false;
+    String addRemStatement;
     private Map<String, String> map;
 
     /**
@@ -39,7 +44,7 @@ public class ContactsModActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_events);
+        setContentView(R.layout.activity_contacts_mod);
 
         contactResult = findViewById(R.id.contactTextBox);
         addContactButton = findViewById(R.id.addContactButton);
@@ -66,10 +71,14 @@ public class ContactsModActivity extends AppCompatActivity {
         final String contactString = this.contactResult.getText().toString().trim();
         if(removeContact){
             API_URL += "delcontact";
+            addRemStatement = "removed";
             removeContact = false;
         }
-        else
+        else{
             API_URL += "addcontact";
+            addRemStatement = "added";
+        }
+
         
         StringRequest stringRequest = new StringRequest(Request.Method.POST, API_URL,
                 new Response.Listener<String>() {
@@ -79,17 +88,17 @@ public class ContactsModActivity extends AppCompatActivity {
                         String success = response;
                         if ((success != (" ")) && (UserActivity.checkUsername == UserActivity.loginUsername) && (UserActivity.checkPassword == UserActivity.loginPassword)) {
 
-                            Toast.makeText(ContactsModActivity.this, "Contact Added", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ContactsModActivity.this, "Contact " + addRemStatement, Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            Toast.makeText(ContactsModActivity.this, "Contact Couldn't be added, are you still logged in?", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ContactsModActivity.this, "Contact Couldn't be" + addRemStatement + ", are you still logged in?", Toast.LENGTH_SHORT).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(ContactsModActivity.this, "Contact Adding Error!" + error.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ContactsModActivity.this, "Contact add/removal Error!" + error.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }) {
             /**
