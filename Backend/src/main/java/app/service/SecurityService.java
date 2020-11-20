@@ -1,9 +1,9 @@
 package app.service;
 
-import app.database.Course;
-import app.database.Event;
-import app.database.Message;
-import app.database.User;
+import app.database.entities.Course;
+import app.database.entities.Event;
+import app.database.entities.Message;
+import app.database.entities.User;
 import app.excpetions.ForbiddenException;
 import app.service.database.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static app.database.Role.ADMIN;
+import static app.database.entities.Role.ADMIN;
 
 @Service
 public class SecurityService {
@@ -29,8 +29,8 @@ public class SecurityService {
 
     public User isAuthorizedHttp(String username, String password) {
         Optional<User> user = userService.getUserByUsername(username);
-        if(user.isPresent()) {
-            if(isNotAuthorized(user.get(), password)) {
+        if (user.isPresent()) {
+            if (isNotAuthorized(user.get(), password)) {
                 throw new ForbiddenException();
             }
             return user.get();
@@ -41,8 +41,8 @@ public class SecurityService {
 
     public User isAuthorizedHttp(String username, String password, Course course) {
         Optional<User> user = userService.getUserByUsername(username);
-        if(user.isPresent()) {
-            if(isNotAuthorized(user.get(), password) || (!user.get().getUserCourses().contains(course) && isNotAdmin(user.get()))) {
+        if (user.isPresent()) {
+            if (isNotAuthorized(user.get(), password) || (!user.get().getUserCourses().contains(course) && isNotAdmin(user.get()))) {
                 throw new ForbiddenException();
             }
             return user.get();
@@ -53,8 +53,8 @@ public class SecurityService {
 
     public User isAuthorizedHttp(String username, String password, Event event) {
         Optional<User> user = userService.getUserByUsername(username);
-        if(user.isPresent()) {
-            if(isNotAuthorized(user.get(), password) || (!user.get().getUserInvolvedEvents().contains(event) && isNotAdmin(user.get())))  {
+        if (user.isPresent()) {
+            if (isNotAuthorized(user.get(), password) || (!user.get().getUserInvolvedEvents().contains(event) && isNotAdmin(user.get()))) {
                 throw new ForbiddenException();
             }
             return user.get();
@@ -65,8 +65,8 @@ public class SecurityService {
 
     public User isAuthorizedHttp(String username, String password, Message message) {
         Optional<User> user = userService.getUserByUsername(username);
-        if(user.isPresent()) {
-            if(isNotAuthorized(user.get(), password) || (message.getMsgUser() != user.get() && isNotAdmin(user.get())))  {
+        if (user.isPresent()) {
+            if (isNotAuthorized(user.get(), password) || (message.getMsgUser() != user.get() && isNotAdmin(user.get()))) {
                 throw new ForbiddenException();
             }
             return user.get();
@@ -77,8 +77,8 @@ public class SecurityService {
 
     public User isAuthorizedOwnerHttp(String username, String password, Event event) {
         Optional<User> user = userService.getUserByUsername(username);
-        if(user.isPresent()) {
-            if(isNotAuthorized(user.get(), password) || (event.getEventOwner() != user.get() && isNotAdmin(user.get())))  {
+        if (user.isPresent()) {
+            if (isNotAuthorized(user.get(), password) || (event.getEventOwner() != user.get() && isNotAdmin(user.get()))) {
                 throw new ForbiddenException();
             }
             return user.get();
@@ -89,8 +89,8 @@ public class SecurityService {
 
     public User isAuthorizedOwnerHttp(String username, String password, Event event, Course course) {
         Optional<User> user = userService.getUserByUsername(username);
-        if(user.isPresent()) {
-            if(isNotAuthorized(user.get(), password) || ((event.getEventOwner() != user.get() || !user.get().getUserCourses().contains(course)) && isNotAdmin(user.get()))) {
+        if (user.isPresent()) {
+            if (isNotAuthorized(user.get(), password) || ((event.getEventOwner() != user.get() || !user.get().getUserCourses().contains(course)) && isNotAdmin(user.get()))) {
                 throw new ForbiddenException();
             }
             return user.get();
@@ -101,8 +101,8 @@ public class SecurityService {
 
     public User isAuthorizedAdminHttp(String username, String password) {
         Optional<User> user = userService.getUserByUsername(username);
-        if(user.isPresent()) {
-            if(isNotAuthorized(user.get(), password) || isNotAdmin(user.get())) {
+        if (user.isPresent()) {
+            if (isNotAuthorized(user.get(), password) || isNotAdmin(user.get())) {
                 throw new ForbiddenException();
             }
             return user.get();
@@ -113,8 +113,8 @@ public class SecurityService {
 
     public User isAuthorizedTeacherHttp(String username, String password, Course course) {
         Optional<User> user = userService.getUserByUsername(username);
-        if(user.isPresent()) {
-            if(isNotAuthorized(user.get(), password) || (!course.getTeachers().contains(user.get()) && isNotAdmin(user.get()))) {
+        if (user.isPresent()) {
+            if (isNotAuthorized(user.get(), password) || (!course.getTeachers().contains(user.get()) && isNotAdmin(user.get()))) {
                 throw new ForbiddenException();
             }
             return user.get();

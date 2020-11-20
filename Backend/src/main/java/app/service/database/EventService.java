@@ -1,7 +1,7 @@
 package app.service.database;
 
-import app.database.Event;
 import app.database.EventDatabase;
+import app.database.entities.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

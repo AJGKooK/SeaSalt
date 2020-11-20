@@ -1,11 +1,11 @@
 package app.controllers;
 
-import app.database.Assignment;
-import app.database.Course;
-import app.database.Event;
+import app.database.entities.Assignment;
+import app.database.entities.Course;
+import app.database.entities.Event;
 import app.excpetions.NotFoundException;
-import app.service.database.AssignmentService;
 import app.service.SecurityService;
+import app.service.database.AssignmentService;
 import app.service.database.CourseService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -34,7 +34,7 @@ public class AssignmentController {
     @GetMapping(path = "/info")
     public ObjectNode info(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
         Optional<Assignment> assignment = assignmentService.getAssignmentById(id);
-        if(assignment.isPresent()) {
+        if (assignment.isPresent()) {
             securityService.isAuthorizedHttp(username, password, assignment.get().getAssignmentCourse());
             ObjectNode response = objectMapper.createObjectNode();
             response.put("id", assignment.get().getAssignmentId());
@@ -52,10 +52,10 @@ public class AssignmentController {
     @GetMapping(path = "/events")
     public ArrayList<Integer> events(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
         Optional<Assignment> assignment = assignmentService.getAssignmentById(id);
-        if(assignment.isPresent()) {
+        if (assignment.isPresent()) {
             securityService.isAuthorizedHttp(username, password, assignment.get().getAssignmentCourse());
             ArrayList<Integer> events = new ArrayList<>();
-            for(Event event : assignment.get().getAssignmentEvents()) {
+            for (Event event : assignment.get().getAssignmentEvents()) {
                 events.add(event.getEventId());
             }
             return events;
@@ -68,7 +68,7 @@ public class AssignmentController {
     @PostMapping(path = "/add")
     public Integer add(@RequestParam String username, @RequestParam String password, @RequestParam Integer courseId, @RequestParam String name, @RequestParam String desc, @RequestParam Integer due) {
         Optional<Course> course = courseService.getCourseById(courseId);
-        if(course.isPresent()) {
+        if (course.isPresent()) {
             securityService.isAuthorizedTeacherHttp(username, password, course.get());
             Assignment assignment = new Assignment(course.get(), name, desc, due);
             assignmentService.saveAssignment(assignment);
@@ -83,15 +83,15 @@ public class AssignmentController {
     public Integer edit(@RequestParam String username, @RequestParam String password, @RequestParam Integer id, @RequestParam(required = false) String name,
                         @RequestParam(required = false) String desc, @RequestParam(required = false) Integer time) {
         Optional<Assignment> assignment = assignmentService.getAssignmentById(id);
-        if(assignment.isPresent()) {
+        if (assignment.isPresent()) {
             securityService.isAuthorizedTeacherHttp(username, password, assignment.get().getAssignmentCourse());
-            if(name != null) {
+            if (name != null) {
                 assignment.get().setAssignmentName(name);
             }
-            if(desc != null) {
+            if (desc != null) {
                 assignment.get().setAssignmentDesc(desc);
             }
-            if(time != null) {
+            if (time != null) {
                 assignment.get().setDueTime(time);
             }
             assignmentService.saveAssignment(assignment.get());

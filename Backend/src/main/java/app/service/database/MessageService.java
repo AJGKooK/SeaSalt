@@ -1,7 +1,7 @@
 package app.service.database;
 
-import app.database.Message;
 import app.database.MessageDatabase;
+import app.database.entities.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
