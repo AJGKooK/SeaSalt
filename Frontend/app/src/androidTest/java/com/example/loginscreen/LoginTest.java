@@ -15,17 +15,21 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.espresso.intent.Intents.intending;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.toPackage;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static org.hamcrest.core.StringEndsWith.endsWith;
+import static org.junit.Assert.assertEquals;
 
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 import androidx.test.rule.ActivityTestRule;
 
 import com.example.loginscreen.ui.login.LoginActivity;
 import com.example.loginscreen.ui.login.MainActivity;
+import com.example.loginscreen.ui.login.UserActivity;
 
 @RunWith(AndroidJUnit4ClassRunner.class)
 public class LoginTest {
@@ -37,10 +41,8 @@ public class LoginTest {
     @Test
     public void loginWithTestUser()
     {
-        Intent result = new Intent(activityRule.getActivity(), MainActivity.class);
+        Intent result = new Intent();
         Instrumentation.ActivityResult activityResult = new Instrumentation.ActivityResult(Activity.RESULT_OK, result);
-
-        intending(toPackage("com.example.loginscreen.ui.login.MainActivity")).respondWith(activityResult);
 
         String un = "asd";
         String pass = "asd";
@@ -54,6 +56,6 @@ public class LoginTest {
         } catch(InterruptedException e){
         }
 
-
+        intended(hasComponent(MainActivity.class.getName()));
     }
 }
