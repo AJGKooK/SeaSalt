@@ -8,9 +8,11 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="412dp"
-        android:layout_height="651dp"
-        tools:layout_editor_absoluteY="2dp" />
+        android:layout_width="406dp"
+        android:layout_height="648dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/listview"
