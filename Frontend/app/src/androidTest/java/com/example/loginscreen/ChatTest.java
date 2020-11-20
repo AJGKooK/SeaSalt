@@ -1,9 +1,13 @@
 package com.example.loginscreen;
 
-/**
- * Mockito test for user register page
- * @author Aaron Goff
- */
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
+
+import com.example.loginscreen.ui.login.EventsActivity;
+import com.example.loginscreen.ui.login.MainActivity;
+
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
@@ -31,42 +35,43 @@ import static org.junit.Assert.assertEquals;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 import androidx.test.rule.ActivityTestRule;
 
-import com.example.loginscreen.ui.login.ContactsModActivity;
-import com.example.loginscreen.ui.login.ContactsActivity;
 import com.example.loginscreen.ui.login.LoginActivity;
-import com.example.loginscreen.ui.login.RegisterActivity;
+import com.example.loginscreen.ui.login.MainActivity;
+import com.example.loginscreen.ui.login.UserActivity;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4ClassRunner.class)
-public class RegisterTest {
-
-    @Rule
-    public IntentsTestRule<RegisterActivity> activityRule = new IntentsTestRule<>(RegisterActivity.class);
-
-
+public class ChatTest {
+   @Rule
+    public IntentsTestRule<LoginActivity> activityRule = new IntentsTestRule<>(LoginActivity.class);
     @Test
-    public void pushNewRegistereduser()
-    {
+    public void clickSendMessage() throws InterruptedException {
         Intent result = new Intent();
         Instrumentation.ActivityResult activityResult = new Instrumentation.ActivityResult(Activity.RESULT_OK, result);
 
-        String un = "mockTest";
-        String pass = "mockTest";
-        String passver = "mockTest";
-        String nf = "mockTest";
-        String nl = "mockTest";
-        onView(withId(R.id.username)).perform(typeText(un), closeSoftKeyboard());
+        String user = "cjurenic";
+        String pass = "123123";
+        String message = "This is my chat mockito test";
+
+        onView(withId(R.id.username)).perform(typeText(user), closeSoftKeyboard());
+        Thread.sleep(1000);
         onView(withId(R.id.password)).perform(typeText(pass), closeSoftKeyboard());
-        onView(withText(R.id.password_verify)).perform(typeText(passver), closeSoftKeyboard());
-        onView(withText(R.id.name_first)).perform(typeText(nf), closeSoftKeyboard());
-        onView(withText(R.id.name_last)).perform(typeText(nl), closeSoftKeyboard());
+        Thread.sleep(1000);
 
-        onView(withId(R.id.submit)).perform(click());
+        onView(withId(R.id.login)).perform(click());
+        Thread.sleep(1000);
+        onView(withId(R.id.chatButton)).perform(click());
+        Thread.sleep(1000);
+        onView(withId(R.id.chatLog)).perform(typeText(message), closeSoftKeyboard());
+        Thread.sleep(500);
+        onView(withId(R.id.msgButton)).perform(click());
+        Thread.sleep(1000);
 
-        try{
-            Thread.sleep(500);
-        } catch(InterruptedException e){
-        }
 
-        intended(hasComponent(LoginActivity.class.getName()));
+
     }
 }

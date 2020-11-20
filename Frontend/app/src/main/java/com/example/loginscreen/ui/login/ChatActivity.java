@@ -69,11 +69,11 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String logText = editText.getText().toString();
-
                 list.add(logText);
                 listView.setAdapter(arrayAdapter);
                 arrayAdapter.notifyDataSetChanged();
                 sendMessage();
+                webSocket.send(logText);
 
             }
 
@@ -92,7 +92,6 @@ public class ChatActivity extends AppCompatActivity {
      */
     public void sendMessage() {
         final String message = this.editText.getText().toString();
-        webSocket.send(message);
         if (message.length() > 0) {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, API_URL,
                     new Response.Listener<String>() {
