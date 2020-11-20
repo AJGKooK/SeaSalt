@@ -1,10 +1,11 @@
 package com.example.loginscreen.ui.login;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,12 +19,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.loginscreen.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +32,6 @@ import java.util.Map;
 public class EventsActivity extends AppCompatActivity {
 
     private static String API_URL = "http://coms-309-ug-09.cs.iastate.edu/event/";
-
     EditText title,time,description;
     String owner = "true";
     Button addEvent;
@@ -142,8 +136,10 @@ public class EventsActivity extends AppCompatActivity {
 
                         String success = response;
                         if ((success != (" ")) && (UserActivity.checkUsername == UserActivity.loginUsername) && (UserActivity.checkPassword == UserActivity.loginPassword)) {
-
                             Toast.makeText(EventsActivity.this, "Event Added", Toast.LENGTH_SHORT).show();
+                            openEvents();
+                            getEvents();
+
                         }
                         else {
                             Toast.makeText(EventsActivity.this, "Event Couldn't be added, are you still logged in?", Toast.LENGTH_SHORT).show();
@@ -178,6 +174,38 @@ public class EventsActivity extends AppCompatActivity {
          */
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
+    }
+    public void openEvents(){
+        Intent intent = new Intent(this, EventsMainActivity.class);
+        startActivity(intent);
+
+    }
+    public void getEvents(){
+        RequestQueue queue = Volley.newRequestQueue(EventsActivity.this);
+        String url = "http://coms-309-ug-09.cs.iastate.edu/user/events/involved?username=" + UserActivity.loginUsername +"&password=" + UserActivity.loginPassword;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
+            @Override
+            public void onResponse(String response){
+
+                EventsMainActivity.textView.setText(response);
+                Log.i("Event list", "Event Received" + " " + response);
+            }
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error){
+                EventsMainActivity.textView.setText("Events Failed to display");
+                Log.i("Event list", "Event adding failed");
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("username", UserActivity.loginUsername);
+                map.put("password", UserActivity.loginPassword);
+                return map;
+            }
+        };
+        queue.add(stringRequest);
     }
 
 }

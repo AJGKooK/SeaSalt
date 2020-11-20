@@ -2,13 +2,24 @@ package com.example.loginscreen.ui.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.loginscreen.R;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The main page activity page for Sea Salt
@@ -20,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageButton chatButton, eventsButton, uploadButton, meetButton, contactsButton;
     private Button logout;
+    private String events;
 
     /**
      * When a user logs in successfully or returns from a different feature back to the main
@@ -61,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 openEvents();
+                getEvents();
             }
         });
         meetButton = (ImageButton) findViewById(R.id.meetButton);
@@ -103,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
     public void openEvents(){
         Intent intent = new Intent(this, EventsMainActivity.class);
         startActivity(intent);
+
     }
 
     /**
@@ -132,6 +146,35 @@ public class MainActivity extends AppCompatActivity {
         UserActivity.loginPassword = null;
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+
+    }
+
+    public void getEvents(){
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        String url = "http://coms-309-ug-09.cs.iastate.edu/user/events/involved?username=" + UserActivity.loginUsername +"&password=" + UserActivity.loginPassword;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
+            @Override
+            public void onResponse(String response){
+                EventsMainActivity.textView.setText(response);
+                Log.i("Event list", "Event Received" + " " + response);
+            }
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error){
+                EventsMainActivity.textView.setText("Events Failed to display");
+                Log.i("Event list", "Event adding failed");
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("username", UserActivity.loginUsername);
+                map.put("password", UserActivity.loginPassword);
+                return map;
+            }
+        };
+        queue.add(stringRequest);
+
 
     }
 
