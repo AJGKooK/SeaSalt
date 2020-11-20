@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton chatButton, eventsButton, uploadButton, meetButton, contactsButton;
     private Button logout;
     private String events;
+    private int j;
 
     /**
      * When a user logs in successfully or returns from a different feature back to the main
@@ -155,8 +156,38 @@ public class MainActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
             @Override
             public void onResponse(String response){
-                EventsMainActivity.textView.setText(response);
-                Log.i("Event list", "Event Received" + " " + response);
+
+                response = response.replace("[", "");
+                response = response.replace("]", "");
+                response = response.replaceAll(",", "");
+                for(int i = 0; i <= response.length()-1; i++){
+                  events.equals(response.charAt(i));
+                    RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+                    String url = "http://coms-309-ug-09.cs.iastate.edu/user/events/involved?username=" + UserActivity.loginUsername +"&password=" + UserActivity.loginPassword;
+                    StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
+                        @Override
+                        public void onResponse(String response){
+                            EventsMainActivity.textView.setText(response);
+                        }
+                    }, new Response.ErrorListener(){
+                        @Override
+                        public void onErrorResponse(VolleyError error){
+                            EventsMainActivity.textView.setText("Events Failed to display");
+                            Log.i("Event list", "Event adding failed");
+                        }
+                    }){
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> map = new HashMap<>();
+                            map.put("username", UserActivity.loginUsername);
+                            map.put("password", UserActivity.loginPassword);
+                            map.put("id", events);
+                            return map;
+                        }
+                    };
+                    queue.add(stringRequest);
+
+                }
             }
         }, new Response.ErrorListener(){
             @Override

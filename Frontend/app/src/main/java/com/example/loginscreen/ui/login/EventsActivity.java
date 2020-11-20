@@ -186,7 +186,9 @@ public class EventsActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
             @Override
             public void onResponse(String response){
-
+                response = response.replace("[", "");
+                response = response.replace("]", "");
+                response = response.replaceAll(",", "");
                 EventsMainActivity.textView.setText(response);
                 Log.i("Event list", "Event Received" + " " + response);
             }
