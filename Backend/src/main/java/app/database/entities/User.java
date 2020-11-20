@@ -8,44 +8,18 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
-    @Id
-    @Column(name = "username", nullable = false, unique = true)
-    private String username;
-
-    @Column(name = "password", nullable = false)
-    private String password;
-
-    @Column(name = "role")
-    private Enum<Role> role;
-
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
-
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
-
-    @Column(name = "phone_number")
-    private String phoneNum;
-
-    @Column(name = "email")
-    private String email;
-
     @ManyToMany
     @JoinTable(
             name = "users_in_course",
             joinColumns = @JoinColumn(name = "username"),
             inverseJoinColumns = @JoinColumn(name = "course_id"))
     private final Set<Course> userCourses = new HashSet<>();
-
     @ManyToMany(mappedBy = "eventUsers")
     private final Set<Event> userInvolvedEvents = new HashSet<>();
-
     @OneToMany(mappedBy = "eventOwner")
     private final Set<Event> userOwnsEvents = new HashSet<>();
-
     @OneToMany(mappedBy = "msgUser", cascade = CascadeType.ALL)
     private final Set<Message> msgHistory = new HashSet<>();
-
     @ManyToMany
     @JoinTable(
             name = "contacts",
@@ -53,9 +27,23 @@ public class User implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "contact")
     )
     private final Set<User> userContacts = new HashSet<>();
-
     @ManyToMany(mappedBy = "userContacts")
     private final Set<User> contactedBy = new HashSet<>();
+    @Id
+    @Column(name = "username", nullable = false, unique = true)
+    private String username;
+    @Column(name = "password", nullable = false)
+    private String password;
+    @Column(name = "role")
+    private Enum<Role> role;
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
+    @Column(name = "phone_number")
+    private String phoneNum;
+    @Column(name = "email")
+    private String email;
 
     // Constructors
     public User() {
@@ -71,7 +59,6 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    // Get functions
     public String getUsername() {
         return this.username;
     }
@@ -80,7 +67,6 @@ public class User implements Serializable {
         return this.password;
     }
 
-    // Set functions
     public void setPassword(String password) {
         this.password = password;
     }
@@ -109,14 +95,6 @@ public class User implements Serializable {
         this.phoneNum = phoneNum;
     }
 
-    public String getEmail() {
-        return this.email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public Set<Course> getUserCourses() {
         return this.userCourses;
     }
@@ -132,6 +110,23 @@ public class User implements Serializable {
     public Set<Message> getUserMessages() {
         return this.msgHistory;
     }
+
+    public Set<User> getUserContacts() {
+        return this.userContacts;
+    }
+
+    public Set<User> getContactedBy() {
+        return this.contactedBy;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 
     // Collection functions
     public void addCourse(Course course) {

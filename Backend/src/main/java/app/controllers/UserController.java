@@ -120,6 +120,26 @@ public class UserController {
         return owns;
     }
 
+    @GetMapping(path = "/contacts")
+    public ArrayList<String> contacts(@RequestParam String username, @RequestParam String password) {
+        User user = securityService.isAuthorizedHttp(username, password);
+        ArrayList<String> contacts = new ArrayList<>();
+        for (User contact : user.getUserContacts()) {
+            contacts.add(contact.getUsername());
+        }
+        return contacts;
+    }
+
+    @GetMapping(path = "/contactedby")
+    public ArrayList<String> contactedBy(@RequestParam String username, @RequestParam String password) {
+        User user = securityService.isAuthorizedHttp(username, password);
+        ArrayList<String> contacts = new ArrayList<>();
+        for (User contact : user.getContactedBy()) {
+            contacts.add(contact.getUsername());
+        }
+        return contacts;
+    }
+
     @PostMapping(path = "/setrole")
     public Role setRole(@RequestParam String username, @RequestParam String password, @RequestParam String role, @RequestParam String usernameToSet) {
         securityService.isAuthorizedAdminHttp(username, password);
