@@ -1,6 +1,6 @@
 package app.service;
 
-import app.database.User;
+import app.database.entities.User;
 import app.service.database.UserService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,9 +12,8 @@ public class UserServiceTest {
     UserService service;
 
     @Test
-    public void canFindUser()
-    {
-        User user = new User("XYZ123", "XYZ123", "Test", "Test");
+    public void canFindUser() {
+        User user = new User("XYZ123", "XYZ123", "Test", "Test", null, null, null);
         service.saveUser(user);
         Optional<User> optionalUser = service.getUserByUsername("XYZ123");
 

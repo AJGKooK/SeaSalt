@@ -1,6 +1,6 @@
 package app.service;
 
-import app.database.Event;
+import app.database.entities.Event;
 import app.service.database.EventService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,8 +16,7 @@ public class EventServiceTest {
     Event event;
 
     @Test
-    public void canFindEvent()
-    {
+    public void canFindEvent() {
         service.saveEvent(event);
 
         Optional<Event> optionalEvent = service.getEventById(event.getEventId());

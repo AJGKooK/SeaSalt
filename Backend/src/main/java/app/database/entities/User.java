@@ -1,4 +1,4 @@
-package app.database;
+package app.database.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,79 +24,137 @@ public class User implements Serializable {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
+    @Column(name = "phone_number")
+    private String phoneNum;
+
+    @Column(name = "email")
+    private String email;
+
     @ManyToMany
     @JoinTable(
             name = "users_in_course",
             joinColumns = @JoinColumn(name = "username"),
             inverseJoinColumns = @JoinColumn(name = "course_id"))
-    private Set<Course> userCourses;
+    private final Set<Course> userCourses = new HashSet<>();
 
     @ManyToMany(mappedBy = "eventUsers")
-    private Set<Event> userInvolvedEvents;
+    private final Set<Event> userInvolvedEvents = new HashSet<>();
 
     @OneToMany(mappedBy = "eventOwner")
-    private Set<Event> userOwnsEvents;
+    private final Set<Event> userOwnsEvents = new HashSet<>();
 
     @OneToMany(mappedBy = "msgUser", cascade = CascadeType.ALL)
-    private Set<Message> msgHistory;
+    private final Set<Message> msgHistory = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "contacts",
+            joinColumns = @JoinColumn(name = "owner"),
+            inverseJoinColumns = @JoinColumn(name = "contact")
+    )
+    private final Set<User> userContacts = new HashSet<>();
+
+    @ManyToMany(mappedBy = "userContacts")
+    private final Set<User> contactedBy = new HashSet<>();
 
     // Constructors
-    public User() {}
+    public User() {
+    }
 
-    public User(String username, String password, String firstName, String lastName) {
+    public User(String username, String password, String firstName, String lastName, Enum<Role> role, String phoneNum, String email) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.userCourses = new HashSet<>();
-        this.userInvolvedEvents = new HashSet<>();
-        this.userOwnsEvents = new HashSet<>();
-        this.msgHistory = new HashSet<>();
+        this.role = role;
+        this.phoneNum = phoneNum;
+        this.email = email;
     }
 
-    // Get functions
     public String getUsername() {
         return this.username;
     }
+
     public String getPassword() {
         return this.password;
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public Enum<Role> getRole() {
         return this.role;
     }
+
+    public void setRole(Enum<Role> role) {
+        this.role = role;
+    }
+
     public String getFirstName() {
         return this.firstName;
     }
+
     public String getLastName() {
         return this.lastName;
     }
+
+    public String getPhoneNum() {
+        return this.phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
+    }
+
     public Set<Course> getUserCourses() {
         return this.userCourses;
     }
+
     public Set<Event> getUserInvolvedEvents() {
         return this.userInvolvedEvents;
     }
+
     public Set<Event> getUserOwnsEvents() {
         return this.userOwnsEvents;
     }
+
     public Set<Message> getUserMessages() {
         return this.msgHistory;
     }
 
-    // Set functions
-    public void setPassword(String password) {
-        this.password = password;
+    public Set<User> getUserContacts() {
+        return this.userContacts;
     }
-    public void setRole(Enum<Role> role) {
-        this.role = role;
+
+    public Set<User> getContactedBy() {
+        return this.contactedBy;
     }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 
     // Collection functions
     public void addCourse(Course course) {
         this.userCourses.add(course);
     }
+
     public void delCourse(Course course) {
         this.userCourses.remove(course);
+    }
+
+    public void addContact(User user) {
+        this.userContacts.add(user);
+    }
+
+    public void delContact(User user) {
+        this.userContacts.remove(user);
     }
 
 }

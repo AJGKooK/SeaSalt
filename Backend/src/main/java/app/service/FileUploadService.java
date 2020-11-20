@@ -15,23 +15,21 @@ import java.nio.file.StandardCopyOption;
 @Service
 public class FileUploadService {
 
-    public enum UploadType {
-        USER, COURSE, ASSIGNMENT, EVENT
-    }
-
     @Value("${app.upload.dir:${user.home}}")
     public String uploadDir;
 
     public String uploadFile(Enum<UploadType> type, String id, MultipartFile file) {
         try {
-            if(file.getOriginalFilename() == null) {
+            if (file.getOriginalFilename() == null) {
                 String timestamp = String.valueOf(System.currentTimeMillis());
                 Path path = Paths.get(uploadDir
                         + File.separator + "uploads"
                         + File.separator + type.toString().toLowerCase()
                         + File.separator + id
                         + File.separator + timestamp);
-
+                if (!Files.exists(path)) {
+                    Files.createDirectories(path);
+                }
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
                 return timestamp;
             } else {
@@ -40,7 +38,9 @@ public class FileUploadService {
                         + File.separator + type.toString().toLowerCase()
                         + File.separator + id
                         + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
-
+                if (!Files.exists(path)) {
+                    Files.createDirectories(path);
+                }
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
                 return StringUtils.cleanPath(file.getOriginalFilename());
             }
@@ -52,7 +52,7 @@ public class FileUploadService {
 
     public String uploadFile(Enum<UploadType> type, String id, String username, MultipartFile file) {
         try {
-            if(file.getOriginalFilename() == null) {
+            if (file.getOriginalFilename() == null) {
                 String timestamp = String.valueOf(System.currentTimeMillis());
                 Path path = Paths.get(uploadDir
                         + File.separator + "uploads"
@@ -60,7 +60,9 @@ public class FileUploadService {
                         + File.separator + id
                         + File.separator + username
                         + File.separator + timestamp);
-
+                if (!Files.exists(path)) {
+                    Files.createDirectories(path);
+                }
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
                 return timestamp;
             } else {
@@ -70,7 +72,9 @@ public class FileUploadService {
                         + File.separator + id
                         + File.separator + username
                         + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
-
+                if (!Files.exists(path)) {
+                    Files.createDirectories(path);
+                }
                 Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
                 return StringUtils.cleanPath(file.getOriginalFilename());
             }
@@ -85,12 +89,18 @@ public class FileUploadService {
             Path path = Paths.get(uploadDir
                     + File.separator + "profiles"
                     + File.separator + username + ".png");
-
+            if (!Files.exists(path)) {
+                Files.createDirectories(path);
+            }
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             e.printStackTrace();
             throw new FileStorageException("Could not store profile picture. Please try again!");
         }
+    }
+
+    public enum UploadType {
+        USER, COURSE, ASSIGNMENT, EVENT
     }
 }
 

@@ -1,9 +1,9 @@
 package app.controllers;
 
-import app.database.Course;
-import app.database.Event;
-import app.database.Role;
-import app.database.User;
+import app.database.entities.Course;
+import app.database.entities.Event;
+import app.database.entities.Role;
+import app.database.entities.User;
 import app.excpetions.BadRequestException;
 import app.excpetions.NotFoundException;
 import app.service.SecurityService;
@@ -36,7 +36,7 @@ public class UserController {
     @PostMapping(path = "/login")
     public Integer login(@RequestParam String username, @RequestParam String password) {
         Optional<User> user = userService.getUserByUsername(username);
-        if(user.isEmpty()) {
+        if (user.isEmpty()) {
             return 2;
         } else if (user.get().getPassword().equals(password)) {
             return 0;
@@ -46,11 +46,27 @@ public class UserController {
     }
 
     @PostMapping(path = "/register")
-    public Integer register(@RequestParam String username, @RequestParam String password, @RequestParam String firstName, @RequestParam String lastName) {
+    public Integer register(@RequestParam String username, @RequestParam String password, @RequestParam String firstName, @RequestParam String lastName,
+                            @RequestParam(required = false) String role, @RequestParam(required = false) String phoneNum, @RequestParam(required = false) String email) {
         if (userService.getUserByUsername(username).isPresent()) {
             return 1;
+        } else if (role != null) {
+            Role roleEnum = null;
+            for (Role e : Role.values()) {
+                if (e.toString().equals(role.toUpperCase())) {
+                    roleEnum = e;
+                    break;
+                }
+            }
+            if (roleEnum != null) {
+                User user = new User(username, password, firstName, lastName, roleEnum, phoneNum, email);
+                userService.saveUser(user);
+                return 0;
+            } else {
+                throw new BadRequestException();
+            }
         } else {
-            User user = new User(username, password, firstName, lastName);
+            User user = new User(username, password, firstName, lastName, null, phoneNum, email);
             userService.saveUser(user);
             return 0;
         }
@@ -67,13 +83,8 @@ public class UserController {
     public ObjectNode info(@RequestParam String username, @RequestParam String password, @RequestParam("info") String usernameInfo) {
         securityService.isAuthorizedHttp(username, password);
         Optional<User> info = userService.getUserByUsername(usernameInfo);
-        if(info.isPresent()) {
-            ObjectNode response = objectMapper.createObjectNode();
-            response.put("username", info.get().getUsername());
-            response.put("firstname", info.get().getFirstName());
-            response.put("lastname", info.get().getLastName());
-            response.put("role", info.get().getRole().toString());
-            return response;
+        if (info.isPresent()) {
+            return getJsonNodes(info.get());
         } else {
             throw new NotFoundException();
         }
@@ -83,7 +94,7 @@ public class UserController {
     public ArrayList<Integer> courses(@RequestParam String username, @RequestParam String password) {
         User user = securityService.isAuthorizedHttp(username, password);
         ArrayList<Integer> courses = new ArrayList<>();
-        for(Course course : user.getUserCourses()) {
+        for (Course course : user.getUserCourses()) {
             courses.add(course.getCourseId());
         }
         return courses;
@@ -93,7 +104,7 @@ public class UserController {
     public ArrayList<Integer> involved(@RequestParam String username, @RequestParam String password) {
         User user = securityService.isAuthorizedHttp(username, password);
         ArrayList<Integer> involved = new ArrayList<>();
-        for(Event event : user.getUserInvolvedEvents()) {
+        for (Event event : user.getUserInvolvedEvents()) {
             involved.add(event.getEventId());
         }
         return involved;
@@ -103,20 +114,40 @@ public class UserController {
     public ArrayList<Integer> owns(@RequestParam String username, @RequestParam String password) {
         User user = securityService.isAuthorizedHttp(username, password);
         ArrayList<Integer> owns = new ArrayList<>();
-        for(Event event : user.getUserOwnsEvents()) {
+        for (Event event : user.getUserOwnsEvents()) {
             owns.add(event.getEventId());
         }
         return owns;
     }
 
+    @GetMapping(path = "/contacts")
+    public ArrayList<String> contacts(@RequestParam String username, @RequestParam String password) {
+        User user = securityService.isAuthorizedHttp(username, password);
+        ArrayList<String> contacts = new ArrayList<>();
+        for (User contact : user.getUserContacts()) {
+            contacts.add(contact.getUsername());
+        }
+        return contacts;
+    }
+
+    @GetMapping(path = "/contactedby")
+    public ArrayList<String> contactedBy(@RequestParam String username, @RequestParam String password) {
+        User user = securityService.isAuthorizedHttp(username, password);
+        ArrayList<String> contacts = new ArrayList<>();
+        for (User contact : user.getContactedBy()) {
+            contacts.add(contact.getUsername());
+        }
+        return contacts;
+    }
+
     @PostMapping(path = "/setrole")
     public Role setRole(@RequestParam String username, @RequestParam String password, @RequestParam String role, @RequestParam String usernameToSet) {
         securityService.isAuthorizedAdminHttp(username, password);
-        Optional<User> user = userService.getUserByUsername(username);
+        Optional<User> user = userService.getUserByUsername(usernameToSet);
         if (user.isPresent()) {
             Role roleEnum = null;
             for (Role e : Role.values()) {
-                if (e.toString().equals(role)) {
+                if (e.toString().equals(role.toUpperCase())) {
                     roleEnum = e;
                     break;
                 }
@@ -133,11 +164,50 @@ public class UserController {
         }
     }
 
+    @PostMapping(path = "/edit")
+    public ObjectNode editUser(@RequestParam String username, @RequestParam String password, @RequestParam(required = false) String userToEdit,
+                               @RequestParam(required = false) String phonenum, @RequestParam(required = false) String email) {
+        if (userToEdit != null) {
+            securityService.isAuthorizedAdminHttp(username, password);
+            Optional<User> user = userService.getUserByUsername(userToEdit);
+            if (user.isPresent()) {
+                if (phonenum != null) {
+                    user.get().setPhoneNum(phonenum);
+                }
+                if (email != null) {
+                    user.get().setEmail(email);
+                }
+                userService.saveUser(user.get());
+                ObjectNode response = objectMapper.createObjectNode();
+                response.put("username", user.get().getUsername());
+                response.put("phonenum", user.get().getPhoneNum());
+                response.put("email", user.get().getEmail());
+                return response;
+            } else {
+                throw new NotFoundException();
+            }
+        } else {
+            User user = securityService.isAuthorizedHttp(username, password);
+            if (phonenum != null) {
+                user.setPhoneNum(phonenum);
+            }
+            if (email != null) {
+                user.setEmail(email);
+            }
+            userService.saveUser(user);
+            ObjectNode response = objectMapper.createObjectNode();
+            response.put("username", user.getUsername());
+            response.put("phonenum", user.getPhoneNum());
+            response.put("email", user.getEmail());
+            return response;
+        }
+    }
+
     @PostMapping(path = "/addcourse")
-    public Integer addcourse(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
+    public Integer addCourse(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
         User user = securityService.isAuthorizedHttp(username, password);
         Optional<Course> course = courseService.getCourseById(id);
-        if(course.isPresent()) {
+        if (course.isPresent()) {
             user.addCourse(course.get());
             userService.saveUser(user);
             return course.get().getCourseId();
@@ -147,10 +217,10 @@ public class UserController {
     }
 
     @PostMapping(path = "/delcourse")
-    public Integer delcourse(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
+    public Integer delCourse(@RequestParam String username, @RequestParam String password, @RequestParam Integer id) {
         User user = securityService.isAuthorizedHttp(username, password);
         Optional<Course> course = courseService.getCourseById(id);
-        if(course.isPresent()) {
+        if (course.isPresent()) {
             user.delCourse(course.get());
             userService.saveUser(user);
             return course.get().getCourseId();
@@ -158,4 +228,66 @@ public class UserController {
             throw new NotFoundException();
         }
     }
+
+    @PostMapping(path = "/addcontact")
+    public ObjectNode addContact(@RequestParam String username, @RequestParam String password, @RequestParam(name = "contact") String contactUsername) {
+        User user = securityService.isAuthorizedHttp(username, password);
+        Optional<User> contact = userService.getUserByUsername(contactUsername);
+        if (contact.isPresent()) {
+            user.addContact(contact.get());
+            userService.saveUser(user);
+            return getJsonNodes(contact.get());
+        } else {
+            throw new NotFoundException();
+        }
+    }
+
+    @PostMapping(path = "/delcontact")
+    public String delContact(@RequestParam String username, @RequestParam String password, @RequestParam(name = "contact") String contactUsername) {
+        User user = securityService.isAuthorizedHttp(username, password);
+        Optional<User> contact = userService.getUserByUsername(contactUsername);
+        if (contact.isPresent()) {
+            user.delContact(contact.get());
+            userService.saveUser(user);
+            return contact.get().getUsername();
+        } else {
+            throw new NotFoundException();
+        }
+    }
+
+    @PostMapping(path = "/deluser")
+    public boolean delUser(@RequestParam String username, @RequestParam String password) {
+        try {
+            userService.deleteUser(securityService.isAuthorizedHttp(username, password));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private ObjectNode getJsonNodes(User user) {
+        ObjectNode response = objectMapper.createObjectNode();
+        response.put("username", user.getUsername());
+        response.put("firstname", user.getFirstName());
+        response.put("lastname", user.getLastName());
+        if (user.getRole() == null) {
+            response.put("role", "null");
+        } else {
+            response.put("role", user.getRole().toString());
+        }
+        if (user.getPhoneNum() == null) {
+            response.put("phonenum", "null");
+        } else {
+            response.put("phoneNum", user.getPhoneNum());
+        }
+        if (user.getEmail() == null) {
+            response.put("email", "null");
+        } else {
+            response.put("email", user.getEmail());
+        }
+
+        return response;
+    }
+
+
 }

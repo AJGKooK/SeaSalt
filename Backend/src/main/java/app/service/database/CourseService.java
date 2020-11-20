@@ -1,7 +1,7 @@
 package app.service.database;
 
-import app.database.Course;
 import app.database.CourseDatabase;
+import app.database.entities.Course;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +24,13 @@ public class CourseService {
 
     public void saveCourse(Course course) {
         courseDatabase.save(course);
+    }
+
+    public void deleteCourse(Course course) {
+        courseDatabase.delete(course);
+    }
+
+    public void deleteCourse(Integer id) {
+        courseDatabase.deleteById(id);
     }
 }

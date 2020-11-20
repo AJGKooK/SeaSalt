@@ -20,6 +20,7 @@ public class EventsMainActivity  extends AppCompatActivity {
     private Button createButton;
     public static TextView textView;
 
+
     /**
      * when user presses the events button, this page is created with a list
      * of the current events that they have in order from top to bottom, soonest to latest

@@ -1,4 +1,4 @@
-package app;
+package app.documentation;
 
 
 import org.springframework.context.annotation.Bean;

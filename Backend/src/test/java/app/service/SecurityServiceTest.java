@@ -1,15 +1,12 @@
 package app.service;
 
-import app.database.Course;
-import app.database.Event;
-import app.database.Message;
-import app.database.User;
+import app.database.entities.Course;
+import app.database.entities.Event;
+import app.database.entities.Message;
+import app.database.entities.User;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mock;
-
-import java.util.List;
-import java.util.Optional;
 
 public class SecurityServiceTest {
 
@@ -25,36 +22,32 @@ public class SecurityServiceTest {
     Course course;
 
     @Test
-    public void userAuthorized()
-    {
+    public void userAuthorized() {
         service.userService.saveUser(user);
-        Assert.assertTrue(service.isAuthorizedHttp(user.getUsername(), user.getPassword()).equals(user));
+        Assert.assertEquals(service.isAuthorizedHttp(user.getUsername(), user.getPassword()), user);
     }
 
     @Test
-    public void userInCourse()
-    {
+    public void userInCourse() {
         user.addCourse(course);
         service.userService.saveUser(user);
 
-        Assert.assertTrue(service.isAuthorizedHttp(user.getUsername(), user.getPassword(), course).equals(course));
+        Assert.assertEquals(service.isAuthorizedHttp(user.getUsername(), user.getPassword(), course), course);
     }
 
     @Test
-    public void userInEvent()
-    {
+    public void userInEvent() {
         event.addUser(user);
         service.userService.saveUser(user);
 
-        Assert.assertTrue(service.isAuthorizedHttp(user.getUsername(), user.getPassword(), event).equals(event));
+        Assert.assertEquals(service.isAuthorizedHttp(user.getUsername(), user.getPassword(), event), event);
     }
 
     @Test
-    public void userHasMessage()
-    {
+    public void userHasMessage() {
         user.getUserMessages().add(message);
         service.userService.saveUser(user);
 
-        Assert.assertTrue(service.isAuthorizedHttp(user.getUsername(), user.getPassword(), message).equals(message));
+        Assert.assertEquals(service.isAuthorizedHttp(user.getUsername(), user.getPassword(), message), message);
     }
 }

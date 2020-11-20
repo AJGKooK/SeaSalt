@@ -1,7 +1,7 @@
 package app.service.database;
 
-import app.database.Assignment;
 import app.database.AssignmentDatabase;
+import app.database.entities.Assignment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +24,13 @@ public class AssignmentService {
 
     public void saveAssignment(Assignment assignment) {
         assignmentDatabase.save(assignment);
+    }
+
+    public void deleteAssignment(Assignment assignment) {
+        assignmentDatabase.delete(assignment);
+    }
+
+    public void deleteAssignment(Integer id) {
+        assignmentDatabase.deleteById(id);
     }
 }

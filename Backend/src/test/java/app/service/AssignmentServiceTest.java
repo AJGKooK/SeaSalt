@@ -1,6 +1,6 @@
 package app.service;
 
-import app.database.Assignment;
+import app.database.entities.Assignment;
 import app.service.database.AssignmentService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,8 +16,7 @@ public class AssignmentServiceTest {
     Assignment assignment;
 
     @Test
-    public void canFindCourse()
-    {
+    public void canFindCourse() {
         service.saveAssignment(assignment);
 
         Optional<Assignment> optionalAssignment = service.getAssignmentById(assignment.getAssignmentId());

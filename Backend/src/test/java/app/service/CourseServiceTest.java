@@ -1,6 +1,6 @@
 package app.service;
 
-import app.database.Course;
+import app.database.entities.Course;
 import app.service.database.CourseService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,8 +16,7 @@ public class CourseServiceTest {
     Course course;
 
     @Test
-    public void canFindCourse()
-    {
+    public void canFindCourse() {
         service.saveCourse(course);
 
         Optional<Course> optionalCourse = service.getCourseById(course.getCourseId());
