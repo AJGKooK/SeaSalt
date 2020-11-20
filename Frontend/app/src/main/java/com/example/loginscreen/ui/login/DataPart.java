@@ -3,7 +3,10 @@ package com.example.loginscreen.ui.login;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
- *  DataPart class to accept and set a String and byte[]
+ * Singleton volley to populate request into single queue.
+ *
+ * Sketch Project Studio
+ * Created by Angga on 22/04/2016 22.58.
  */
 public class DataPart extends AppCompatActivity {
     private String fileName;
@@ -23,6 +26,7 @@ public class DataPart extends AppCompatActivity {
      * @return
      */
     public String getFileName() {
+
         return fileName;
     }
 
@@ -30,6 +34,7 @@ public class DataPart extends AppCompatActivity {
      * @return
      */
     public byte[] getContent() {
+
         return content;
     }
 
