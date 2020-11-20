@@ -23,6 +23,9 @@ import com.example.loginscreen.ui.login.ContactsActivity;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * The main page activity page for Sea Salt
  * @author Chandler Jurenic and Aaron Goff
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView textView;
     private final String events = "";
     private Button logout;
+    private int j;
 
     /**
      * When a user logs in successfully or returns from a different feature back to the main
@@ -76,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 openEvents();
+                getEvents();
             }
         });
         meetButton = (ImageButton) findViewById(R.id.meetButton);
@@ -118,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
     public void openEvents(){
         Intent intent = new Intent(this, EventsMainActivity.class);
         startActivity(intent);
+
     }
 
     /**
@@ -134,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
     public void openContacts(){
         Intent intent = new Intent(this, ContactsActivity.class);
         startActivity(intent);
-        getContacts();
+//        getContacts();
     }
 
     /**
@@ -151,52 +157,26 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void getContacts(){
-        final String[] responseFinal = new String[1];
+    public void getEvents(){
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         String url = "http://coms-309-ug-09.cs.iastate.edu/user/events/involved?username=" + UserActivity.loginUsername +"&password=" + UserActivity.loginPassword;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
             @Override
             public void onResponse(String response){
 
-//                response = response.replace("[", ",");
-//                response = response.replace("]", ",");
-////                response = response.replaceAll(",", "");
-                responseFinal[0] = response;
+                response = response.replace("[", "");
+                response = response.replace("]", "");
+                response = response.replaceAll(",", "");
                 for(int i = 0; i <= response.length()-1; i++){
-                    events.equals(response.charAt(i));
-                    RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-                    String url = "http://coms-309-ug-09.cs.iastate.edu/user/events/info/involved?username=" + UserActivity.loginUsername +"&password=" + UserActivity.loginPassword;
-                    StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
-                        @Override
-                        public void onResponse(String response){
-                            ContactsActivity.textView.setText(response);
-                        }
-                    }, new Response.ErrorListener(){
-                        @Override
-                        public void onErrorResponse(VolleyError error){
-                            ContactsActivity.textView.setText("Contacts Failed to display: " + responseFinal[0]);
-                            Log.i("Event list", "Contacts adding failed");
-                        }
-                    }){
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            Map<String, String> map = new HashMap<>();
-                            map.put("username", UserActivity.loginUsername);
-                            map.put("password", UserActivity.loginPassword);
-                            map.put("id", events);
-                            return map;
-                        }
-                    };
-                    queue.add(stringRequest);
-
+                    final char event = response.charAt(i);
+                    final String events = Character.toString(event);
+                    EventsMainActivity.textView.append("\n" + events);
                 }
             }
+
         }, new Response.ErrorListener(){
             @Override
             public void onErrorResponse(VolleyError error){
-//                ContactsActivity.textView.setText("Events Failed to display");
-                Log.i("Event list", "Event adding failed");
             }
         }){
             @Override
@@ -204,13 +184,13 @@ public class MainActivity extends AppCompatActivity {
                 Map<String, String> map = new HashMap<>();
                 map.put("username", UserActivity.loginUsername);
                 map.put("password", UserActivity.loginPassword);
+
                 return map;
             }
         };
+
         queue.add(stringRequest);
 
 
     }
-
-
 }

@@ -1,17 +1,14 @@
 package com.example.loginscreen.ui.login;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.loginscreen.R;
-
-
-
-import java.util.List;
 
 /**
  * The Meet page activity page for Sea Salt

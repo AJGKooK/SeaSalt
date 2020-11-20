@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,7 +18,7 @@ import com.example.loginscreen.R;
 public class EventsMainActivity  extends AppCompatActivity {
 
     private Button createButton;
-    private ListView listView;
+    public static TextView textView;
 
 
     /**
@@ -32,7 +32,7 @@ public class EventsMainActivity  extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events_main);
 
-        listView = (ListView) findViewById(R.id.listview);
+        textView = findViewById(R.id.textView);
         createButton = (Button) findViewById(R.id.createButton);
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
