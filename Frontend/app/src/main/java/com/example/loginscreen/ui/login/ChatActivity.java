@@ -117,7 +117,7 @@ public class ChatActivity extends AppCompatActivity {
     private void connectWebSocket(){
         URI uri;
         try{
-            uri = new URI("ws://echo.websocket.org");
+            uri = new URI("ws://coms-309-ug-09.cs.iastate.edu/chat/" + UserActivity.loginUsername);
         }catch(URISyntaxException e){
             e.printStackTrace();
             return;
