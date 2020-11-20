@@ -25,4 +25,12 @@ public class EventService {
     public void saveEvent(Event event) {
         eventDatabase.save(event);
     }
+
+    public void deleteEvent(Event event) {
+        eventDatabase.delete(event);
+    }
+
+    public void deleteEvent(Integer id) {
+        eventDatabase.deleteById(id);
+    }
 }
