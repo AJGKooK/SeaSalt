@@ -1,6 +1,9 @@
 package app.websockets;
 
 import app.excpetions.WebsocketException;
+import org.hibernate.annotations.common.util.impl.LoggerFactory;
+import org.slf4j.ILoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -17,7 +20,7 @@ public class Websocket {
     private static Map<Session, String> sessionToUsernameMap = new Hashtable<>();
 
     @OnOpen
-    public void onOpen(Session session, @PathParam("username") String username) {
+    public void onOpen(Session session, @PathParam("username") String username) throws IOException{
         sessionToUsernameMap.put(session, username);
     }
 
@@ -25,13 +28,13 @@ public class Websocket {
     //How do we want to go about sending messages?
     //I'd suggest storing the message object in the database, but handling the IM part separately in websockets.
     @OnMessage
-    public void onMessage(Session session, String message) {
+    public void onMessage(Session session, String message) throws IOException {
         String username = sessionToUsernameMap.get(session);
         broadcast(username + ": " + message);
     }
 
     @OnClose
-    public void onClose(Session session) {
+    public void onClose(Session session) throws IOException {
         sessionToUsernameMap.remove(session);
     }
 
