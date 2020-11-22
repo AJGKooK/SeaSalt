@@ -194,18 +194,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void getContacts(){
-
+        final String[] responseFinal = new String[1];
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         String url = "http://coms-309-ug-09.cs.iastate.edu/user/contacts?username=" + UserActivity.loginUsername +"&password=" + UserActivity.loginPassword;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
             @Override
             public void onResponse(String response){
-                final String responseFinal;
                 String returnResponse[];
                 response = response.substring(0, response.length() - 1);
                 response = response.substring(1, response.length() - 1);
-                final String usernames = response;
-                responseFinal = response;
+                final String[] usernames = response.split(",");
+                responseFinal[0] = response;
                 for(int i = 0; i <= response.length()-1; i++){
                     events.equals(response.charAt(i));
                     RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
@@ -218,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
                     }, new Response.ErrorListener(){
                         @Override
                         public void onErrorResponse(VolleyError error){
-                            ContactsActivity.textView.setText("Contacts Failed to display: " + responseFinal);
+                            ContactsActivity.textView.setText("Contacts Failed to display: " + responseFinal[0]);
                             Log.i("Event list", "Contacts adding failed");
                         }
                     }){
