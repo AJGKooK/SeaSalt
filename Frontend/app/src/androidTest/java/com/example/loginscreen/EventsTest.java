@@ -45,7 +45,7 @@ public class EventsTest {
         Thread.sleep(1000);
         String title = "Chandlers Event Test";
         String time = "1230";
-        String desc = "First Mockio Test";
+        String desc = "First Mockito Test";
 
         onView(withId(R.id.eventTitle)).perform(typeText(title), closeSoftKeyboard());
         Thread.sleep(1000);
@@ -54,7 +54,7 @@ public class EventsTest {
         onView(withId(R.id.descriptionEvent)).perform(typeText(desc), closeSoftKeyboard());
         Thread.sleep(1000);
         onView(withId(R.id.addEvent)).perform(click());
-        Thread.sleep(1000);
+        Thread.sleep(2000);
 
     }
 
