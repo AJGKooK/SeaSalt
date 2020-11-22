@@ -1,6 +1,6 @@
 package app.service;
 
-import app.database.Course;
+import app.database.entities.Course;
 import app.service.database.CourseService;
 import org.junit.Assert;
 import org.junit.Test;

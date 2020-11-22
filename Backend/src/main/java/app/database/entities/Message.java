@@ -1,4 +1,4 @@
-package app.database;
+package app.database.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,7 +23,8 @@ public class Message implements Serializable {
     private String msgContent;
 
     // Constructors
-    public Message() {}
+    public Message() {
+    }
 
     public Message(User user, String msg) {
         this.msgTimestamp = new Date(System.currentTimeMillis());
@@ -35,12 +36,15 @@ public class Message implements Serializable {
     public Integer getMsgId() {
         return this.msgId;
     }
+
     public User getMsgUser() {
         return this.msgUser;
     }
+
     public Date getMsgTimestamp() {
         return this.msgTimestamp;
     }
+
     public String getMsgContent() {
         return this.msgContent;
     }
