@@ -87,7 +87,8 @@ public class SecurityService {
     public User isAuthorizedOwnerHttp(String username, String password, Event event, Course course) {
         Optional<User> user = userService.getUserByUsername(username);
         if (user.isPresent()) {
-            if (isNotAuthorized(user.get(), password) || ((event.getEventOwner() != user.get() || !user.get().getUserCourses().contains(course)) && isNotAdmin(user.get()))) {
+            if (isNotAuthorized(user.get(), password) || ((event.getEventOwner() != user.get() || !user.get().getUserCourses().contains(course))
+                    && isNotAdmin(user.get()))) {
                 throw new ForbiddenException();
             }
             return user.get();
