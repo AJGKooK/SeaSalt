@@ -153,8 +153,8 @@ public class UploadActivity extends AppCompatActivity {
                     InputStream iStream =   getContentResolver().openInputStream(selectedImage);
                     final byte[] inputData;
                     inputData = getBytes(iStream);
-                    long imagename = System.currentTimeMillis();
-//                      long imagename = 3;
+//                    long imagename = System.currentTimeMillis();
+                      long imagename = 5;
                     params.put("file", new DataPart(imagename + ".png", inputData));
                     return params;
                 }
