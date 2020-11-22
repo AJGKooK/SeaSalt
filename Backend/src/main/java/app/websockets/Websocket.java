@@ -14,7 +14,7 @@ import java.util.Map;
 @Component
 public class Websocket {
 
-    private final Map<Session, String> sessionToUsernameMap = new Hashtable<>();
+    private static Map<Session, String> sessionToUsernameMap = new Hashtable<>();
 
     @OnOpen
     public void onOpen(Session session, @PathParam("username") String username) {
