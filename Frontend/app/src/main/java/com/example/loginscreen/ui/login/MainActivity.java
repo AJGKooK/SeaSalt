@@ -194,30 +194,31 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void getContacts(){
-        final String[] responseFinal = new String[1];
+
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-        String url = "http://coms-309-ug-09.cs.iastate.edu/user/events/involved?username=" + UserActivity.loginUsername +"&password=" + UserActivity.loginPassword;
+        String url = "http://coms-309-ug-09.cs.iastate.edu/user/contacts?username=" + UserActivity.loginUsername +"&password=" + UserActivity.loginPassword;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
             @Override
             public void onResponse(String response){
-
-//                response = response.replace("[", ",");
-//                response = response.replace("]", ",");
-////                response = response.replaceAll(",", "");
-                responseFinal[0] = response;
+                final String responseFinal;
+                String returnResponse[];
+                response = response.substring(0, response.length() - 1);
+                response = response.substring(1, response.length() - 1);
+                final String usernames = response;
+                responseFinal = response;
                 for(int i = 0; i <= response.length()-1; i++){
                     events.equals(response.charAt(i));
                     RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-                    String url = "http://coms-309-ug-09.cs.iastate.edu/user/events/info/involved?username=" + UserActivity.loginUsername +"&password=" + UserActivity.loginPassword;
+                    String url = "http://coms-309-ug-09.cs.iastate.edu/user/info?username=" + UserActivity.loginUsername +"&password=" + UserActivity.loginPassword;
                     StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
                         @Override
                         public void onResponse(String response){
-                            ContactsActivity.textView.setText(response);
+                            ContactsActivity.textView.setText(response + usernames);
                         }
                     }, new Response.ErrorListener(){
                         @Override
                         public void onErrorResponse(VolleyError error){
-                            ContactsActivity.textView.setText("Contacts Failed to display: " + responseFinal[0]);
+                            ContactsActivity.textView.setText("Contacts Failed to display: " + responseFinal);
                             Log.i("Event list", "Contacts adding failed");
                         }
                     }){
@@ -226,7 +227,6 @@ public class MainActivity extends AppCompatActivity {
                             Map<String, String> map = new HashMap<>();
                             map.put("username", UserActivity.loginUsername);
                             map.put("password", UserActivity.loginPassword);
-                            map.put("id", events);
                             return map;
                         }
                     };
