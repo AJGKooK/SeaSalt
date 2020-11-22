@@ -22,15 +22,13 @@ public class SecurityServiceTest {
     Course course;
 
     @Test
-    public void userAuthorized()
-    {
+    public void userAuthorized() {
         service.userService.saveUser(user);
         Assert.assertEquals(service.isAuthorizedHttp(user.getUsername(), user.getPassword()), user);
     }
 
     @Test
-    public void userInCourse()
-    {
+    public void userInCourse() {
         user.addCourse(course);
         service.userService.saveUser(user);
 
@@ -38,8 +36,7 @@ public class SecurityServiceTest {
     }
 
     @Test
-    public void userInEvent()
-    {
+    public void userInEvent() {
         event.addUser(user);
         service.userService.saveUser(user);
 
@@ -47,8 +44,7 @@ public class SecurityServiceTest {
     }
 
     @Test
-    public void userHasMessage()
-    {
+    public void userHasMessage() {
         user.getUserMessages().add(message);
         service.userService.saveUser(user);
 

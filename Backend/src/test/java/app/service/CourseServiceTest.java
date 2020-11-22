@@ -16,8 +16,7 @@ public class CourseServiceTest {
     Course course;
 
     @Test
-    public void canFindCourse()
-    {
+    public void canFindCourse() {
         service.saveCourse(course);
 
         Optional<Course> optionalCourse = service.getCourseById(course.getCourseId());

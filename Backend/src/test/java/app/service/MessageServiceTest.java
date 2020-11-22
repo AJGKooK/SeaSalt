@@ -16,8 +16,7 @@ public class MessageServiceTest {
     Message message;
 
     @Test
-    public void messageSent()
-    {
+    public void messageSent() {
         service.saveMessage(message);
 
         List<Message> messageList = service.getAllMessages();

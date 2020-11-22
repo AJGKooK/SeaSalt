@@ -1,11 +1,15 @@
 package com.example.loginscreen.ui.login;
 
+
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +23,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.loginscreen.R;
 
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,8 +40,9 @@ import java.util.Map;
  * multiple users of the group.  It is also able to send and store messages to other users.
  */
 public class ChatActivity extends AppCompatActivity {
-
+    private WebSocketClient webSocket;
     private ListView listView;
+    private TextView textView;
     private ArrayAdapter<String> arrayAdapter;
     private ArrayList<String> list;
     private ImageButton msgButton;
@@ -46,10 +56,12 @@ public class ChatActivity extends AppCompatActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        connectWebSocket();
 
+        textView = (TextView) findViewById(R.id.textView);
+        textView.setMovementMethod(new ScrollingMovementMethod());
         listView = (ListView) findViewById(R.id.listview);
         msgButton = (ImageButton) findViewById(R.id.msgButton);
         editText = (EditText) findViewById(R.id.chatLog);
@@ -57,11 +69,12 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String logText = editText.getText().toString();
-
                 list.add(logText);
                 listView.setAdapter(arrayAdapter);
                 arrayAdapter.notifyDataSetChanged();
                 sendMessage();
+                webSocket.send(logText);
+
             }
 
         });
@@ -127,8 +140,44 @@ public class ChatActivity extends AppCompatActivity {
              */
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(stringRequest);
-
             editText.getText().clear();
         }
     }
+
+    private void connectWebSocket(){
+        URI uri;
+        try{
+            uri = new URI("ws://coms-309-ug-09.cs.iastate.edu/chat/" + UserActivity.loginUsername);
+        }catch(URISyntaxException e){
+            e.printStackTrace();
+            return;
+        }
+        webSocket = new WebSocketClient(uri){
+
+            @Override
+            public void onOpen(ServerHandshake serverHandshake) {
+                Log.i("Websocket", "Opened");
+            }
+
+            @Override
+            public void onMessage(String msg) {
+                Log.i("Websocket", "Message Received" + " " + msg);
+                textView.append("\n" + msg);
+            }
+
+            @Override
+            public void onClose(int errorCode, String reason, boolean remote) {
+                Log.i("Websocket", "Closed" + reason);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.i("Websocket", "Closed" + e.getMessage());
+            }
+        };
+        webSocket.connect();
+    }
+
+
+
 }
