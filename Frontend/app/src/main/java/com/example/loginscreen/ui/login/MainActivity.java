@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 if (response.length() == 2) {
-                    // DO SOMETHING WHEN NO CONTACTS ARE RETURNED
+                    ContactsActivity.textView.setText("You have no friends");
                 } else {
                     response = response.substring(1, response.length() - 2);
                     String[] usernames = response.split(",");
