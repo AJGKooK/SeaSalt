@@ -300,7 +300,7 @@ public class EventController {
         response.put("id", event.getEventId());
         response.put("name", event.getEventName());
         response.put("desc", event.getEventDesc());
-        response.put("time", event.getEventDesc());
+        response.put("time", event.getEventTime());
         if (event.getEventOwner() != null) {
             response.put("owner", event.getEventOwner().getUsername());
         }
