@@ -297,15 +297,15 @@ public class EventController {
 
     private ObjectNode getJsonNodes(Event event) {
         ObjectNode response = objectMapper.createObjectNode();
-        response.put("id", "\"" + event.getEventId() + "\"");
+        response.put("id", event.getEventId().toString());
         response.put("name", event.getEventName());
         response.put("desc", event.getEventDesc());
-        response.put("time", "\"" + event.getEventTime() + "\"");
+        response.put("time", event.getEventTime().toString());
         if (event.getEventOwner() != null) {
             response.put("owner", event.getEventOwner().getUsername());
         }
         if (event.getEventCourse() != null) {
-            response.put("course", "\"" + event.getEventCourse().getCourseId() + "\"");
+            response.put("course", event.getEventCourse().getCourseId().toString());
         }
         return response;
     }
