@@ -161,25 +161,64 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getEvents(){
+        final ArrayList<String> contacts = new ArrayList<>();
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         String url = "http://coms-309-ug-09.cs.iastate.edu/user/events/involved?username=" + UserActivity.loginUsername +"&password=" + UserActivity.loginPassword;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
             @Override
-            public void onResponse(String response){
+            public void onResponse(String response) {
+                EventsMainActivity.textView.setText("Upcoming events:\n");
+                if (response.length() == 2) {
+                    EventsMainActivity.textView.setText("You have no friends");
+                } else {
+                    response = response.substring(1, response.length() - 1);
+                    String[] usernames = response.split(",");
+                    for (String username : usernames) {
+                        username = username.replace("\"", "");
+                        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+                        String url = "http://coms-309-ug-09.cs.iastate.edu/user/events/info?username=" + UserActivity.loginUsername + "&password=" + UserActivity.loginPassword + "&info=" + username;
+                        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                int i = 0;
+                                Pattern p = Pattern.compile("\"([^\"]*)\"");
+                                Matcher m = p.matcher(response);
+                                while (m.find()) {
+                                    if (i == 0)
+                                        EventsMainActivity.textView.append("\n");
+                                    if (i%2 == 0)
+                                        EventsMainActivity.textView.append(m.group(1) + ": ");
+                                    else
+                                        EventsMainActivity.textView.append(m.group(1) + "\n");
+                                    i++;
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                EventsMainActivity.textView.setText("Events Failed to display: ");
+                                Log.i("Event list", "Event adding failed");
+                            }
+                        }) {
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> map = new HashMap<>();
+                                map.put("username", UserActivity.loginUsername);
+                                map.put("password", UserActivity.loginPassword);
+                                map.put("id", events);
+                                return map;
+                            }
+                        };
+                        queue.add(stringRequest);
 
-                response = response.replace("[", "");
-                response = response.replace("]", "");
-                response = response.replaceAll(",", "");
-                for(int i = 0; i <= response.length()-1; i++){
-                    final char event = response.charAt(i);
-                    final String events = Character.toString(event);
-                    EventsMainActivity.textView.append("\n" + events);
+                    }
                 }
             }
-
         }, new Response.ErrorListener(){
             @Override
             public void onErrorResponse(VolleyError error){
+//                ContactsActivity.textView.setText("Events Failed to display");
+                Log.i("Event list", "Event adding failed");
             }
         }){
             @Override
@@ -187,17 +226,14 @@ public class MainActivity extends AppCompatActivity {
                 Map<String, String> map = new HashMap<>();
                 map.put("username", UserActivity.loginUsername);
                 map.put("password", UserActivity.loginPassword);
-
                 return map;
             }
         };
-
         queue.add(stringRequest);
 
 
     }
     public void getContacts(){
-        final String[] responseFinal = new String[1];
         final ArrayList<String> contacts = new ArrayList<>();
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         String url = "http://coms-309-ug-09.cs.iastate.edu/user/contacts?username=" + UserActivity.loginUsername +"&password=" + UserActivity.loginPassword;
@@ -209,7 +245,6 @@ public class MainActivity extends AppCompatActivity {
                     ContactsActivity.textView.setText("You have no friends");
                 } else {
                     response = response.substring(1, response.length() - 1);
-                    responseFinal[0] = response;
                     String[] usernames = response.split(",");
                     for (String username : usernames) {
                         username = username.replace("\"", "");
@@ -243,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
                                 Map<String, String> map = new HashMap<>();
                                 map.put("username", UserActivity.loginUsername);
                                 map.put("password", UserActivity.loginPassword);
-                                map.put("id", events);
+//                                map.put("id", events);
                                 return map;
                             }
                         };
