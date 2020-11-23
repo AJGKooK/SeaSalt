@@ -42,7 +42,6 @@ import java.util.Map;
  */
 public class ChatActivity extends AppCompatActivity {
     private WebSocketClient webSocket;
-    private ListView listView;
     private TextView textView;
     private ArrayAdapter<String> arrayAdapter;
     private ArrayList<String> list;
@@ -63,7 +62,6 @@ public class ChatActivity extends AppCompatActivity {
 
         textView = (TextView) findViewById(R.id.textView);
         textView.setMovementMethod(new ScrollingMovementMethod());
-        listView = (ListView) findViewById(R.id.listview);
         msgButton = (ImageButton) findViewById(R.id.msgButton);
         editText = (EditText) findViewById(R.id.chatLog);
         msgButton.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +69,6 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String logText = editText.getText().toString();
                 list.add(logText);
-                listView.setAdapter(arrayAdapter);
                 arrayAdapter.notifyDataSetChanged();
                 sendMessage();
                 webSocket.send(logText);
@@ -178,5 +175,6 @@ public class ChatActivity extends AppCompatActivity {
         };
         webSocket.connect();
     }
+
 
 }
