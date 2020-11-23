@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 EventsMainActivity.textView.setText("Upcoming events:\n");
                 if (response.length() == 2) {
-                    EventsMainActivity.textView.setText("You have no friends");
+                    EventsMainActivity.textView.setText("You have no events");
                 } else {
                     response = response.substring(1, response.length() - 1);
                     String[] usernames = response.split(",");
