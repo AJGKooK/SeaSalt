@@ -173,10 +173,10 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     response = response.substring(1, response.length() - 1);
                     String[] usernames = response.split(",");
-                    for (String username : usernames) {
-                        username = username.replace("\"", "");
+                    for (String bubbles : usernames) {
+                        bubbles = bubbles.replace("\"", "");
                         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-                        String url = "http://coms-309-ug-09.cs.iastate.edu/user/events/info?username=" + UserActivity.loginUsername + "&password=" + UserActivity.loginPassword + "&info=" + username;
+                        String url = "http://coms-309-ug-09.cs.iastate.edu/event/info?username=" + UserActivity.loginUsername + "&password=" + UserActivity.loginPassword + "&id=" + bubbles;
                         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
