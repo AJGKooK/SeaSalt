@@ -1,6 +1,8 @@
 package com.example.loginscreen.ui.login;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,8 +19,13 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.loginscreen.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static java.lang.Thread.sleep;
 
 /**
  * The contacts modification activity page for Sea Salt
@@ -34,6 +41,7 @@ public class ContactsModActivity extends AppCompatActivity {
     Button removeContactButton;
     Boolean removeContact = false;
     String addRemStatement;
+    private final String events = "";
     private Map<String, String> map;
 
     /**
@@ -52,6 +60,7 @@ public class ContactsModActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 modifyContact();
+                openContacts();
             }
         });
         removeContactButton = (Button) findViewById(R .id.removeContactButton);
@@ -59,6 +68,7 @@ public class ContactsModActivity extends AppCompatActivity {
             public void onClick(View v){
                 removeContact = true;
                 modifyContact();
+                openContacts();
             }
         });
     }
@@ -70,16 +80,16 @@ public class ContactsModActivity extends AppCompatActivity {
     private void modifyContact() {
         final String contactString = this.contactResult.getText().toString().trim();
         if(removeContact){
-            API_URL += "delcontact";
+            API_URL = "http://coms-309-ug-09.cs.iastate.edu/user/delcontact";
             addRemStatement = "removed";
             removeContact = false;
         }
         else{
-            API_URL += "addcontact";
+            API_URL = "http://coms-309-ug-09.cs.iastate.edu/user/addcontact";
             addRemStatement = "added";
         }
 
-        
+
         StringRequest stringRequest = new StringRequest(Request.Method.POST, API_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -122,4 +132,15 @@ public class ContactsModActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
+    /**
+     * opens the contacts interface
+     */
+    public void openContacts(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+
 }
+
+

@@ -26,6 +26,7 @@ import com.example.loginscreen.R;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
+import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -177,7 +178,5 @@ public class ChatActivity extends AppCompatActivity {
         };
         webSocket.connect();
     }
-
-
 
 }
