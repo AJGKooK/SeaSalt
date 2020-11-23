@@ -20,10 +20,14 @@ import com.android.volley.toolbox.Volley;
 import com.example.loginscreen.R;
 import com.example.loginscreen.ui.login.ContactsActivity;
 
+import org.springframework.util.StringUtils;
+
 import java.util.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The main page activity page for Sea Salt
@@ -193,29 +197,44 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void getContacts(){
+        final String[] responseFinal = new String[1];
         final ArrayList<String> contacts = new ArrayList<>();
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-        String url = "http://coms-309-ug-09.cs.iastate.edu/user/conacts?username=" + UserActivity.loginUsername +"&password=" + UserActivity.loginPassword;
+        String url = "http://coms-309-ug-09.cs.iastate.edu/user/contacts?username=" + UserActivity.loginUsername +"&password=" + UserActivity.loginPassword;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
             @Override
             public void onResponse(String response) {
+                ContactsActivity.textView.setText("Contacts list:\n");
                 if (response.length() == 2) {
                     ContactsActivity.textView.setText("You have no friends");
                 } else {
-                    response = response.substring(1, response.length() - 2);
+                    response = response.substring(1, response.length() - 1);
+                    responseFinal[0] = response;
                     String[] usernames = response.split(",");
                     for (String username : usernames) {
+                        username = username.replace("\"", "");
                         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
                         String url = "http://coms-309-ug-09.cs.iastate.edu/user/info?username=" + UserActivity.loginUsername + "&password=" + UserActivity.loginPassword + "&info=" + username;
                         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                contacts.add(response);
+                                int i = 0;
+                                Pattern p = Pattern.compile("\"([^\"]*)\"");
+                                Matcher m = p.matcher(response);
+                                while (m.find()) {
+                                    if (i == 0)
+                                        ContactsActivity.textView.append("\n");
+                                    if (i%2 == 0)
+                                        ContactsActivity.textView.append(m.group(1) + ": ");
+                                    else
+                                        ContactsActivity.textView.append(m.group(1) + "\n");
+                                    i++;
+                                }
                             }
                         }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                ContactsActivity.textView.setText("Contacts Failed to display");
+                                ContactsActivity.textView.setText("Contacts Failed to display: ");
                                 Log.i("Event list", "Contacts adding failed");
                             }
                         }) {
